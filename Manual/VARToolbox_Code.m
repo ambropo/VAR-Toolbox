@@ -3,7 +3,7 @@
 delete 'SCREEN.m' 
 clear all; clear session; close all; clc
 warning off all
-addpath(genpath('/Users/jambro/Dropbox/AMPER/VARToolbox/Codes'))
+addpath(genpath('/Users/jambro/Google Drive/VAR-Toolbox/'))
 addpath('codes')
 
 

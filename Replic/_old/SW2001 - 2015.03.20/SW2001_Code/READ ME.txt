@@ -1,6 +1,0 @@
-
-Matlab code to replicate Figure 1 and Table 1.B of Stock and Watson (2001, JEP)
-
-To replicate Figure 1 and Table 1.B open and run the file GO_SW2001.m.
-
-BQ1989_Code - 2014.01.14

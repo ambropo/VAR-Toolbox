@@ -1,0 +1,322 @@
+\hspace{1mm}\textcolor{matlabgreen}{\%}\textcolor{matlabgreen}{\% 1. PRELIMINARIES }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}delete \textcolor{matlabpurple}{'SCREEN.m'}  \\ 
+\hspace{1mm}clear all; clear session; close all; clc \\ 
+\hspace{1mm}warning off all \\ 
+\hspace{1mm}addpath(genpath(\textcolor{matlabpurple}{'/Users/jambro/Dropbox/AMPER/VARToolbox/Codes'})) \\ 
+\hspace{1mm}addpath(\textcolor{matlabpurple}{'codes'}) \\ 
+\hspace{1mm} \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%}\textcolor{matlabgreen}{\% 1. LOAD DATA }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%**************************************************************************  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% The data used in this example is read from an Excel file and stored in a }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% structure (DATA). }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Load data from Gertler and Karadi data set }\\ 
+\hspace{1mm}[xlsdata, xlstext] = xlsread(\textcolor{matlabpurple}{'data/GK2015\_Data.xlsx'},\textcolor{matlabpurple}{'VAR\_data'}); \\ 
+\hspace{1mm}data   = Num2NaN(xlsdata(:,3:end)); \\ 
+\hspace{1mm}vnames = xlstext(1,3:end); \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Store variables in the structure DATA }\\ 
+\hspace{1mm}\textcolor{matlabblue}{for} ii=1:length(vnames) \\ 
+\hspace{1mm}\hspace{5mm} DATA.(vnames\{ii\}) = data(:,ii); \\ 
+\hspace{1mm}\textcolor{matlabblue}{end} \\ 
+\hspace{1mm}year = xlsdata(1,1); \\ 
+\hspace{1mm}month = xlsdata(1,2); \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Observations }\\ 
+\hspace{1mm}nobs = size(data,1); \\ 
+\hspace{1mm} \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%}\textcolor{matlabgreen}{\% 2. PLOT DATA }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%**************************************************************************  }\\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Select the list of variables to plot... }\\ 
+\hspace{1mm}Xvnames      = \{\textcolor{matlabpurple}{'logip'},\textcolor{matlabpurple}{'gs1'}\}; \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% ... and corresponding labels to be used \textcolor{matlabblue}{for} plots }\\ 
+\hspace{1mm}\hspace{5mm} Xvnames\_long = \{\textcolor{matlabpurple}{'Industrial Production'},\textcolor{matlabpurple}{'1-year Rate'}\}; \\ 
+\hspace{1mm}\hspace{5mm} Xnvar        = length(Xvnames); \\ 
+\hspace{1mm}\hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% Create matrices of variables to be used in the VAR }\\ 
+\hspace{1mm}\hspace{5mm} X = nan(nobs,Xnvar); \\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabblue}{for} ii=1:Xnvar \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} X(:,ii) = DATA.(Xvnames\{ii\}); \\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabblue}{end} \\ 
+\hspace{1mm}\hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% Open a figure of the desired size and plot the selected series }\\ 
+\hspace{1mm}\hspace{5mm} FigSize(26,12) \\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabblue}{for} ii=1:Xnvar \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} subplot(1,2,ii) \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} H(ii) = plot(X(:,ii),\textcolor{matlabpurple}{'LineWidth'},2,\textcolor{matlabpurple}{'Color'},cmap(ii)); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} title(Xvnames\_long(ii));  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} DatesPlot(year+(month-1)/12,nobs,6,\textcolor{matlabpurple}{'m'}) \textcolor{matlabgreen}{\% Set the x-axis label  }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} grid on;  \\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabblue}{end} \\ 
+\hspace{1mm}\hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% Create a legend common to the two panels }\\ 
+\hspace{1mm}\hspace{5mm} lopt = LegOption; lopt.handle = H; LegSubplot(vnames,lopt); FigFont(10); \\ 
+\hspace{1mm}\hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% Save figure }\\ 
+\hspace{1mm}\hspace{5mm} SaveFigure(\textcolor{matlabpurple}{'graphics/F1\_PLOT'},1) \\ 
+\hspace{1mm}\hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\%}\textcolor{matlabgreen}{\% 3. VAR ESTIMATION }\\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\%**************************************************************************  }\\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% VAR estimations is achieved in two steps: (1) set the vector of endogenous  }\\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% variables, the desired number of lags, and deterministic variables; (2) }\\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% run teh VARmdoel function. }\\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% Select list of endogenous variables (these will be pulled from the  }\\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% structure DATA, where all data is stored) and their corresponding labels  }\\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% that will be used \textcolor{matlabblue}{for} plots }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} Xvnames      = \{\textcolor{matlabpurple}{'logip'},\textcolor{matlabpurple}{'gs1'}\}; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} Xvnames\_long = \{\textcolor{matlabpurple}{'Industrial Production'},\textcolor{matlabpurple}{'Policy rate'}\}; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} Xnvar        = length(Xvnames); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Create matrices of variables to be used in the VAR }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} X = nan(nobs,Xnvar); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabblue}{for} ii=1:Xnvar \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \hspace{5mm} X(:,ii) = DATA.(Xvnames\{ii\}); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabblue}{end} \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Set the deterministic variable in the VAR (1=constant, 2=trend) }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} det = 1; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Set number of lags }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} nlags = 12; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Estimate VAR by OLS }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} [VAR, VARopt] = VARmodel(X,nlags,det); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Print at screen the outputs of the VARmodel \textcolor{matlabblue}{function} }\\ 
+\hspace{1mm}disp(VAR) \\ 
+\hspace{1mm}disp(VARopt) \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Update the VARopt structure with additional details }\\ 
+\hspace{1mm}VARopt.vnames = Xvnames\_long; \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Print at screen and create table that can be exported to Excel }\\ 
+\hspace{1mm}[TABLE, beta] = VARprint(VAR,VARopt,2); \\ 
+\hspace{1mm} \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%}\textcolor{matlabgreen}{\% 4. IDENTIFICATION WITH ZERO CONTEMPORANEOUS RESTRICTIONS  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%**************************************************************************  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Identification with zero contemporaneous restrictions is achieved in two  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% steps: (1) set the identification scheme mnemonic in the structure  }\\ 
+\hspace{1mm}\textcolor{matlabblue}{case} "rec"; (2) run the VARir or the  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% VARvd functions. For the zero contemporaneous restrictions  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% identification, consider the simple bivariate VAR estimated in the  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% previous section. }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabblue}{case} of zero contemporaneous restrictions set: }\\ 
+\hspace{1mm}VARopt.ident = \textcolor{matlabpurple}{'rec'}; \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Update the VARopt structure with additional details to be used in IR  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% calculations and plots }\\ 
+\hspace{1mm}VARopt.nsteps = 60; \\ 
+\hspace{1mm}VARopt.quality = 1; \\ 
+\hspace{1mm}VARopt.FigSize = [26,12]; \\ 
+\hspace{1mm}VARopt.firstdate = year+(month-1)/12; \\ 
+\hspace{1mm}VARopt.frequency = \textcolor{matlabpurple}{'m'}; \\ 
+\hspace{1mm}VARopt.figname= \textcolor{matlabpurple}{'graphics/REC\_'}; \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% 4.1 IMPULSE RESPONSES }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Compute IR }\\ 
+\hspace{1mm}[IR, VAR] = VARir(VAR,VARopt); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Compute IR error bands }\\ 
+\hspace{1mm}[IRinf,IRsup,IRmed,IRbar] = VARirband(VAR,VARopt); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Plot IR }\\ 
+\hspace{1mm}VARirplot(IRbar,VARopt,IRinf,IRsup); \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% 4.2 FORECAST ERROR VARIANCE DECOMPOSITION }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Compute VD }\\ 
+\hspace{1mm}[VD, VAR] = VARvd(VAR,VARopt); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Compute VD error bands }\\ 
+\hspace{1mm}[VDinf,VDsup,VDmed,VDbar] = VARvdband(VAR,VARopt); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Plot VD }\\ 
+\hspace{1mm}VARvdplot(VDbar,VARopt); \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% 4.3 HISTORICAL DECOMPOSITION }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Compute HD }\\ 
+\hspace{1mm}HD = VARhd(VAR); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Plot HD }\\ 
+\hspace{1mm}VARhdplot(HD,VARopt); \\ 
+\hspace{1mm} \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%}\textcolor{matlabgreen}{\% 5. IDENTIFICATION WITH ZERO LONG-RUN RESTRICTIONS  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%**************************************************************************  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% As in the previous section, identification is achieved in two steps: (1)  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% set the identification scheme mnemonic in the structure VARopt to the  }\\ 
+\hspace{1mm}\textcolor{matlabblue}{case} "bq"; (2) run the VARir or VARvd functions.  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% For the zero long-run restrictions identification, consider the same VAR  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% as in the previous section. }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabblue}{case} of zero long-run restrictions identification set: }\\ 
+\hspace{1mm}VARopt.ident = \textcolor{matlabpurple}{'bq'}; \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Update the options in VARopt to be used in IR calculations and plots }\\ 
+\hspace{1mm}VARopt.figname= \textcolor{matlabpurple}{'graphics/BQ\_'}; \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% 5.1 IMPULSE RESPONSES }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Compute IR }\\ 
+\hspace{1mm}[IR, VAR] = VARir(VAR,VARopt); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Compute error bands }\\ 
+\hspace{1mm}[IRinf,IRsup,IRmed,IRbar] = VARirband(VAR,VARopt); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Plot }\\ 
+\hspace{1mm}VARirplot(IRbar,VARopt,IRinf,IRsup); \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% 5.2 FORECAST ERROR VARIANCE DECOMPOSITION }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Compute VD }\\ 
+\hspace{1mm}[VD, VAR] = VARvd(VAR,VARopt); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Compute error bands }\\ 
+\hspace{1mm}[VDinf,VDsup,VDmed,VDbar] = VARvdband(VAR,VARopt); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Plot }\\ 
+\hspace{1mm}VARvdplot(VDbar,VARopt); \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% 5.3 HISTORICAL DECOMPOSITION }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Compute HD }\\ 
+\hspace{1mm}HD = VARhd(VAR); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Plot HD }\\ 
+\hspace{1mm}VARhdplot(HD,VARopt); \\ 
+\hspace{1mm} \\ 
+\hspace{1mm} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%}\textcolor{matlabgreen}{\% 6. IDENTIFICATION WITH EXTERNAL INSTRUMENTS }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%**************************************************************************  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Identification with external instruments is achieved in three steps: (1)  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% set the identification scheme mnemonic in the structure VARopt to the  }\\ 
+\hspace{1mm}\textcolor{matlabblue}{case} "iv"; (2) update the VARopt structure with the  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% external instrument to be used \textcolor{matlabblue}{for} identification; (3) run the VARir  }\\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% function. For the external instruments example, consider a larger VAR  }\\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% with four endogenous variables.  }\\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% FOUR-VARIABLE VAR ESTIMATION }\\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\hspace{5mm} \textcolor{matlabgreen}{\% Select list of endogenous variables \textcolor{matlabblue}{for} the VAR estimation with the usual  }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% notation: }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} Xvnames      = \{\textcolor{matlabpurple}{'gs1'},\textcolor{matlabpurple}{'logip'},\textcolor{matlabpurple}{'logcpi'},\textcolor{matlabpurple}{'ebp'}\}; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} Xvnames\_long = \{\textcolor{matlabpurple}{'Policy rate'},\textcolor{matlabpurple}{'Industrial Production'},\textcolor{matlabpurple}{'CPI'},\textcolor{matlabpurple}{'Excess Bond Premium'}\}; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} Xnvar        = length(Xvnames); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Create matrices of variables to be used in the VAR }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} X = nan(nobs,Xnvar); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabblue}{for} ii=1:Xnvar \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \hspace{5mm} X(:,ii) = DATA.(Xvnames\{ii\}); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabblue}{end} \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Set the deterministic variable in the VAR (1=constant, 2=trend) }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} det = 1; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Set number of nlags }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} nlags = 12; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Estimate VAR by OLS }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} [VAR, VARopt] = VARmodel(X,nlags,det); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Update the VARopt structure with additional details to be used in IR  }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% calculations and plots }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.vnames = Xvnames\_long; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.nsteps = 60; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.quality = 1; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.FigSize = [26,12]; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.firstdate = year+(month-1)/12; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.figname= \textcolor{matlabpurple}{'graphics/IV\_'}; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.frequency = \textcolor{matlabpurple}{'m'}; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% IDENTIFICATION }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% With the usual notation, select the instrument from the DATA structure: }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} IVvnames      = \{\textcolor{matlabpurple}{'ff4\_tc'}\}; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} IVvnames\_long = \{\textcolor{matlabpurple}{'FF4 futures'}\}; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} IVnvar        = length(IVvnames); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Create vector of instruments to be used in the VAR }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} IV = nan(nobs,IVnvar); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabblue}{for} ii=1:IVnvar \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \hspace{5mm} IV(:,ii) = DATA.(IVvnames\{ii\}); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabblue}{end} \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Identification is achieved with the external instrument IV, which needs }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% to be added to the VARopt structure }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.IV = IV; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Update the options in VARopt to be used in IR calculations and plots }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.ident = \textcolor{matlabpurple}{'iv'}; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.method = \textcolor{matlabpurple}{'wild'}; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Compute IRs }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} [IR, VAR] = VARir(VAR,VARopt); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Compute error bands }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} [IRinf,IRsup,IRmed,IRbar] = VARirband(VAR,VARopt); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Plot impulse responses }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.FigSize = [26,24]; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARirplot(IRbar,VARopt,IRinf,IRsup); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\%}\textcolor{matlabgreen}{\% 5. IDENTIFICATION WITH SIGN RESTRICTIONS }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\%**************************************************************************  }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Identification with sign restrictions is achieved in a slightly different  }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% way relative to zero contemporaneous or long-run restrictions.  }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Identification is achieved in two steps: (1) define a matrix with the }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% sign restrictions that the IRs have to satisfy; (2) run the SR function. }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% For the sign restrictions identification, consider the same VAR as in the  }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% previous section. }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Define the shock names }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.snames = \{\textcolor{matlabpurple}{'Demand Shock'},\textcolor{matlabpurple}{'Supply Shock'},\textcolor{matlabpurple}{'Monetary Policy Shock'},\textcolor{matlabpurple}{'Unidentified'}\}; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Define the sign restrictions }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} SIGN = [-1,       0,       1      0;        ... policy rate \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} -1,      -1,      -1      0;        ... ip         \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} -1,       1,      -1      0;        ... cpi \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} 1,       1,       1      0];       ... ebp \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% D        S        MP        }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Define the number of steps the restrictions are imposed for: }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.sr\_hor = 6; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Set options the credible intervals }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.pctg = 68; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% The functin SR performs the sign restrictions identification and computes }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% IRs, VDs, and HDs. All the results are stored in SRout }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} SRout = SR(VAR,SIGN,VARopt); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% PLOT }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Plot impulse responses }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.FigSize = [26,24]; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} SRirplot(SRout.IRmed,VARopt,SRout.IRinf,SRout.IRsup); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Plot variance decompositions }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.FigSize = [26,24]; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} SRvdplot(SRout.VDmed,VARopt); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% Plot hd }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} VARopt.FigSize = [26,12]; \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} SRhdplot(SRout.HDmed,VARopt); \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\%}\textcolor{matlabgreen}{\% }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} m2tex(\textcolor{matlabpurple}{'VARToolbox\_Code.m'}) \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm} \textcolor{matlabgreen}{\% rmpath(genpath('C:/AMPER/VARToolbox')) }\\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 
+\hspace{1mm}\hspace{5mm} \hspace{5mm}  \\ 

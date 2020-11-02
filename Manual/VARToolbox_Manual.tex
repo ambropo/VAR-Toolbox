@@ -1,0 +1,1054 @@
+%\newcommand{\todo}[1]{\todo[color=gray!20,inline]{\textbf{Note}: #1}}
+%\makeatletter
+%\renewcommand\verbatim@font{\footnotesize\footnotesize\ttfamily}
+%\makeatother
+
+
+\documentclass[10pt]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{eurosym}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage[a4paper,hmargin={1.4in,1.4in},vmargin={1.4in,1.4in}]{geometry}
+\usepackage{mathpazo}
+\usepackage[scaled]{helvet}
+\usepackage{courier}
+\usepackage[T1]{fontenc}
+\usepackage{verbatim}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{sectsty}
+\usepackage{enumitem}
+\usepackage{fancyvrb}
+\usepackage{newverbs}
+\usepackage[scaled=.8]{nimbusmono}
+\usepackage[bordercolor=white,backgroundcolor=gray!30,linecolor=black,colorinlistoftodos]{todonotes}
+\usepackage[square,sort,comma,numbers]{natbib}\usepackage[bookmarks=true,pdfauthor=A.Cesa-Bianchi,colorlinks=true,linkcolor=red,citecolor=note,urlcolor=note]{hyperref}
+
+\setcounter{MaxMatrixCols}{10}
+%TCIDATA{OutputFilter=Latex.dll}
+%TCIDATA{Version=5.50.0.2953}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{BibliographyScheme=Manual}
+%TCIDATA{LastRevised=Sunday, March 15, 2020 19:48:57}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{Language=American English}
+
+\newlength\myverbindent 
+\setlength\myverbindent{1cm} \makeatletter
+\def\verbatim@processline{  \hspace{\myverbindent}\the\verbatim@line\par}
+\makeatother
+\definecolor{cmd}{gray}{0.99}
+\definecolor{script}{RGB}{255,248,225}
+\linespread{1} 
+\definecolor{subsection}{RGB}{0,0,50}
+\definecolor{section}{RGB}{0,0,50}
+\definecolor{blue}{RGB}{0,0,100}
+\sectionfont{\color{section}}
+\subsectionfont{\color{subsection}}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+\renewcommand*\familydefault{\sfdefault}
+\graphicspath{{./graphics/}}
+\newcommand*\backmatter{\setcounter{section}{0}\renewcommand\theHsection{back.\Roman{section}}}
+\definecolor{shadecolor}{rgb}{0.95,0.95,0.95}
+\definecolor{title}{RGB}{0,0,90}
+\definecolor{note}{RGB}{49,79,179}
+\definecolor{light}{RGB}{70,130,180}
+\definecolor{red}{RGB}{200,0,0}
+\definecolor{gold}{RGB}{218,165,32}
+\definecolor{green}{RGB}{0,179,0}
+\definecolor{purple}{RGB}{150,40,160}
+\definecolor{maroon}{RGB}{128,0,0}
+\definecolor{red}{RGB}{140,0,0}
+\definecolor{blue}{RGB}{0,0,255}
+\definecolor{maroon}{RGB}{128,0,0}
+\definecolor{subsection}{RGB}{0,0,90}
+\definecolor{section}{RGB}{0,0,90}
+\definecolor{matlabgreen}{RGB}{0,153,0}
+\definecolor{matlabpurple}{RGB}{127,0,255}
+\definecolor{matlabblue}{RGB}{0,42,252}
+\sectionfont{\color{section}}
+\subsectionfont{\color{subsection}}
+\setlength{\parskip}{.25cm}
+\setlength{\parindent}{0cm}
+\setlist[itemize]{topsep=0cm}
+\setlist[itemize]{topsep=0cm}
+\renewcommand*\familydefault{\sfdefault}
+\renewcommand\labelitemi{-}
+\setcounter{secnumdepth}{3}
+\graphicspath{{./graphics/}}
+\input{tcilatex}
+\begin{document}
+
+
+\section{Installing the VAR Toolbox}
+
+No installation is required. Simply extract the codes from the\ ZIP\ file
+and copy them to a specific folder, e.g. \textquotedblleft \texttt{%
+C:/UserFolder/VARToolbox}\textquotedblright . Then, add the folder (with
+subfolders)\ to the Matlab path. To avoid clashes with other function it is
+recommendable to add and remove the Toolbox with the following commands at
+beginning and end of your scripts:
+
+\todo[color=script!80,inline]{\ttfamily
+addpath(genpath('C:/AMPER/VARToolbox'))
+
+...
+
+rmpath(genpath('C:/AMPER/VARToolbox'))}
+
+To save Figures in high quality format, Ghostscript is needed\ (freely
+available at \href{www.ghostscript.com}{www.ghostscript.com}). The VT 3.0
+has been tested with Matlab R2016B on a Windows 10 machine.
+
+\section{VAR Toolbox:\ High level description}
+
+The VAR Toolbox is a collection of Matlab routines to perform VAR analysis.
+Vector autoregressive models (VARs) are one of the most successful,
+flexible, and easy to use models for the analysis of multivariate time
+series. It is a natural extension of the univariate autoregressive model to
+dynamic multivariate time series. In their well-known paper
+\textquotedblleft Vector Autoregressions,\textquotedblright\ \cite%
+{StockWatson2000} describe VAR models as especially useful (and successful)
+tools for i) describing the dynamic behavior of economic and financial time
+series and ii) for forecasting.
+
+In addition to data description and forecasting, VAR models are also used
+for iii) structural inference and iv) policy analysis. In structural
+analysis, we generally need to impose certain assumptions about the causal
+structure of the data under investigation. The resulting \textquotedblleft
+structural\textquotedblright\ VAR\ model can then be used to analyze the
+impact of unexpected shocks to specified variables on all the variables in
+the model. This is normally done by means of {i{impulse responses}}, {%
+forecast error variance decompositions}, and {historical decompositions}.
+
+The VAR Toolbox allows for identification of structural shocks with zero
+short-run restrictions; zero long-run restrictions; sign restrictions; and
+with the external instrument approach (proxy SVAR). Impulse Response
+Functions (IR), Forecast Error Variance Decomposition (VD), and Historical
+Decompositions (HD) are computed according to the chosen identification.
+Error bands are obtained with bootstrapping. The VAR Toolbox makes use of
+few Matlab routines from the Econometrics Toolbox for Matlab by James P.
+LeSage (freely available at \href{www.spatial-econometrics.com}{%
+www.spatial-econometrics.com}).
+
+It also includes a collection of Matlab routines that allows the user to
+save and export high quality images from Matlab (using the Export\_fig
+function by Oliver Woodford, freely available at \href{https://www.mathworks.com/matlabcentral/fileexchange/23629-export_fig}%
+{https://www.mathworks.com/matlabcentral/fileexchange/23629-export\_fig}).
+To enable this option, the Toolbox requires Ghostscript installed on your
+computer (freely available at \href{www.ghostscript.com}{www.ghostscript.com}%
+).
+
+The VAR\ Toolbox is not meant to be efficient, but rather to be transparent
+and allow the user to understand the econometrics of VARs step by step. The
+codes are grouped in six categories (and respective folders):
+
+\begin{itemize}
+\item \textbf{Auxiliary}:\ codes that I borrowed from other public sources.
+Each m-file has a reference to the original source.
+
+\item \textbf{ExportFig}: this is a toolbox available at Oliver Woodford
+website for exporting high quality figures. [add website]
+
+\item \textbf{Figure}:\ codes for plotting high quality figures,
+particularly thought for time series. For example, the functions in this
+folder allow to efficiently add dates to the x-axis, to control the size and
+font of Figures and the appearance of the legends, to plot charts with
+shaded error bands, etc.
+
+\item \textbf{Stats}: codes for the calculation of summary statistics,
+moving correlations, pairwise correlations, etc.
+
+\item \textbf{Utils}: codes that allow the smooth functioning if the Toolbox.
+
+\item \textbf{VAR}:\ the codes for VAR estimation, identification,
+computation of the impulse response functions, FEVD, HD.
+\end{itemize}
+
+The Matlab on examples page includes few examples on the functioning of the
+VAR Toolbox.
+
+\section{A Guided Example}
+
+The idea of this manual is to explain the functioning of the VT\ by means of
+a simple example -- the idea being that is much easier to learn by doing
+rather than reading a technical manual and then go to the computer. As a
+result, many of the functions included in the VT\ are not covered in this
+manual, nor is a full description of the output of each function. Moreover,
+I\ will need to stop every now and then to introduce some concepts and/or
+notation. Sections that include technical details, derivations, etc will be
+labelled with {\color{note} {\small {[Note]}}}, while sections that include
+details on the practical example will be labelled with {%
+\color{note} {\small 
+{[Matlab]}}}.
+
+Additional resources are available on my website:
+
+\begin{itemize}
+\item \href{https://sites.google.com/site/ambropo/replications}{%
+https://sites.google.com/site/ambropo/replications} provide some lecture
+notes on the basics of VARs that are a good complement to this manual.
+
+\item \href{https://sites.google.com/site/ambropo/matlab-examples}{%
+https://sites.google.com/site/ambropo/matlab-examples} provides a few
+examples on how to estimate VARs with different identification schemes (in a
+similar spirit to the example in this manual.
+
+\item \href{https://sites.google.com/site/ambropo/replications}{%
+https://sites.google.com/site/ambropo/replications}) provide the replication
+codes for a few well-known VAR\ studies (e.g. \cite{StockWatson2000}, \cite%
+{BlanchardQuah1989}, \cite{Uhlig2005}, and \cite{GertlerKaradi2015}).
+\end{itemize}
+
+I will start by introducing some (very light)\ notation.
+
+\subsection{VARs: Basics {\color{note} {\protect\small {[Notes]}}\label%
+{sec:basics}}}
+
+Given a $k\times 1$ vector of time series ($x_{t}$) a Structural Vector
+Autoregression (SVAR) of order $p$ is given by:%
+\begin{equation}
+x_{t}=\sum_{j=1}^{p}\Phi _{j}x_{t-j}+B\varepsilon _{t},
+\label{eq:struct_var}
+\end{equation}%
+where $B$ is a $k\times k$ matrix and $\varepsilon _{t}$ is a $k\times 1$
+vector of serially uncorrelated error terms, generally called
+\textquotedblleft \emph{structural innovations}\textquotedblright\ or
+\textquotedblleft \emph{structural shocks}\textquotedblright . All elements
+of $\varepsilon _{t}$ are assumed to be mutually uncorrelated and $%
+\varepsilon _{it}\sim i.i.d.(0,1)$. Note that the fact that the variance of
+the structural shocks is equal to one is just a harmless normalization which
+does not involve a loss of generality (as long as the diagonal elements of $A
+$ remain unrestricted.\footnote{%
+An alternative (and equivalently valid) normalization would be to leave
+unrestricted the variance of the structural innovations, namely $\varepsilon
+_{it}\sim i.i.d.(0,\sigma _{it})$ and assume tha the diagonal elements of $A$
+to $1$.}
+
+To keep the notation simple, consider a bivariate VAR(1), i.e. a VAR where
+the number of variables is $k=2$ and the number of lags is $p=1$. This
+simple bivariate VAR(1) can be written as a system of linear equations:%
+\begin{equation}
+\begin{bmatrix}
+x_{1t} \\ 
+x_{2t}%
+\end{bmatrix}%
+=%
+\begin{bmatrix}
+\phi _{11} & \phi _{12} \\ 
+\phi _{21} & \phi _{22}%
+\end{bmatrix}%
+\begin{bmatrix}
+x_{1t-1} \\ 
+x_{2t-1}%
+\end{bmatrix}%
++%
+\begin{bmatrix}
+b_{11} & b_{12} \\ 
+b_{21} & b_{22}%
+\end{bmatrix}%
+\begin{bmatrix}
+\varepsilon _{1t} \\ 
+\varepsilon _{2t}%
+\end{bmatrix}%
+,  \label{eq:struct_var_1}
+\end{equation}%
+or:%
+\begin{equation}
+\begin{array}{c}
+x_{1t}=\phi _{11}x_{1,t-1}+\phi _{12}x_{2,t-1}+b_{11}\varepsilon
+_{1t}+b_{12}\varepsilon _{2t}, \\ 
+x_{2t}=\phi _{21}x_{1,t-1}+\phi _{22}x_{2,t-1}+b_{21}\varepsilon
+_{1t}+b_{22}\varepsilon _{2t},%
+\end{array}
+\label{eq:struct_var_2}
+\end{equation}%
+where $\varepsilon _{t}=(\varepsilon _{1t}^{\prime },\varepsilon
+_{2t}^{\prime })^{\prime }$ is a $2\times 1$ vector of (unobservable)\
+uncorrelated, zero mean, white noise processes. That is:%
+\begin{equation}
+\mathbb{V}(\varepsilon _{t})=\Sigma _{\varepsilon }=\left[ 
+\begin{array}{cc}
+1 & 0 \\ 
+0 & 1%
+\end{array}%
+\right] =I.  \label{eq:struct_cov_1}
+\end{equation}%
+The assumption that the elements of $\varepsilon _{t}$ are mutually
+uncorrelated is crucial. It implies that we can track the dynamic effects of
+a shock to, say, $\varepsilon _{1t}$ to all variables in the VAR keeping the
+other shock to zero (and vice versa). The $B$ matrix is also crucial.\ To
+see that, consider a unit surprise in $\varepsilon _{1t}$. What are the
+consequences for $x_{1t}$ and $x_{2t}$? The answer to this question is in
+the first column of the $B$ matrix: $x_{1t}$ will increase by $b_{11}$and $%
+x_{2t}$ will increase by $b_{21}$. This is why the $B$ matrix is also known
+as the structural impact matrix. The $\Phi $ matrix can then be used to
+track the dynamic effects in $t+1$, $t+2$, etc.
+
+While all this sounds easy and great, there is a slight complication. The
+structural innovations are unobservable. An econometrician can only estimate:%
+\begin{equation}
+\begin{array}{c}
+x_{1t}=\phi _{11}x_{1,t-1}+\phi _{12}x_{2,t-1}+u_{1t}, \\ 
+x_{2t}=\phi _{21}x_{1,t-1}+\phi _{22}x_{2,t-1}+u_{2t},%
+\end{array}
+\label{eq:red_var_1}
+\end{equation}%
+where the reduced-form innovations ($u_{t}$) are a linear combination of the
+structural innovations:%
+\begin{equation}
+\begin{array}{c}
+u_{1t}=b_{11}\varepsilon _{1t}+b_{12}\varepsilon _{2t}, \\ 
+u_{2t}=b_{21}\varepsilon _{1t}+b_{22}\varepsilon _{2t}.%
+\end{array}
+\label{eq:red_resid_1}
+\end{equation}%
+The VAR in (\ref{eq:var_red_a}) is typically referred to as the \emph{%
+reduced-form representation} of the structural VAR, which can be written
+more compactly in matrix form as:%
+\begin{equation}
+\left[ 
+\begin{array}{c}
+x_{1t} \\ 
+x_{2t}%
+\end{array}%
+\right] =%
+\begin{bmatrix}
+\phi _{11} & \phi _{12} \\ 
+\phi _{21} & \phi _{22}%
+\end{bmatrix}%
+\left[ 
+\begin{array}{c}
+x_{1t-1} \\ 
+x_{2t-1}%
+\end{array}%
+\right] +\left[ 
+\begin{array}{c}
+u_{1t} \\ 
+u_{2t}%
+\end{array}%
+\right]  \label{eq:red_var_2}
+\end{equation}%
+where:%
+\begin{equation}
+\left[ 
+\begin{array}{c}
+u_{1t} \\ 
+u_{2t}%
+\end{array}%
+\right] =%
+\begin{bmatrix}
+b_{11} & b_{12} \\ 
+b_{21} & b_{22}%
+\end{bmatrix}%
+\begin{bmatrix}
+\varepsilon _{1t} \\ 
+\varepsilon _{2t}%
+\end{bmatrix}%
+,  \label{eq:red_resid_2}
+\end{equation}%
+or:%
+\begin{equation}
+x_{t}=\Phi x_{t-1}+u_{t}  \label{eq:red_var_3}
+\end{equation}%
+where $u_{t}=B\varepsilon _{t}$. Note that, in general, $\mathbf{\hat{\Sigma}%
+}_{u}$, is a symmetric non-diagonal matrix:%
+\begin{equation}
+\mathbf{\hat{\Sigma}}_{u}=\left[ 
+\begin{array}{cc}
+\sigma _{1}^{2} & \sigma _{12}^{2} \\ 
+- & \sigma _{2}^{2}%
+\end{array}%
+\right]  \label{eq:red_cov_1}
+\end{equation}%
+where its diagonal elements are the variances of the estimated reduced-form
+error terms, $\sigma _{1}^{2}$ and $\sigma _{2}^{2}$; and the off-diagonal
+elements are instead and the covariance between the estimated error terms ($%
+\sigma _{12}=\sigma _{21}$).The covariance between the estimated reduced
+form resiuduals plays an important role VARs because it collects the
+information on the contemporaneous interaction of the variables in the
+structural system, which (as we have just seen) is summarized by by the $B$
+matrix. Indeed, using (\ref{eq_red_resid_a}) the covariance matrix of th
+ereduced for residulas can be written as:%
+\begin{equation}
+\mathbf{\hat{\Sigma}}_{u}=\left[ 
+\begin{array}{cc}
+b_{11}^{2} & b_{11}b_{21}+b_{12}b_{22} \\ 
+b_{11}b_{21}+b_{12}b_{22} & b_{22}^{2}%
+\end{array}%
+\right]  \label{eq:red_cov_2}
+\end{equation}%
+This shows that, differently from structural VARs, the reduced form
+innovations are not informative about how shocks propagate throught the
+system, as an innovation to $u_{1t}$ could be driven by either $\varepsilon
+_{1t}$ or $\varepsilon _{2t}$ (and vice versa).
+
+\subsection{Load \& Plot Data {\color{note} {\protect\small {[Matlab]}}}}
+
+The example uses data on US industrial production ($IP_{t}$), consumer
+prices ($CPI_{t}$), short-term interest rates\ ($R_{t}$), and the Excess
+Bond Premium ($EBP_{t}$) from 1979:M7 to 2015:M3 (this is the data used by 
+\cite{GertlerKaradi2015}). The code below shows a general way of loading the
+data and managing it in a way that is consistent with the functioning of the
+VT.
+
+\todo[color=script!80,inline]{\ttfamily
+\hspace{1mm}\textcolor{matlabgreen}{\%}\textcolor{matlabgreen}{\% 1. LOAD \& PLOT DATA }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Load  }\\ 
+\hspace{1mm}[xlsdata, xlstext] = xlsread(\textcolor{matlabpurple}{'GK2015\_Data.xlsx'},\textcolor{matlabpurple}{'VAR\_data'}); \\ 
+\hspace{1mm}data   = Num2NaN(xlsdata(:,3:end)); \\ 
+\hspace{1mm}vnames = xlstext(1,3:end); \\ 
+\hspace{1mm}\textcolor{matlabblue}{for} ii=1:length(vnames) \\ 
+\hspace{1mm}\hspace{5mm} DATA.(vnames\{ii\}) = data(:,ii); \\ 
+\hspace{1mm}\textcolor{matlabblue}{end} \\ 
+\hspace{1mm}year = xlsdata(1,1); \\ 
+\hspace{1mm}month = xlsdata(1,2); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Observations }\\ 
+\hspace{1mm}nobs = size(data,1); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Set endogenous }\\ 
+\hspace{1mm}VARvnames      = \{\textcolor{matlabpurple}{'gs1'},\textcolor{matlabpurple}{'logcpi'},\textcolor{matlabpurple}{'logip'},\textcolor{matlabpurple}{'ebp'}\}; \\ 
+\hspace{1mm}VARvnames\_long = \{\textcolor{matlabpurple}{'Policy rate'},\textcolor{matlabpurple}{'CPI'},\textcolor{matlabpurple}{'Industrial Production'},\textcolor{matlabpurple}{'EBP'}\}; \\ 
+\hspace{1mm}VARnvar        = length(VARvnames); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Create matrices of variables to be used in the VAR }\\ 
+\hspace{1mm}ENDO = nan(nobs,VARnvar); \\ 
+\hspace{1mm}\textcolor{matlabblue}{for} ii=1:VARnvar \\ 
+\hspace{1mm}\hspace{5mm} ENDO(:,ii) = DATA.(VARvnames\{ii\}); \\ 
+\hspace{1mm}\textcolor{matlabblue}{end} \\ 
+}
+
+First the code reads from an Excel file and stores all data into the
+structure \texttt{DATA}. The VAR Toolbox includes some functions that allow
+to plot time series quickly and export them as high-quality PDFs, so that
+they can be used directly in your papers. The code shows how to plot the
+four time series in \texttt{ENDO}.
+
+\todo[color=script!80,inline]{\ttfamily
+\hspace{1mm}\textcolor{matlabgreen}{\% Open a figure of the desired size }\\ 
+\hspace{1mm}FigSize(28,16) \\ 
+\hspace{1mm}\textcolor{matlabblue}{for} ii=1:VARnvar \\ 
+\hspace{1mm}\hspace{5mm} subplot(2,2,ii) \\ 
+\hspace{1mm}\hspace{5mm} H(ii) = plot(ENDO(:,ii),\textcolor{matlabpurple}{'LineWidth'},2,\textcolor{matlabpurple}{'Color'},cmap(ii)); \\ 
+\hspace{1mm}\hspace{5mm} title(VARvnames\_long(ii));  \\ 
+\hspace{1mm}\hspace{5mm} DatesPlot(year+(month-1)/12,nobs,6,\textcolor{matlabpurple}{'m'}) \textcolor{matlabgreen}{\% Set the x-axis label  }\\ 
+\hspace{1mm}\hspace{5mm} grid on;  \\ 
+\hspace{1mm}\textcolor{matlabblue}{end} \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Legend }\\ 
+\hspace{1mm}lopt = LegOption; lopt.handle = H; LegSubplot(VARvnames,lopt); FigFont(10); \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Save  }\\ 
+\hspace{1mm}SaveFigure(\textcolor{matlabpurple}{'graphics/F1\_PLOT'},1) \\ 
+}
+
+Figure \ref{fig:F1_PLOT} reports the behavior of the interest rate on US
+1-year Treasury bill, an index of industrial production, the CPI level and
+the Excess Bond Premium (GZ) over the 1979:M7 to 2015:M3 sample period.
+
+\begin{figure}[th]
+\centering%
+\begin{minipage}[b]{.9\textwidth}
+\caption{\scshape{Raw Data}}\vspace{0.1cm}
+\begin{center}
+\includegraphics[width=\textwidth]{F1_PLOT}
+\end{center}%
+\footnotesize{{\scshape Note.} Raw data for interest rate on US 1-year Treasury bill, industrial production, CPI level and the Excess Bond Premium (GZ) from 1979;M7 to 2015:M3.}
+\label{fig:F1_PLOT}
+\end{minipage}
+\end{figure}
+
+Some useful functions are:
+
+\begin{itemize}
+\item \texttt{FigSize.m}: allows the user to choose the proportions of the
+figure to plot. This is particularly useful when creating figures with many
+panels.
+
+\item \texttt{DatesPlot.m}: Adds dates to the horizontal axis of a chart (at
+monthly, quarterly, and annual frequency) using a specified number of ticks.
+
+\item \texttt{LegSubplot.m}: To be used in combination with the Matlab
+built-in function subplot. \texttt{Legsubplot.m} creates a single legend for
+the subplots, below the charts and centered.
+
+\item \texttt{FigFont.m}: Sets the font of axes, title, legends, etc to a
+specified font size.
+
+\item \texttt{FigFont.m}: SaveFigure saves the chart in the selected format
+(pdf, jpg, eps). The function allows the user to save the figure at high
+quality standard using the \texttt{export\_fig.m} function created by Oliver
+Woodford. Note that you need Ghostscript to be able to use this function.
+\end{itemize}
+
+\subsection{VAR\ estimation {\color{note} {\protect\small {[Matlab]}}}}
+
+A\ VAR\ model can be estimated with a simple line of code, using the \texttt{%
+VARmodel.m} function. To do that you need to specify a matrix including the
+endogenous variables (\texttt{ENDO}), whether you want deterministic
+variables, like a constant or a trend for example (\texttt{det}), and the
+number of lags of the VAR (\texttt{nlags}). In the example, I\ specify a
+simple bivariate VAR(12) in industrial production and interest rates, with a
+constant.\footnote{%
+Note that this is a different specification from the original one used by 
+\cite{GertlerKaradi2015}. This choice is purely pedagogical to make some of
+the derivations below easier.} 
+
+The code below shows how to create the matrix of endogenous variables.
+
+\todo[color=script!80,inline]{\ttfamily
+\hspace{1mm}\textcolor{matlabgreen}{\%}\textcolor{matlabgreen}{\% VAR ESTIMATION }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Set the deterministic variable in the VAR (1=constant, 2=trend) }\\ 
+\hspace{1mm}det = 1; \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Set number of nlags }\\ 
+\hspace{1mm}nlags = 12; \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Estimate VAR by OLS }\\ 
+\hspace{1mm}[VAR, VARopt] = VARmodel(ENDO,nlags,det); \\ 
+\hspace{1mm}disp(VAR) \\ 
+\hspace{1mm}disp(VARopt) \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Add variable names to VARopt }\\ 
+\hspace{1mm}VARopt.vnames = VARvnames; \\ 
+\hspace{1mm}VARopt.figname= \textcolor{matlabpurple}{'graphics/'}; \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Print at screen and create table }\\ 
+\hspace{1mm}[TABLE, beta] = VARprint(VAR,VARopt,2); \\ 
+}
+
+The cell array \texttt{VARvnames} defines the list of endogenous variables
+that will be used to estimate the VAR model (in this case, industrial
+production and interets rates, namely a subset of the data in \texttt{DATA}%
+). The chosen data is then stored in the matrix \texttt{ENDO}. The
+convention in the VT is that each column is a variable and each row is an
+observation (with no missing observations allowed). That is:%
+\begin{equation*}
+\text{\texttt{ENDO}}=\left[ 
+\begin{array}{cc}
+IP_{1} & R_{1} \\ 
+IP_{2} & R_{2} \\ 
+... & ... \\ 
+IP_{T} & R_{T}%
+\end{array}%
+\right] =\left( IP_{t}^{\prime },R_{t}^{\prime }\right) =x_{t}^{\prime }.
+\end{equation*}%
+This convention implies that, using the notation defined in the previous
+section, \texttt{ENDO}$\ =x_{t}^{\prime }$. 
+
+The VAR\ can then be estimated in a few lines of code.
+
+\todo[color=script!80,inline]{\ttfamily
+\hspace{1mm}\textcolor{matlabgreen}{\%}\textcolor{matlabgreen}{\% VAR ESTIMATION }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\%--------------------------------------------------------------------------  }\\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Set the deterministic variable in the VAR (1=constant, 2=trend) }\\ 
+\hspace{1mm}det = 1; \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Set number of nlags }\\ 
+\hspace{1mm}nlags = 12; \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Estimate VAR by OLS }\\ 
+\hspace{1mm}[VAR, VARopt] = VARmodel(ENDO,nlags,det); \\ 
+\hspace{1mm}disp(VAR) \\ 
+\hspace{1mm}disp(VARopt) \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Add variable names to VARopt }\\ 
+\hspace{1mm}VARopt.vnames = VARvnames; \\ 
+\hspace{1mm}VARopt.figname= \textcolor{matlabpurple}{'graphics/'}; \\ 
+\hspace{1mm}\textcolor{matlabgreen}{\% Print at screen and create table }\\ 
+\hspace{1mm}[TABLE, beta] = VARprint(VAR,VARopt,2); \\ 
+}
+
+The results of the VAR estimation are stored in the structures \texttt{VAR}
+and \texttt{VARopt}. The structure \texttt{VAR}\ includes all the estimation
+results. These can be seen by executing the command \colorbox{script!80}{%
+\texttt{disp(VARprint(VAR)}} which prints the following output in the
+command window:
+
+\setlength{\parindent}{.2cm}
+\begin{verbatim}
+>> disp(VAR)
+         ENDO: [396x2 double]
+         nlag: 12
+        const: 1
+         EXOG: []
+         nobs: 384
+         nvar: 4
+      nvar_ex: 0
+      nlag_ex: 0
+       ncoeff: 24
+    ntotcoeff: 25
+          eq1: [1x1 struct]
+          eq2: [1x1 struct]
+          eq3: [1x1 struct]
+          eq4: [1x1 struct]
+           Ft: [49x4 double]
+            F: [4x49 double]
+        sigma: [4x4 double]
+        resid: [384x4 double]
+            X: [384x49 double]
+            Y: [384x4 double]
+        Fcomp: [48x48 double]
+       maxEig: 0.9974
+           Fp: [4x4x12 double]
+            B: []
+      BfromSR: []
+          PSI: []
+\end{verbatim}
+
+\setlength{\parindent}{.0cm}
+
+The structure \texttt{VAR} includes all the inputs to the \texttt{VARmodel.m}
+function, such as the matrix of endogenous variables (\texttt{VAR.ENDO}),
+the number of lags (\texttt{VAR.nlags}), and the number of endogenous
+variables\ (\texttt{VAR.nvar}). But also includes the estimation output. For
+example:
+
+\begin{itemize}
+\item The matrix \texttt{VAR.F} collects the estimated coefficients
+following the notation in (\ref{eq:var_red_b}), namely we have that \texttt{%
+VAR.F}$=F$. For a VAR with $12$ lags and $2$ variables plus a constant, this
+means that \texttt{VAR.F} is a $2\times (12\times 2+1)$ matrix.
+
+\item The covariance matrix of the VAR residuals defined by (\ref%
+{eq:var_red_cov}) is instead stored in \texttt{VAR.sigma}$=\Sigma _{u}$, of
+size $2\times 2$.
+
+\item Note that the structural impact matrix \texttt{VAR.B}$\ =B$, whihc we
+defined in equation (), is empty.\ This is because, for the moment we
+estimated only the reduced form VAR (1). The next sections will show how,
+with additional assumptions, the also the strutcural form of the VAR can be
+recovered.
+\end{itemize}
+
+Other outputs are the OLS\ equation-by-equation estimation results
+(structures \texttt{VAR.eq}), the VAR\ companion matrix (\texttt{VAR.Fcomp}%
+), the maximum eigenvalue of the VAR\ (\texttt{VAR.maxEig}), etc.\ 
+
+The structure \texttt{VARopt} includes a few auxiliary variables that are
+created automatically by the \texttt{VARmodel.m} function and will be needed
+below for the calculation of impulse responses, variance decompositions,
+etc. The variables stored in \texttt{VARopt} can be seen by executing the
+command \colorbox{script!80}{\texttt{disp(VARopt)}}, which prints the
+following output in the Matlab command window:
+\begin{verbatim}
+>> disp(VARopt)
+       vnames: []
+    vnames_ex: []
+       snames: []
+       nsteps: 40
+       impact: 0
+         shut: 0
+        ident: 'oir'
+       recurs: 'wold'
+       ndraws: 100
+         pctg: 95
+       method: 'bs'
+         pick: 0
+      quality: 0
+     suptitle: 0
+    firstdate: []
+    frequency: 'q'
+      figname: []
+\end{verbatim}
+
+These variables include the number of steps for impulse response functions
+and variance decompositions (\texttt{nsteps}), the labels of the endogenous
+or exogenous variables for plots (\texttt{vnames} and \texttt{vnames\_ex}),
+the confidence levels for the computation of error bands (\texttt{pctg}),
+etc. While some variables are automatically created by the VARmodel
+function, some other variables need to be inputted by the user.\ For example:
+
+\begin{itemize}
+\item \colorbox{script!80}{\texttt{VARopt.vnames = VARvnames}} stores in 
+\texttt{VARopt} the endogenous variables' names.
+
+\item \colorbox{script!80}{\texttt{VARopt.figname =
+'graphics/'}} stores in \texttt{VARopt} the name of the folder where all
+figures will be saved.
+\end{itemize}
+
+So that when executing \colorbox{script!80}{\texttt{disp(VARopt)}} we now
+get:
+\begin{verbatim}
+>> disp(VARopt)
+       vnames: {'gs1'  'logcpi'  'logip'  'ebp'}
+    vnames_ex: []
+       snames: []
+       nsteps: 40
+       impact: 0
+         shut: 0
+        ident: 'oir'
+       recurs: 'wold'
+       ndraws: 100
+         pctg: 95
+       method: 'bs'
+         pick: 0
+      quality: 0
+     suptitle: 0
+    firstdate: []
+    frequency: 'q'
+      figname: 'graphics/'
+\end{verbatim}
+
+\subsection{The Identification\ Problem {\color{note} {\protect\small
+{[Notes]}}}}
+
+In the previous section we have seen how to estimate a reduced form VAR.
+Ignoring lagged variables beyond order 1 for ease of notation, we estimated
+the following:%
+\begin{equation}
+\begin{bmatrix}
+IP_{t} \\ 
+R_{t}%
+\end{bmatrix}%
+=\left[ 
+\begin{array}{cc}
+\phi _{11} & \phi _{12} \\ 
+\phi _{21} & \phi _{22}%
+\end{array}%
+\right] 
+\begin{bmatrix}
+IP_{t-1} \\ 
+R_{t-1}%
+\end{bmatrix}%
++\text{other lags}+%
+\begin{bmatrix}
+u_{t}^{IP} \\ 
+u_{t}^{R}%
+\end{bmatrix}%
+,  \label{eq:red_2var}
+\end{equation}%
+Now, imagine that you are asked to estimate the effect of a moneatry policy
+shock to industrial production and consumer prices. Unfortunately, the
+reduced form innovation to the interets rate ($u_{t}^{R}$) is not going tpo
+help us. The reason is that, as we discussed in Section \ref{sec:basics}, $%
+u_{t}^{R}$ is a linear combination of the true structural shocks in the
+economy. So, it does not tell us anything about how monetary opoicy affects
+output and prices. 
+
+To see that more clearly, assume that the `true' model of the economy is
+given by the following structural VAR:%
+\begin{equation}
+\begin{bmatrix}
+IP_{t} \\ 
+R_{t}%
+\end{bmatrix}%
+=\text{all lags}+\left[ 
+\begin{array}{cc}
+b_{11} & b_{12} \\ 
+b_{21} & b_{22}%
+\end{array}%
+\right] 
+\begin{bmatrix}
+\varepsilon _{t}^{Demand} \\ 
+\varepsilon _{t}^{Mon.\ Pol}%
+\end{bmatrix}%
+,  \label{eq:struct_2var}
+\end{equation}%
+where the matrix $B$ and the structural shocks $\varepsilon $ are
+unobserved. The SVAR\ in (XX) assumes that time series of industrial
+production and interest rates are driven by a combination of demand and
+moneatry policy shocks.\footnote{%
+Again this is not a very realistic assumption, but it simplifies the math
+that follows. a more realistic VAR\ woudl ave included more varibles and
+more shocks.} It is obvious that the reduced form innovation to the interets
+rate, $u_{t}^{R}$, is a linear combination of all shocks, and not just the
+monetary policy shock.
+
+To answer the question of what are the effects of monetary policy on the
+economy, we need to find the values of the $B$ matrix. This is known as the
+identification problem. For example, the coefficients $b_{11}$ and $b_{21}$
+give us the impact effect of moneatry policy on all variables. The matrix of
+coefficient $\Phi $, whihc we estimated in the reduced form VAR, can then be
+used to trace out the dynamic effects of moneatry policy on the economy
+beyond the impact effect.
+
+So, how can we go from the reduced form representation to the structural
+representation of the VAR? We have seen abpove that we know that $%
+u=B\varepsilon $, so that we can write:%
+\begin{equation}
+\hat{\Sigma}_{u}=E\left[ \hat{u}_{t}\hat{u}_{t}^{\prime }\right] =E\left[
+B\varepsilon _{t}\left( B\varepsilon _{t}\right) ^{\prime }\right] =B\Sigma
+_{\varepsilon }B^{\prime }=BB^{\prime }.  \label{eq:red2struct_1}
+\end{equation}%
+where remember that $\Sigma _{\varepsilon }=I$. This means that there is a
+mapping between the estimated covariance matrix of the reduced form
+residuals ($\hat{\Sigma}_{u}$)\ and the unobserved matrix of structural
+impact coefficients. We can think of (\ref{eq:2}) as a system of nonlinear
+equations in the $4$ unknown coefficients of the $B$ matrix. The problem the 
+$\Sigma _{u}$ matrix, given its symmetric nature, leads to only $3$
+independent restrictions. In other words, we have 
+\begin{equation}
+\left[ 
+\begin{array}{cc}
+\sigma _{1}^{2} & \sigma _{12}^{2} \\ 
+- & \sigma _{2}^{2}%
+\end{array}%
+\right] =\left[ 
+\begin{array}{cc}
+b_{11} & b_{12} \\ 
+b_{21} & b_{22}%
+\end{array}%
+\right] \left[ 
+\begin{array}{cc}
+b_{11} & b_{21} \\ 
+b_{12} & b_{22}%
+\end{array}%
+\right] ,  \label{eq:red2struct_2}
+\end{equation}%
+which can be rewritten as the following system of equations:%
+\begin{equation}
+\begin{array}{l}
+\sigma _{1}^{2}=b_{11}^{2}+b_{12}^{2} \\ 
+\sigma _{12}^{2}=b_{11}b_{21}+b_{12}b_{22} \\ 
+\sigma _{12}^{2}=b_{11}b_{21}+b_{12}b_{22} \\ 
+\sigma _{2}^{2}=b_{21}^{2}+b_{22}^{2}%
+\end{array}
+\label{eq:red2struct_3}
+\end{equation}%
+Note that, becasue of the symmetry of the $\Sigma _{u}$ matrix, the second
+and the third equation are identical. This means that we are left with $4$
+unknowns (the $b$'s) but only $3$ equations. The system is clearly
+under-identified, meaning that we need additional conditions if we want to
+recover the structural parameters. 
+
+There are many ways of identifying solving the identificartion problem
+described above. In the following section, I will describe a few of the most
+popular ones, and how thy can be implemented in the VAR\ Tolbox.
+
+\subsection{Identification by zero contemporaneous resrictions}
+
+Identification using zero contemporaneous resrictions (also known as
+recursive identification, as it will be clear in a second) were developed by
+Sims1980, and are by far the most commonly used identification scheme used
+in the literature. In a recursive SVAR, identification is achieved by
+assuming that some shocks have zero contemporaneous effect on some endoenous
+variables. This amounts to setting some of the non-diagonal elements of the $%
+B$ matrix to zero -- therefore reducing the number of unknown coefficients.
+
+Typically, it is assumed that the first variable in the system is only
+affected by the first strcutral shock, the second is contemporaneously
+affected by the first and second structural shock, and so on. In our
+example, that means to assume that the structural VAR\ is 
+\begin{equation}
+\begin{bmatrix}
+IP_{t} \\ 
+R_{t}%
+\end{bmatrix}%
+=\text{all lags}+\left[ 
+\begin{array}{cc}
+b_{11} & 0 \\ 
+b_{21} & b_{22}%
+\end{array}%
+\right] 
+\begin{bmatrix}
+\varepsilon _{t}^{Demand} \\ 
+\varepsilon _{t}^{Mon.\ Pol}%
+\end{bmatrix}%
+,
+\end{equation}%
+where note that the industrial production is not contemporaneously affected
+by the monetary policy shock (while interest rates are contemporaneously
+affected by both the demand and the moneatry policuy shock). This assumption
+could be justified by the fact that moneatry policy takes time to affect
+real variables like industrial production.
+
+What are the implications for the identificariton problem descrobed above?
+The simple answer is that we now have 3 instead of 4 parameters to estimate,
+and 3 restrictions implied by the reduced form covariance matrix. That is,
+the system of equations (\ref{eq:red2struct_3}) now becomes:%
+\begin{equation}
+\begin{array}{l}
+\sigma _{1}^{2}=b_{11}^{2} \\ 
+\sigma _{12}^{2}=b_{11}b_{21} \\ 
+\sigma _{2}^{2}=b_{21}^{2}+b_{22}^{2}%
+\end{array}
+\label{eq:red2struct_4}
+\end{equation}%
+which can be easily solved to get:%
+\begin{equation*}
+\begin{array}{c}
+b_{11}=\sigma _{1}, \\ 
+b_{21}=\sigma _{12}^{2}/\sigma _{1}, \\ 
+b_{22}=\sqrt{\sigma _{2}^{2}-\left( \sigma _{12}^{2}/\sigma _{1}^{2}\right)
+^{2}}%
+\end{array}%
+\end{equation*}%
+The VAR\ is identified! This means that it is possible to compute the \emph{%
+impact} impulse response of all endogenous variables by simply looking at
+the estimated B\ matrix. For example, consider a one standard deviation
+shock to moneatry policy, i.e. $\varepsilon _{t}^{Mon.\ Pol}=1$. Using the
+structural VAR\ representation we get:%
+\begin{equation}
+\begin{array}{l}
+\mathcal{IR}_{IP,0}^{Mon.\ Pol}=0 \\ 
+\mathcal{IR}_{R,0}^{Mon.\ Pol}=\sigma _{12}^{2}/\sigma _{1}%
+\end{array}
+\label{eq:IR_example}
+\end{equation}%
+where $\mathcal{IR}_{i,0}^{j}$ denotes the impulse response at horizon $0$
+(i.e. on impact), of variable $i$ to the structural shock $j$. Knowing the
+impact response it is then easy to compute the dynamic response of all
+endogenous variables (i.e. at horoizons $>0$) with the reduced form $\Phi $
+matrix. 
+
+In summary, we have:%
+\begin{equation}
+\begin{array}{l}
+\mathcal{IR}_{0}=B\varepsilon _{t} \\ 
+\mathcal{IR}_{h}=\Phi ^{h}\mathcal{IR}_{0}^{j}\ \ \ \ \ \ h>0%
+\end{array}
+\label{eq:IR_recusive}
+\end{equation}
+
+\subsection{Variance decompositions}
+
+\subsection{Historical decompositions}
+
+\bibliographystyle{chicago}
+\bibliography{BIBLIO}
+
+\appendix
+
+\section{Appendix}
+
+\subsection{The Identification\ Problem {\color{note} {\protect\small
+{[Notes]}}}}
+
+In the previous section we have seen how to estimate a reduced form VAR.
+Ignoring lagged variables beyond order 1 for ease of notation, we estimated
+the following:%
+\begin{equation}
+\begin{bmatrix}
+R_{t} \\ 
+IP_{t} \\ 
+CPI_{t} \\ 
+EBP_{t}%
+\end{bmatrix}%
+=\left[ 
+\begin{array}{cccc}
+\phi _{11} & \phi _{12} & \phi _{13} & \phi _{14} \\ 
+\phi _{21} & \phi _{22} & \phi _{23} & \phi _{24} \\ 
+\phi _{31} & \phi _{12} & \phi _{33} & \phi _{34} \\ 
+\phi _{41} & \phi _{22} & \phi _{43} & \phi _{44}%
+\end{array}%
+\right] 
+\begin{bmatrix}
+R_{t-1} \\ 
+IP_{t-1} \\ 
+CPI_{t-1} \\ 
+EBP_{t-1}%
+\end{bmatrix}%
++\text{other lags}+%
+\begin{bmatrix}
+u_{t}^{R} \\ 
+u_{t}^{IP} \\ 
+u_{t}^{CPI} \\ 
+u_{t}^{EBP}%
+\end{bmatrix}%
+,
+\end{equation}%
+Now, imagine that you are asked to estimate the effect of a moneatry policy
+shock to industrial production and consumer prices. Unfortunately, the
+reduced form innovation to the interets rate ($u_{t}^{R}$) is not going tpo
+help us. The reason is that, as we discussed in Section \ref{sec:basics}, $%
+u_{t}^{R}$ is a linear combination of the true structural shocks in the
+economy. So, it does not tell us anything about how monetary opoicy affects
+output and prices. 
+
+To see that more clearly, assume that the `true' model of the economy is
+given by the following structural VAR:%
+\begin{equation}
+\begin{bmatrix}
+R_{t} \\ 
+IP_{t} \\ 
+CPI_{t} \\ 
+EBP_{t}%
+\end{bmatrix}%
+=\text{all lags}+\left[ 
+\begin{array}{cccc}
+b_{11} & b_{12} & b_{13} & b_{14} \\ 
+b_{21} & b_{22} & b_{23} & b_{24} \\ 
+b_{31} & b_{12} & b_{33} & b_{34} \\ 
+b_{41} & b_{22} & b_{43} & b_{44}%
+\end{array}%
+\right] 
+\begin{bmatrix}
+\varepsilon _{t}^{Mon.\ Pol} \\ 
+\varepsilon _{t}^{Demand} \\ 
+\varepsilon _{t}^{Supply} \\ 
+\varepsilon _{t}^{Financial}%
+\end{bmatrix}%
+,  \label{eq:GK_VAR}
+\end{equation}%
+where the matrix $B$ and the structural shocks $\varepsilon $ are
+unobserved. The SVAR\ in (XX) assumes that time series of interest rates,
+industrial production, consumer prices and the excess bond premium are
+driven by a combination of moneatry, demand, supply and financial shocks. It
+is obvious that the reduced form innovation to the interets rate, $u_{t}^{R}$%
+, is a linear combination of all shocks, and not just the monetary policy
+shock.
+
+To answer the question of what are the effects of monetary policy on the
+economy, we need to find the values of the $B$ matrix. This is known as the
+identification problem. For example, the coefficients $b_{11}$, $b_{21}$, $%
+b_{31}$, and $b_{41}$ give us the impact effect of moneatry policy on all
+variables. The matrix of coefficient $\Phi $, whihc we estimated in the
+reduced form VAR, can then be used to trace out the dynamic effects of
+moneatry policy on the economy beyond the impact effect.
+
+So, how can we go from the reduced form representation to the structural
+representation of the VAR? From equation (\ref{eq:var_reduced_c}) we know
+that:%
+\begin{equation}
+\hat{\Sigma}_{u}=E\left[ \hat{u}_{t}\hat{u}_{t}^{\prime }\right] =E\left[
+B\varepsilon \left( B\varepsilon \right) ^{\prime }\right] =B\Sigma
+_{\varepsilon }B^{\prime }=BB^{\prime }.  \label{eq:2}
+\end{equation}%
+where remember that $\Sigma _{\varepsilon }=I$. This means that there is a
+mapping between the estimated covariance matrix of the reduced form
+residuals ($\hat{\Sigma}_{u}$)\ and the unobserved matrix of structural
+impact coefficients. We can think of (\ref{eq:2}) as a system of nonlinear
+equations in the $4\times 4$ unknown coefficients of the $B$ matrix. The
+problem the $\Sigma _{u}$ matrix ---given its symmetric nature--- would
+contain only $4+(4\times 3)/2$ parameters. In other words, we have 
+\begin{equation*}
+\mathbf{\Sigma }_{u}=\left[ 
+\begin{array}{cccc}
+\sigma _{1}^{2} & \sigma _{12}^{2} & \sigma _{13}^{2} & \sigma _{14}^{2} \\ 
+- & \sigma _{2}^{2} & \sigma _{23}^{2} & \sigma _{24}^{2} \\ 
+- & - & \sigma _{3}^{2} & \sigma _{34}^{2} \\ 
+- & - & - & \sigma _{4}^{2}%
+\end{array}%
+\right] =\left[ 
+\begin{array}{cccc}
+b_{11} & b_{12} & b_{13} & b_{14} \\ 
+b_{21} & b_{22} & b_{23} & b_{24} \\ 
+b_{31} & b_{12} & b_{33} & b_{34} \\ 
+b_{41} & b_{22} & b_{43} & b_{44}%
+\end{array}%
+\right] \left[ 
+\begin{array}{cccc}
+b_{11} & b_{12} & b_{13} & b_{14} \\ 
+b_{21} & b_{22} & b_{23} & b_{24} \\ 
+b_{31} & b_{12} & b_{33} & b_{34} \\ 
+b_{41} & b_{22} & b_{43} & b_{44}%
+\end{array}%
+\right] ^{\prime }
+\end{equation*}%
+which shows that there are 16 unknowns but only 10 independent equations.
+The system is clearly under-identified, meaning that we need additional
+conditions if we want to recover the structural parameters. 
+
+There are many ways of identifying solving the identificartion problem
+described above. In the following section, I will describe a few of the most
+popular ones, and how thy can be implemented in the VAR\ Tolbox.
+
+\subsection{Impulse responses}
+
+ZERO LONG-RUN RESTRICTIONS. Similarly to the short-run restrictions,
+identification is achieved by making the assumption that some variables of
+the VAR\ cannot affect some other variables in the long-run. Specifically we
+will assume that the first variable is not affected in the long run by the
+others; the second is affected in the long run by the first variable but not
+by the others, and so on and so forth.
+
+SIGN RESTRICTIONS. Identification is achieved by restricting the sign of the
+responses of selected model variables to structural shocks, using economic
+theory as a guidance
+
+\end{document}

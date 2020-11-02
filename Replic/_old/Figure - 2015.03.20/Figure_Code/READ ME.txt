@@ -1,0 +1,4 @@
+To run the program, open the file GO_Figure.m and run it.
+
+Ambrogio Cesa Bianchi, October 2012
+ambrogio.cesabianchi@gmail.com

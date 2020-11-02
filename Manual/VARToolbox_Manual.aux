@@ -1,0 +1,78 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{StockWatson2000}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Installing the VAR Toolbox}{1}{section.1}\protected@file@percent }
+\@writefile{tdo}{\contentsline {todo}{\color@fb@x {}{white}{}{script!80}{\leavevmode {\color  {script!80}o}}\ \ttfamily  addpath(genpath('C:/AMPER/VARToolbox')) \par ... \par rmpath(genpath('C:/AMPER/VARToolbox'))}{1}{section*.1}\protected@file@percent }
+\pgfsyspdfmark {pgfid1}{19562754}{41772187}
+\@writefile{toc}{\contentsline {section}{\numberline {2}VAR Toolbox:\ High level description}{1}{section.2}\protected@file@percent }
+\citation{StockWatson2000}
+\citation{BlanchardQuah1989}
+\citation{Uhlig2005}
+\citation{GertlerKaradi2015}
+\@writefile{toc}{\contentsline {section}{\numberline {3}A Guided Example}{2}{section.3}\protected@file@percent }
+\newlabel{sec:basics}{{3.1}{2}{VARs: Basics {\color {note} {\protect \small {[Notes]}}\label {sec:basics}}}{subsection.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}VARs: Basics {\color  {note} {\small {[Notes]}}}}{2}{subsection.3.1}\protected@file@percent }
+\newlabel{eq:struct_var}{{1}{2}{VARs: Basics {\color {note} {\protect \small {[Notes]}}\label {sec:basics}}}{equation.3.1}{}}
+\newlabel{eq:struct_var_1}{{2}{3}{VARs: Basics {\color {note} {\protect \small {[Notes]}}\label {sec:basics}}}{equation.3.2}{}}
+\newlabel{eq:struct_var_2}{{3}{3}{VARs: Basics {\color {note} {\protect \small {[Notes]}}\label {sec:basics}}}{equation.3.3}{}}
+\newlabel{eq:struct_cov_1}{{4}{3}{VARs: Basics {\color {note} {\protect \small {[Notes]}}\label {sec:basics}}}{equation.3.4}{}}
+\newlabel{eq:red_var_1}{{5}{3}{VARs: Basics {\color {note} {\protect \small {[Notes]}}\label {sec:basics}}}{equation.3.5}{}}
+\newlabel{eq:red_resid_1}{{6}{3}{VARs: Basics {\color {note} {\protect \small {[Notes]}}\label {sec:basics}}}{equation.3.6}{}}
+\newlabel{eq:red_var_2}{{7}{3}{VARs: Basics {\color {note} {\protect \small {[Notes]}}\label {sec:basics}}}{equation.3.7}{}}
+\newlabel{eq:red_resid_2}{{8}{3}{VARs: Basics {\color {note} {\protect \small {[Notes]}}\label {sec:basics}}}{equation.3.8}{}}
+\newlabel{eq:red_var_3}{{9}{3}{VARs: Basics {\color {note} {\protect \small {[Notes]}}\label {sec:basics}}}{equation.3.9}{}}
+\newlabel{eq:red_cov_1}{{10}{3}{VARs: Basics {\color {note} {\protect \small {[Notes]}}\label {sec:basics}}}{equation.3.10}{}}
+\citation{GertlerKaradi2015}
+\newlabel{eq:red_cov_2}{{11}{4}{VARs: Basics {\color {note} {\protect \small {[Notes]}}\label {sec:basics}}}{equation.3.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Load \& Plot Data {\color  {note} {\small {[Matlab]}}}}{4}{subsection.3.2}\protected@file@percent }
+\@writefile{tdo}{\contentsline {todo}{\color@fb@x {}{white}{}{script!80}{\leavevmode {\color  {script!80}o}}\ \ttfamily  \hspace  {1mm}\leavevmode {\color  {matlabgreen}\%}\leavevmode {\color  {matlabgreen}\% 1. LOAD \& PLOT DATA }\\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\%-------------------------------------------------------------------------- }\\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Load }\\ \hspace  {1mm}[xlsdata, xlstext] = xlsread(\leavevmode {\color  {matlabpurple}'GK2015\_Data.xlsx'},\leavevmode {\color  {matlabpurple}'VAR\_data'}); \\ \hspace  {1mm}data = Num2NaN(xlsdata(:,3:end)); \\ \hspace  {1mm}vnames = xlstext(1,3:end); \\ \hspace  {1mm}\leavevmode {\color  {matlabblue}for} ii=1:length(vnames) \\ \hspace  {1mm}\hspace  {5mm} DATA.(vnames\{ii\}) = data(:,ii); \\ \hspace  {1mm}\leavevmode {\color  {matlabblue}end} \\ \hspace  {1mm}year = xlsdata(1,1); \\ \hspace  {1mm}month = xlsdata(1,2); \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Observations }\\ \hspace  {1mm}nobs = size(data,1); \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Set endogenous }\\ \hspace  {1mm}VARvnames = \{\leavevmode {\color  {matlabpurple}'gs1'},\leavevmode {\color  {matlabpurple}'logcpi'},\leavevmode {\color  {matlabpurple}'logip'},\leavevmode {\color  {matlabpurple}'ebp'}\}; \\ \hspace  {1mm}VARvnames\_long = \{\leavevmode {\color  {matlabpurple}'Policy rate'},\leavevmode {\color  {matlabpurple}'CPI'},\leavevmode {\color  {matlabpurple}'Industrial Production'},\leavevmode {\color  {matlabpurple}'EBP'}\}; \\ \hspace  {1mm}VARnvar = length(VARvnames); \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Create matrices of variables to be used in the VAR }\\ \hspace  {1mm}ENDO = nan(nobs,VARnvar); \\ \hspace  {1mm}\leavevmode {\color  {matlabblue}for} ii=1:VARnvar \\ \hspace  {1mm}\hspace  {5mm} ENDO(:,ii) = DATA.(VARvnames\{ii\}); \\ \hspace  {1mm}\leavevmode {\color  {matlabblue}end} \\ }{4}{section*.2}\protected@file@percent }
+\pgfsyspdfmark {pgfid2}{19562754}{27198570}
+\@writefile{tdo}{\contentsline {todo}{\color@fb@x {}{white}{}{script!80}{\leavevmode {\color  {script!80}o}}\ \ttfamily  \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Open a figure of the desired size }\\ \hspace  {1mm}FigSize(28,16) \\ \hspace  {1mm}\leavevmode {\color  {matlabblue}for} ii=1:VARnvar \\ \hspace  {1mm}\hspace  {5mm} subplot(2,2,ii) \\ \hspace  {1mm}\hspace  {5mm} H(ii) = plot(ENDO(:,ii),\leavevmode {\color  {matlabpurple}'LineWidth'},2,\leavevmode {\color  {matlabpurple}'Color'},cmap(ii)); \\ \hspace  {1mm}\hspace  {5mm} title(VARvnames\_long(ii)); \\ \hspace  {1mm}\hspace  {5mm} DatesPlot(year+(month-1)/12,nobs,6,\leavevmode {\color  {matlabpurple}'m'}) \leavevmode {\color  {matlabgreen}\% Set the x-axis label }\\ \hspace  {1mm}\hspace  {5mm} grid on; \\ \hspace  {1mm}\leavevmode {\color  {matlabblue}end} \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Legend }\\ \hspace  {1mm}lopt = LegOption; lopt.handle = H; LegSubplot(VARvnames,lopt); FigFont(10); \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Save }\\ \hspace  {1mm}SaveFigure(\leavevmode {\color  {matlabpurple}'graphics/F1\_PLOT'},1) \\ }{4}{section*.3}\protected@file@percent }
+\pgfsyspdfmark {pgfid3}{19562754}{43533763}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \scshape  {Raw Data}}}{5}{figure.1}\protected@file@percent }
+\newlabel{fig:F1_PLOT}{{1}{5}{\scshape {Raw Data}}{figure.1}{}}
+\citation{GertlerKaradi2015}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}VAR\ estimation {\color  {note} {\small {[Matlab]}}}}{6}{subsection.3.3}\protected@file@percent }
+\@writefile{tdo}{\contentsline {todo}{\color@fb@x {}{white}{}{script!80}{\leavevmode {\color  {script!80}o}}\ \ttfamily  \hspace  {1mm}\leavevmode {\color  {matlabgreen}\%}\leavevmode {\color  {matlabgreen}\% VAR ESTIMATION }\\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\%-------------------------------------------------------------------------- }\\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Set the deterministic variable in the VAR (1=constant, 2=trend) }\\ \hspace  {1mm}det = 1; \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Set number of nlags }\\ \hspace  {1mm}nlags = 12; \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Estimate VAR by OLS }\\ \hspace  {1mm}[VAR, VARopt] = VARmodel(ENDO,nlags,det); \\ \hspace  {1mm}disp(VAR) \\ \hspace  {1mm}disp(VARopt) \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Add variable names to VARopt }\\ \hspace  {1mm}VARopt.vnames = VARvnames; \\ \hspace  {1mm}VARopt.figname= \leavevmode {\color  {matlabpurple}'graphics/'}; \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Print at screen and create table }\\ \hspace  {1mm}[TABLE, beta] = VARprint(VAR,VARopt,2); \\ }{6}{section*.4}\protected@file@percent }
+\pgfsyspdfmark {pgfid4}{19562754}{29177803}
+\@writefile{tdo}{\contentsline {todo}{\color@fb@x {}{white}{}{script!80}{\leavevmode {\color  {script!80}o}}\ \ttfamily  \hspace  {1mm}\leavevmode {\color  {matlabgreen}\%}\leavevmode {\color  {matlabgreen}\% VAR ESTIMATION }\\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\%-------------------------------------------------------------------------- }\\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Set the deterministic variable in the VAR (1=constant, 2=trend) }\\ \hspace  {1mm}det = 1; \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Set number of nlags }\\ \hspace  {1mm}nlags = 12; \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Estimate VAR by OLS }\\ \hspace  {1mm}[VAR, VARopt] = VARmodel(ENDO,nlags,det); \\ \hspace  {1mm}disp(VAR) \\ \hspace  {1mm}disp(VARopt) \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Add variable names to VARopt }\\ \hspace  {1mm}VARopt.vnames = VARvnames; \\ \hspace  {1mm}VARopt.figname= \leavevmode {\color  {matlabpurple}'graphics/'}; \\ \hspace  {1mm}\leavevmode {\color  {matlabgreen}\% Print at screen and create table }\\ \hspace  {1mm}[TABLE, beta] = VARprint(VAR,VARopt,2); \\ }{6}{section*.5}\protected@file@percent }
+\pgfsyspdfmark {pgfid5}{19562754}{42754672}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}The Identification\ Problem {\color  {note} {\small {[Notes]}}}}{9}{subsection.3.4}\protected@file@percent }
+\newlabel{eq:red_2var}{{12}{9}{The Identification\ Problem {\color {note} {\protect \small {[Notes]}}}}{equation.3.12}{}}
+\newlabel{eq:struct_2var}{{13}{9}{The Identification\ Problem {\color {note} {\protect \small {[Notes]}}}}{equation.3.13}{}}
+\newlabel{eq:red2struct_1}{{14}{9}{The Identification\ Problem {\color {note} {\protect \small {[Notes]}}}}{equation.3.14}{}}
+\newlabel{eq:red2struct_2}{{15}{10}{The Identification\ Problem {\color {note} {\protect \small {[Notes]}}}}{equation.3.15}{}}
+\newlabel{eq:red2struct_3}{{16}{10}{The Identification\ Problem {\color {note} {\protect \small {[Notes]}}}}{equation.3.16}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Identification by zero contemporaneous resrictions}{10}{subsection.3.5}\protected@file@percent }
+\newlabel{eq:red2struct_4}{{18}{10}{Identification by zero contemporaneous resrictions}{equation.3.18}{}}
+\bibstyle{chicago}
+\bibdata{BIBLIO}
+\bibcite{BlanchardQuah1989}{{1}{1989}{{Blanchard and Quah}}{{Blanchard and Quah}}}
+\bibcite{GertlerKaradi2015}{{2}{2015}{{Gertler and Karadi}}{{Gertler and Karadi}}}
+\bibcite{StockWatson2000}{{3}{2001}{{Stock and Watson}}{{Stock and Watson}}}
+\bibcite{Uhlig2005}{{4}{2005}{{Uhlig}}{{Uhlig}}}
+\newlabel{eq:IR_example}{{19}{11}{Identification by zero contemporaneous resrictions}{equation.3.19}{}}
+\newlabel{eq:IR_recusive}{{20}{11}{Identification by zero contemporaneous resrictions}{equation.3.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Variance decompositions}{11}{subsection.3.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}Historical decompositions}{11}{subsection.3.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix}{11}{appendix.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}The Identification\ Problem {\color  {note} {\small {[Notes]}}}}{11}{subsection.1.1}\protected@file@percent }
+\newlabel{eq:GK_VAR}{{22}{12}{The Identification\ Problem {\color {note} {\protect \small {[Notes]}}}}{equation.1.22}{}}
+\newlabel{eq:2}{{23}{12}{The Identification\ Problem {\color {note} {\protect \small {[Notes]}}}}{equation.1.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Impulse responses}{12}{subsection.1.2}\protected@file@percent }

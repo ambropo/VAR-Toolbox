@@ -1,0 +1,12 @@
+Matlab code to replicate Figure 6 of Uhlig (2005, JME)
+
+
+To replicate Figure 6 open and run the file GO_Uhlig2005.m.
+
+
+If you happen to use these codes for research papers can you please quote as follows: 
+Ambrogio Cesa-Bianchi, 2014. "VAR Toolbox", sites.google.com/site/ambropo/".
+
+Ambrogio Cesa Bianchi, January 2014
+ambrogio.cesabianchi@gmail.com
+

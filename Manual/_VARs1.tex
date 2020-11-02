@@ -1,0 +1,1746 @@
+
+\documentclass[11pt,a4paper]{report}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{makeidx}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[singlelinecheck=false,labelsep=space,indention=.5cm,labelfont=bf,center]{caption}
+\usepackage[a4paper,hmargin={3.5cm,3.5cm},vmargin={3.5cm,3cm},includefoot,bindingoffset=0cm]{geometry}
+\usepackage[comma]{natbib}
+\usepackage[dvipsnames,usenames]{color}
+\usepackage{appendix}
+\usepackage{setspace}
+\usepackage{booktabs,tabularx}
+\usepackage{supertabular}
+\usepackage{mathpazo}
+\usepackage{verbatim}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{boxedminipage}
+\usepackage[colorlinks,linkcolor=blue]{hyperref}
+
+\setcounter{MaxMatrixCols}{10}
+%TCIDATA{OutputFilter=LATEX.DLL}
+%TCIDATA{Version=5.50.0.2953}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{BibliographyScheme=BibTeX}
+%TCIDATA{Created=Wednesday, August 10, 2011 17:16:47}
+%TCIDATA{LastRevised=Wednesday, March 11, 2020 22:50:13}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{<META NAME="DocumentShell" CONTENT="Standard LaTeX\Standard LaTeX Report">}
+%TCIDATA{Language=American English}
+%TCIDATA{CSTFile=40 LaTeX Report.cst}
+
+\definecolor{note}{RGB}{40,0,0}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent \textbf{#1.} }{\  \rule{0.5em}{0.5em}}
+\input{tcilatex}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\nouppercase{\rightmark}}
+\rfoot{\thepage \ of \pageref{LastPage}}
+\renewcommand*{\thepart}{\arabic{part}}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{2}
+\numberwithin{equation}{chapter}
+\numberwithin{section}{chapter}
+\setlength{\parskip}{0.2cm}
+\hypersetup{
+pdftitle={pdf title here},
+pdfsubject={},
+pdfauthor={Ambrogio Cesa Bianchi},
+pdfcreator={},
+pdfkeywords={},
+pdfstartview=FitV,
+plainpages=false,
+}
+\graphicspath{{./graphics/}}
+
+\begin{document}
+
+\title{%
+%TCIMACRO{\TeXButton{----}{\rule{\textwidth}{.04cm}}}%
+%BeginExpansion
+\rule{\textwidth}{.04cm}%
+%EndExpansion
+\\
+A Primer On Vector Autoregressions}
+\author{{\small Ambrogio Cesa Bianchi\thanks{
+\emph{Disclaimer}. These explanatory notes result from the elaboration of
+text and figures found in published papers, unpublished manuscripts,
+personal notes, and a lot of material found on the web that I collected over
+a long time.\ If you find any lack of attribution or error in quoting the
+source of the material in these notes ---as well as if you find any errors
+or you would like to give me comments--- please email me at
+ambrogio.cesabianchi@gmail.com.}} \and 
+%TCIMACRO{\TeXButton{----}{\rule{\textwidth}{.04cm}}}%
+%BeginExpansion
+\rule{\textwidth}{.04cm}%
+%EndExpansion
+}
+\maketitle
+\tableofcontents
+
+\onehalfspacing
+\newpage
+
+%TCIMACRO{%
+%\TeXButton{---Note}{\begin{quotation}
+%\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+%\vspace{-.36cm}
+%
+%\noindent \hrulefill
+%\small
+%\singlespacing
+%\color{note}\sffamily}}%
+%BeginExpansion
+\begin{quotation}
+\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+\vspace{-.36cm}
+
+\noindent \hrulefill
+\small
+\singlespacing
+\color{note}\sffamily%
+%EndExpansion
+
+What is a variance-covariance matrix? The formula for the variance of a
+univariate time series $x=[x_{1},x_{2},...,x_{T}]$ is:%
+\begin{equation*}
+\mathsf{VAR}=\sum_{t=0}^{T}\frac{\left( x_{t}-\bar{x}\right) ^{2}}{N}%
+=\sum_{t=0}^{T}\frac{\left( x_{t}-\bar{x}\right) \left( x_{t}-\bar{x}\right) 
+}{N}.
+\end{equation*}%
+If we have a bivariate time series, such as:%
+\begin{equation*}
+\mathbf{x}_{t}=\left[ 
+\begin{array}{cccc}
+x_{1} & x_{2} & ... & x_{T} \\ 
+x_{1} & x_{2} & ... & x_{T}%
+\end{array}%
+\right] ,
+\end{equation*}%
+the formula simply becomes:%
+\begin{equation*}
+\mathsf{VCV}=\left[ 
+\begin{array}{cc}
+\sum_{t=0}^{T}\frac{\left( x_{t}-\bar{x}\right) \left( x_{t}-\bar{x}\right) 
+}{N} & \sum_{t=0}^{T}\frac{\left( x_{t}-\bar{x}\right) \left( x_{t}-x\right) 
+}{N} \\ 
+\sum_{t=0}^{T}\frac{\left( x_{t}-x\right) \left( x_{t}-\bar{x}\right) }{N} & 
+\sum_{t=0}^{T}\frac{\left( x_{t}-x\right) \left( x_{t}-x\right) }{N}%
+\end{array}%
+\right] =\left[ 
+\begin{array}{cc}
+\mathsf{VAR}(x) & \mathsf{COV}(x,x) \\ 
+\mathsf{COV}(x,x) & \mathsf{VAR}(x)%
+\end{array}%
+\right] .
+\end{equation*}
+
+%TCIMACRO{%
+%\TeXButton{---Note End}{\color{black}
+%\noindent \hrulefill 
+%\vspace{-.5cm}
+%
+%\noindent \hrulefill
+%\end{quotation}
+%\bigskip}}%
+%BeginExpansion
+\color{black}
+\noindent \hrulefill 
+\vspace{-.5cm}
+
+\noindent \hrulefill
+\end{quotation}
+\bigskip%
+%EndExpansion
+
+\noindent Note that the basic VAR(1) model may be too poor to sufficiently
+summarize the main characteristics of the data. Deterministic terms (such as
+time trend or seasonal dummy variables) and exogenous variables (such as the
+price of oil) can be added to the basic specification. The general form of
+the \textbf{stationary structural VAR(p)} model with deterministic terms ($%
+\mathbf{Z}_{t}$) and exogenous variables ($\mathbf{W}_{t}$) is given by:%
+\begin{equation*}
+\mathbf{Ax}_{t}=\mathbf{B}_{1}\mathbf{x}_{t-1}+\mathbf{B}_{2}\mathbf{x}%
+_{t-2}+...+\mathbf{B}_{p}\mathbf{x}_{t-p}+\boldsymbol{\Lambda }\mathbf{Z}%
+_{t}+\boldsymbol{\Psi }\mathbf{W}_{t}+\mathbf{\varepsilon }_{t}.
+\end{equation*}
+
+\section{Estimation}
+
+The previous section showed that structural VARs are our ultimate object of
+interest. However, the estimation of a structural VAR with OLS violates one
+of the assumption of the classical regression models, i.e. the regressors
+and the error terms have to be orthogonal. $%
+a_{11}x_{1t}+a_{12}x_{2t}=b_{11}x_{1,t-1}+b_{12}x_{2,t-1}+\varepsilon _{1t},$
+
+To see that, let's consider the second equation of the system in (\ref%
+{eq:var_struct_a}):%
+\begin{equation*}
+a_{22}x_{2t}=-a_{21}x_{1t}+b_{21}x_{1,t-1}+b_{22}x_{2,t-1}+\varepsilon _{2t}.
+\end{equation*}%
+Below, I will compute the covariance between $x_{1t}$ (one of the
+regressors) and $\varepsilon _{2t}$ (the error term), and show that is not
+zero. Our object of interest is $\mathsf{COV}\left[ x_{1t},\varepsilon _{2t}%
+\right] $: note that we can substitute for $x_{1t}$ using the first equation
+of the system in (\ref{eq:var_struct_a}) and get:%
+%TCIMACRO{\TeXButton{ReduceSize_Start}{\footnotesize}}%
+%BeginExpansion
+\footnotesize%
+%EndExpansion
+\begin{equation*}
+\mathsf{COV}\left[ \underset{\text{from the first equation of (\ref%
+{eq:var_struct_a})}}{\underbrace{-\frac{a_{12}}{a_{11}}x_{2t}+\frac{b_{11}}{%
+a_{11}}x_{1,t-1}+\frac{b_{12}}{a_{11}}x_{2,t-1}+\frac{\varepsilon _{1t}}{%
+a_{11}}}},\varepsilon _{2t}\right] .
+\end{equation*}%
+%TCIMACRO{\TeXButton{ReduceSize_End}{\normalsize}}%
+%BeginExpansion
+\normalsize%
+%EndExpansion
+But from the second equation of the system in (\ref{eq:var_struct_a}) it
+follows that:%
+%TCIMACRO{\TeXButton{ReduceSize_Start}{\footnotesize} }%
+%BeginExpansion
+\footnotesize
+%EndExpansion
+\begin{equation*}
+\mathsf{COV}\left[ -\frac{a_{12}}{a_{11}}\left( \underset{\text{from the
+second equation of (\ref{eq:var_struct_a})}}{\underbrace{-\frac{a_{21}}{%
+a_{22}}x_{1t}+\frac{b_{21}}{a_{22}}x_{1,t-1}+\frac{b_{22}}{a_{22}}x_{2,t-1}+%
+\frac{\varepsilon _{2t}}{a_{22}}}}\right) +\frac{b_{11}}{a_{11}}x_{1,t-1}+%
+\frac{b_{12}}{a_{11}}x_{2,t-1}+\frac{\varepsilon _{1t}}{a_{11}},\varepsilon
+_{2t}\right] ,
+\end{equation*}%
+%TCIMACRO{\TeXButton{ReduceSize_End}{\normalsize}}%
+%BeginExpansion
+\normalsize%
+%EndExpansion
+which implies that: 
+\begin{equation*}
+\mathsf{COV}\left[ x_{1t},\varepsilon _{2t}\right] =\frac{a_{12}}{a_{11}}%
+\frac{a_{21}}{a_{22}}\mathsf{COV}\left[ x_{1t},\varepsilon _{2t}\right] -%
+\frac{a_{12}}{a_{11}a_{22}}\mathsf{COV}\left[ \varepsilon _{2t},\varepsilon
+_{2t}\right] .
+\end{equation*}%
+From the last equality it follows that 
+\begin{equation*}
+\mathsf{COV}[x_{1t},\varepsilon _{2t}]=\frac{a_{12}}{%
+a_{12}a_{21}-a_{11}a_{22}}\neq 0
+\end{equation*}%
+This is a violation of the assumptions of the classical regression model.
+Therefore, OLS estimates of equation for $x_{2t}$ will yield inconsistent
+estimates of the parameters of the model unless we assume that $a_{12}=0$.
+The same happens if we want to estimate the structural equation for $x_{1t}$%
+, unless we assume $a_{21}=0.$
+
+The reduced form VAR\ does not suffer from the same problem and can be
+estimated by OLS. However, as we have seen above, the reduced-form errors
+terms will correlated and, therefore, it will not be possible to evaluate
+the effect of the structural shock on the system.
+
+The OLS\ estimates of the parameters of a\ reduced form VAR(1)\ are:%
+\begin{eqnarray*}
+\mathbf{F} &=&(\mathbf{x}_{t-1}\mathbf{x}_{t-1}^{\prime })^{-1}\mathbf{x}%
+_{t-1}\mathbf{x}_{t}^{\prime }, \\
+\mathbf{\hat{u}}_{t} &=&\mathbf{x}_{t}-\mathbf{\hat{F}y}_{t-1}, \\
+\mathbf{\hat{\Sigma}}_{u} &=&\mathsf{E}\left[ \mathbf{\hat{u}}_{t}\mathbf{%
+\hat{u}}_{t}^{\prime }\right] =\frac{\mathbf{\hat{u}}_{t}\mathbf{\hat{u}}%
+_{t}^{\prime }}{T-1}.
+\end{eqnarray*}%
+Note that, in general, $\mathbf{\hat{\Sigma}}_{u}$, is a symmetric
+non-diagonal matrix:%
+\begin{equation*}
+\mathbf{\hat{\Sigma}}_{u}=\left[ 
+\begin{array}{cc}
+\sigma _{1}^{2} & \sigma _{12}^{2} \\ 
+- & \sigma _{2}^{2}%
+\end{array}%
+\right] .
+\end{equation*}%
+Its diagonal elements are the variances of the estimated reduced-form error
+terms, $\sigma _{1}^{2}$ and $\sigma _{2}^{2}$. The off-diagonal elements
+are instead and the covariance between the estimated error terms ($\sigma
+_{12}=\sigma _{21}$). The covariance between the estimated error terms plays
+an important role in estimated reduced form VARs because it collects the
+information on the contemporaneous interaction of the variables in the
+system.
+
+\subsection{Estimation with the VAR\ Toolbox}
+
+Before seeing how we can estimate a VAR\ in MatLab, note that In MatLab we
+generally use a different notation. Specifically, we generally write the two
+time series $x_{1t}$ and $x_{2t}$ in a matrix \textbf{$x$} of dimension $%
+T\times 2$ (i.e., including $2$ time series with $T$ observations each). In
+other words, we can write:%
+\begin{equation*}
+\mathbf{x}=\left[ 
+\begin{array}{cc}
+x_{11} & x_{21} \\ 
+x_{12} & x_{22} \\ 
+... & ... \\ 
+x_{1T} & x_{2T}%
+\end{array}%
+\right] .
+\end{equation*}%
+Therefore we can write the system of equations in (\ref{eq:var_red_a}) as:%
+\begin{equation}
+\left[ 
+\begin{array}{cc}
+x_{1t} & x_{2t}%
+\end{array}%
+\right] =\left[ 
+\begin{array}{cc}
+x_{1t-1} & x_{2t-1}%
+\end{array}%
+\right] \left[ 
+\begin{array}{cc}
+f_{11} & f_{21} \\ 
+f_{12} & f_{22}%
+\end{array}%
+\right] +\left[ 
+\begin{array}{cc}
+u_{1t} & u_{2t}%
+\end{array}%
+\right] ,  \label{eq:var_red_b_matlab}
+\end{equation}%
+which clearly yields%
+\begin{equation*}
+\left\{ 
+\begin{array}{c}
+x_{1t}=f_{11}x_{1,t-1}+f_{12}x_{2,t-1}+u_{1t}, \\ 
+x_{2t}=f_{21}x_{1,t-1}+f_{22}x_{2,t-1}+u_{2t},%
+\end{array}%
+\right.
+\end{equation*}%
+as in equation (\ref{eq:var_red_a}). Even though the matricial notation
+above is a different from the on used above, the reduced-form representation
+is of course the same. According to our above notation, equation \ref%
+{eq:var_red_b_matlab} can be also expressed as:%
+\begin{equation}
+\mathbf{x}_{t}=\mathbf{x}_{t-1}\mathbf{F}^{\prime }+\mathbf{u}_{t}.
+\label{eq:var_red_c_matlab}
+\end{equation}
+
+%TCIMACRO{%
+%\TeXButton{---Note}{\begin{quotation}
+%\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+%\vspace{-.36cm}
+%
+%\noindent \hrulefill
+%\small
+%\singlespacing
+%\color{note}\sffamily}}%
+%BeginExpansion
+\begin{quotation}
+\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+\vspace{-.36cm}
+
+\noindent \hrulefill
+\small
+\singlespacing
+\color{note}\sffamily%
+%EndExpansion
+
+In Matlab, to perform the estimation of a reduced form VAR you can use the
+procedure \texttt{VARmodel.m}, whose description is provided below.\medskip
+
+\texttt{function VARout = VARmodel(DATA,nlag,c\_case,DATA\_EX,nlag\_ex)}
+
+\texttt{\% ===============================================================}
+
+\texttt{\% Performs vector autogressive estimation}
+
+\texttt{\% ===============================================================}
+
+\texttt{\% VARout = VARmodel(DATA,nlag,c\_case,DATA\_EX)}
+
+\texttt{\% ---------------------------------------------------------------}
+
+\texttt{\% INPUTS }
+
+\texttt{\% DATA = an (nobs x neqs) matrix of y-vectors}
+
+\texttt{\% nlag = the lag length}
+
+\texttt{\%}
+
+\texttt{\% OPTIONAL INPUTS}
+
+\texttt{\% c\_case = 0 no constant; 1 with constant ; 2 constant + }
+
+\%\qquad \qquad \qquad\ \ \texttt{time trend}
+
+\texttt{\% DATA\_EX = optional matrix of variables (nobs x nvar\_ex)}
+
+\texttt{\% nlag\_ex = number of lags for exogeonus variables }
+
+\%\qquad \qquad \qquad\ \ \ \texttt{(default = 0)}
+
+\texttt{\% ===============================================================}%
+\medskip
+
+%TCIMACRO{%
+%\TeXButton{---Note End}{\color{black}
+%\noindent \hrulefill 
+%\vspace{-.5cm}
+%
+%\noindent \hrulefill
+%\end{quotation}
+%\bigskip}}%
+%BeginExpansion
+\color{black}
+\noindent \hrulefill 
+\vspace{-.5cm}
+
+\noindent \hrulefill
+\end{quotation}
+\bigskip%
+%EndExpansion
+
+The \texttt{DATA} matrix should be such that each column is a variable and
+each row is an observation (with no missing observations), as the following
+one:%
+\begin{equation*}
+\mathtt{DATA}=\mathbf{x}^{\prime }=\left[ 
+\begin{array}{cc}
+x_{11} & x_{21} \\ 
+x_{12} & x_{22} \\ 
+... & ... \\ 
+x_{1T} & x_{2T}%
+\end{array}%
+\right] .
+\end{equation*}%
+The other two inputs that are needed for the estimation are the number of
+lags and the deterministic variables (constant and trend). For example, to
+estimate a bivariate VAR$(2)$ with constant and trend on the the matrix 
+\textbf{$x$} you can type in Matlab:\medskip 
+
+\texttt{VARout = VARmodel(Y,2,2);}\medskip
+
+\noindent The \texttt{VARmodel}\ code estimates the reduced form VAR\ and
+saves the results in the \texttt{VARout} structure. For example, a bivariate
+VAR$(2)$\ with trend and constant can be written as:%
+\begin{equation*}
+\begin{array}{c}
+x_{1t}=\alpha _{1}+\beta
+_{1}tr+f_{11}x_{1t-1}+f_{12}x_{2t-1}+f_{11}^{2}x_{1t-2}+f_{12}^{2}x_{2t-2}+u_{1t},
+\\ 
+x_{1t}=\alpha _{2}+\beta
+_{2}tr+f_{21}x_{1t-1}+f_{22}x_{2t-1}+f_{21}^{2}x_{1t-2}+f_{22}^{2}x_{2t-2}+u_{2t},%
+\end{array}%
+\end{equation*}%
+or as in equation (\ref{eq:var_red_b_matlab}):%
+\begin{equation*}
+\left[ 
+\begin{array}{cc}
+x_{1t} & x_{2t}%
+\end{array}%
+\right] =\left[ 
+\begin{array}{cccccc}
+1 & tr & x_{1t-1} & x_{2t-1} & x_{1t-2} & x_{2t-2}%
+\end{array}%
+\right] \underset{\mathbf{F}^{\prime }}{\underbrace{\left[ 
+\begin{array}{cc}
+\alpha _{1} & \alpha _{2} \\ 
+\beta _{1} & \beta _{2} \\ 
+f_{11} & f_{21} \\ 
+f_{12} & f_{22} \\ 
+f_{11}^{2} & f_{21}^{2} \\ 
+f_{12}^{2} & f_{22}^{2}%
+\end{array}%
+\right] .}}
+\end{equation*}%
+The matrix \texttt{VARout.beta} collects the estimated coefficients as in
+the equation above. Therefore, we have that:%
+\begin{equation*}
+\mathtt{VARout.beta}=\mathbf{F}^{\prime }.
+\end{equation*}%
+The \texttt{VARout} structure includes many additional standard results of
+VAR\ analysis. I refer to the \texttt{VARmodel.m}\ file for a full
+description of those results.
+
+\subsection{A simple example}
+
+We can now estimate the VAR with some real data. We use UK\ quarterly data
+on GDP growth, inflation and, short term interest rates from 1985.I to
+2013.III, plotted in the Figure below.
+
+%TCIMACRO{%
+%\TeXButton{FIG}{\begin{figure}[!ht]\vspace{.1cm}
+%\centering
+%\begin{minipage}[b]{0.99\textwidth}}}%
+%BeginExpansion
+\begin{figure}[!ht]\vspace{.1cm}
+\centering
+\begin{minipage}[b]{0.99\textwidth}%
+%EndExpansion
+%TCIMACRO{%
+%\TeXButton{figure}{\includegraphics[width=.30\textwidth]{X1.pdf}
+%\includegraphics[width=.30\textwidth]{X2.pdf}
+%\includegraphics[width=.30\textwidth]{X3.pdf}
+%\vspace{.3cm}}}%
+%BeginExpansion
+\includegraphics[width=.30\textwidth]{X1.pdf}
+\includegraphics[width=.30\textwidth]{X2.pdf}
+\includegraphics[width=.30\textwidth]{X3.pdf}
+\vspace{.3cm}%
+%EndExpansion
+\caption{ {\scshape Data: GDP Growth, Inflation, Short-term Interest Rate}}%
+%TCIMACRO{%
+%\TeXButton{FIG_END}{\end{minipage}
+%\end{figure}}}%
+%BeginExpansion
+\end{minipage}
+\end{figure}%
+%EndExpansion
+
+\noindent We estimate, as an example, a VAR(1) with a constant (namely, $%
+\mathbf{x}_{t}=\mathbf{c}+\mathbf{Fx}_{t-1}+\mathbf{u}_{t}$). The typical
+VAR output is given by a matrix of coefficients ($\mathbf{F}^{\prime }$):
+
+\begin{center}
+%TCIMACRO{%
+%\TeXButton{table}{\begin{tabular}{lrrr}
+%\addlinespace \toprule & Real GDP & GDP Deflator & Policy Rate \\ 
+%\midrule c & 1.14 & 1.19 & -0.11 \\ 
+%Real GDP(-1) & 0.61 & -0.07 & 0.06 \\ 
+%GDP Deflator(-1) & -0.09 & 0.02 & 0.03 \\ 
+%Policy Rate(-1) & 0.01 & 0.30 & 0.96 \\ 
+%\bottomrule &  &  & 
+%\end{tabular}}}%
+%BeginExpansion
+\begin{tabular}{lrrr}
+\addlinespace \toprule & Real GDP & GDP Deflator & Policy Rate \\ 
+\midrule c & 1.14 & 1.19 & -0.11 \\ 
+Real GDP(-1) & 0.61 & -0.07 & 0.06 \\ 
+GDP Deflator(-1) & -0.09 & 0.02 & 0.03 \\ 
+Policy Rate(-1) & 0.01 & 0.30 & 0.96 \\ 
+\bottomrule &  &  & 
+\end{tabular}%
+%EndExpansion
+\end{center}
+
+\noindent and the correlation matrix of the reduced-form residuals:
+
+\begin{center}
+%TCIMACRO{%
+%\TeXButton{table}{\begin{tabular}{lrrr}
+%\addlinespace \toprule & Real GDP & GDP Deflator & Policy Rate \\ 
+%\midrule Real GDP & 1.000 & -0.178 & 0.373 \\ 
+%GDP Deflator & -- & 1.000 & 0.137 \\ 
+%Policy Rate & -- & -- & 1.000 \\ 
+%\bottomrule &  &  & 
+%\end{tabular}}}%
+%BeginExpansion
+\begin{tabular}{lrrr}
+\addlinespace \toprule & Real GDP & GDP Deflator & Policy Rate \\ 
+\midrule Real GDP & 1.000 & -0.178 & 0.373 \\ 
+GDP Deflator & -- & 1.000 & 0.137 \\ 
+Policy Rate & -- & -- & 1.000 \\ 
+\bottomrule &  &  & 
+\end{tabular}%
+%EndExpansion
+\end{center}
+
+After estimating the VAR\ we should check the goodness of our model. We do
+not cover this in detail but before interpreting the VAR results we should
+check a number of assumptions. Loosely speaking we need to check that the
+reduced-form residuals are, normally distributed, not autocorrelated, and
+not heteroskedastic (i.e., have constant variance). Finally, we need to
+check that the VAR is stationary (we'll see in a second what it means). But
+before moving to stationarity, why do we need to check the residuals? The
+reason is quite simple. The VAR believes that:%
+\begin{equation*}
+\mathbf{x}\sim \mathcal{N}(\mathbf{\mu },\mathbf{\sigma })\ \ \
+\Longrightarrow \ \ \ \left\{ 
+\begin{array}{lll}
+\Delta y & \sim & \mathcal{N}(\mu ^{\Delta y},\sigma ^{\Delta y}) \\ 
+\pi & \sim & \mathcal{N}(\mu ^{\pi },\sigma ^{\pi }) \\ 
+i & \sim & \mathcal{N}(\mu ^{i},\sigma ^{i})%
+\end{array}%
+\right.
+\end{equation*}%
+If the data that we feed into the VAR\ has not these features, the residuals
+will inherit them. Moreover note that:
+
+\begin{itemize}
+\item Mean ($\mu $) and variance\ ($\sigma $) are constant $\Longrightarrow $
+the data have to be stationary!
+
+\item The mean ($\mu $) and variance\ ($\sigma $) are not known a priori
+\end{itemize}
+
+\noindent Can we recover the mean of our endogenous variables? Yes. It is
+given by $\mathbf{\mu }=\mathbb{E}[\mathbf{x}_{t}]$%
+\begin{equation*}
+\begin{array}{lll}
+\mathsf{E}[\mathbf{x}_{t}] & = & \mathsf{E}[\mathbf{c}+\mathbf{Fx}_{t-1}+%
+\mathbf{u}_{t}]=\smallskip \\ 
+& = & \mathsf{E}[\mathbf{c+F(c+Fx}_{t-2}\mathbf{+u}_{t-1}\mathbf{)+u}_{t}%
+\mathbf{]=E[c+Fc+F}^{2}\mathbf{x}_{t-2}\mathbf{+Fu}_{t-1}\mathbf{+u}_{t}%
+\mathbf{]=}\smallskip \\ 
+& = & \mathsf{E}[\mathbf{c+Fc+F}^{2}\mathbf{c+...+F}^{t-2}\mathbf{c+F}^{t-1}%
+\mathbf{x}_{1}\mathbf{+F}^{t-2}\mathbf{u}_{2}\mathbf{+...+F}^{2}\mathbf{u}%
+_{t-2}\mathbf{+Fu}_{t-1}\mathbf{+u}_{t}]=\smallskip \\ 
+& = & ...\ =\smallskip \\ 
+& = & \mathsf{E}\left[ \sum\limits_{j=0}^{t-2}\mathbf{F}^{j}\mathbf{c}+%
+\mathbf{F}^{t-1}\mathbf{x}_{1}+\sum\limits_{j=0}^{t-2}\mathbf{F}^{j}\mathbf{u%
+}_{t-j}\right]%
+\end{array}%
+\end{equation*}%
+If VAR\ is stationary (wait one more minute to see what it means), from the
+last expression we get:%
+\begin{equation*}
+\mathsf{E}[\mathbf{x}_{t}]=\left( \mathbf{I}-\mathbf{F}\right) ^{-1}\mathbf{c%
+}=\mathbf{\mu }
+\end{equation*}
+
+%TCIMACRO{%
+%\TeXButton{---Note}{\begin{quotation}
+%\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+%\vspace{-.36cm}
+%
+%\noindent \hrulefill
+%\small
+%\singlespacing
+%\color{note}\sffamily}}%
+%BeginExpansion
+\begin{quotation}
+\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+\vspace{-.36cm}
+
+\noindent \hrulefill
+\small
+\singlespacing
+\color{note}\sffamily%
+%EndExpansion
+
+Geometric series. Consider the following sum $\sum\limits_{j=0}^{T}Y^{j}$.
+When $T\rightarrow \infty $ we have: 
+\begin{equation*}
+\mathbf{(1+Y}+\mathbf{Y}^{2}+\mathbf{...}+\mathbf{Y}^{\infty }\mathbf{)=}%
+\left( \mathbf{I}-\mathbf{Y}\right) ^{-1}
+\end{equation*}%
+if and only if:
+
+\begin{itemize}
+\item $\left\vert eig(\mathbf{Y)}\right\vert <1$ when $Y$ is a matrix
+
+\item $Y<1$ when $Y$ is a number
+\end{itemize}
+
+\noindent Therefore, for $T$ large enough we have 
+\begin{eqnarray*}
+\mathsf{E}[\mathbf{x}_{t}] &=&\mathsf{E}\left[ \sum\limits_{j=0}^{t-2}%
+\mathbf{F}^{j}\mathbf{c}+\mathbf{F}^{t-1}\mathbf{x}_{0}+\sum%
+\limits_{j=0}^{t-2}\mathbf{F}^{j}\mathbf{u}_{t-j}\right] = \\
+&=&\mathsf{E}\left[ \left( \mathbf{I}-\mathbf{F}\right) ^{-1}\mathbf{c}%
+\right] +\underset{\approx 0}{\underbrace{\mathbf{F}^{t-1}\mathbf{x}_{1}}}+%
+\underset{\approx 0}{\underbrace{\mathsf{E}\left[ \sum\limits_{j=0}^{t-2}%
+\mathbf{F}^{j}\mathbf{u}_{t-j}\right] }}
+\end{eqnarray*}
+
+%TCIMACRO{%
+%\TeXButton{---Note End}{\color{black}
+%\noindent \hrulefill 
+%\vspace{-.5cm}
+%
+%\noindent \hrulefill
+%\end{quotation}
+%\bigskip}}%
+%BeginExpansion
+\color{black}
+\noindent \hrulefill 
+\vspace{-.5cm}
+
+\noindent \hrulefill
+\end{quotation}
+\bigskip%
+%EndExpansion
+
+\noindent A VAR\ is stationary (or stable) when: 
+\begin{equation*}
+\left\vert eig(\mathbf{F)}\right\vert <1.
+\end{equation*}%
+In this case, the VAR thinks that $(\mathbf{I}-\mathbf{F})^{-1}\mathbf{c}$
+is the unconditional mean of the stochastic processes governing our
+variables. Note that the unconditional mean is an interesting element of
+VAR\ analysis but it is often ignored. If we recover both $\mathbf{c}$ and $%
+\mathbf{F}$ from the estimated VAR, we can compute the unconditional mean as 
+\begin{equation*}
+\begin{array}{c}
+\mathbf{(I-\mathbf{F})}^{-1}\mathbf{c}=\left[ 
+\begin{array}{ccc}
+2.32 & -0.28 & -1.89 \\ 
+1.34 & 1.24 & 10.58 \\ 
+4.89 & 0.67 & 33.87%
+\end{array}%
+\right] \left[ 
+\begin{array}{c}
+1.14 \\ 
+1.19 \\ 
+-0.11%
+\end{array}%
+\right] =\left[ 
+\begin{array}{c}
+2.51 \\ 
+1.80 \\ 
+2.49%
+\end{array}%
+\right] =\left[ 
+\begin{array}{l}
+\mu ^{\Delta y} \\ 
+\mu ^{\pi } \\ 
+\mu ^{i}%
+\end{array}%
+\right]%
+\end{array}%
+\end{equation*}%
+The stationarity of the data is important because in absence of shocks, each
+variable will converge to its unconditional mean. For example, if we start
+from an hypothetical point in time $T$ where $x_{T}=2\%$, $\pi _{T}=2\%$,
+and $r_{T}=4\%$, we would have:
+
+%TCIMACRO{%
+%\TeXButton{FIG}{\begin{figure}[!ht]\vspace{.1cm}
+%\centering
+%\begin{minipage}[b]{0.79\textwidth}}}%
+%BeginExpansion
+\begin{figure}[!ht]\vspace{.1cm}
+\centering
+\begin{minipage}[b]{0.79\textwidth}%
+%EndExpansion
+%TCIMACRO{%
+%\TeXButton{figure}{\includegraphics[width=.99\textwidth]{uncond_mean.pdf}
+%\vspace{.3cm}}}%
+%BeginExpansion
+\includegraphics[width=.99\textwidth]{uncond_mean.pdf}
+\vspace{.3cm}%
+%EndExpansion
+\caption{ {\scshape Convergence To The Unconditional Mean}}\label{fig:}%
+%TCIMACRO{%
+%\TeXButton{FIG_END}{\end{minipage}
+%\end{figure}}}%
+%BeginExpansion
+\end{minipage}
+\end{figure}%
+%EndExpansion
+
+\chapter{THE IDENTIFICATION PROBLEM}
+
+So far we have estimated our reduced form VAR. But what can we do with it?
+
+What are the dynamic properties of these variables? [{Look at lagged
+coefficients}]
+
+How do these variables interact? [{Look at cross-variable coefficients}]
+
+What will be inflation tomorrow [{Forecasting}]
+
+What is the effect of a monetary policy shock on GDP and inflation? [{???}]
+
+\noindent The problem with reduced-form VARs is that they do not tell us
+anything about the structure of the economy. In particular, we cannot
+interpret the reduced-form error terms ($\mathbf{u}$) as {structural shocks.
+Imagine that you have to }interpret a movement in $u_{r}$? Since it is a
+linear combination of $\varepsilon _{r}$, $\varepsilon _{\Delta y}$, and $%
+\varepsilon _{\pi }$ it is hard to know what is the nature of the shock: is
+it a shock to aggregate demand that induces policy to move the interest
+rate?\ Or is it a monetary policy shock? This is the very nature of the {%
+identification problem}
+
+To answer this question we need to get back to the structural representation
+(where the error terms are uncorrelated). In practice, in a reduced form VAR
+we estimate$\ \mathbf{F}$ and $\mathbf{\Sigma }_{u}$, but we cannot easily
+revert to the $\mathbf{A}$, the $\mathbf{B}$, and the $\mathbf{\Sigma }%
+_{\varepsilon }$ that are our ultimate object of interest. So how can we
+recover the structural parameters of $\mathbf{A}$, $\mathbf{B}$, and $%
+\mathbf{\Sigma }_{\varepsilon }$?
+
+From equation (\ref{eq:var_reduced_c}) we know that:%
+\begin{eqnarray}
+\mathbf{F} &=&\mathbf{A}^{-1}\mathbf{B},  \label{eq:1} \\
+\mathbf{\hat{\Sigma}}_{u} &=&\mathsf{E}\left[ \mathbf{\hat{u}}_{t}\mathbf{%
+\hat{u}}_{t}^{\prime }\right] =\mathsf{E}\left[ \mathbf{A}^{-1}\mathbf{%
+\varepsilon }\left( \mathbf{A}^{-1}\mathbf{\varepsilon }\right) ^{\prime }%
+\right] =\mathbf{A}^{-1}\mathbf{\Sigma }_{\varepsilon }\left( \mathbf{A}%
+^{-1}\right) ^{\prime }=\mathbf{A}^{-1}\mathbf{A}^{-1\prime }.  \label{eq:2}
+\end{eqnarray}%
+Therefore, if we recover $\mathbf{A}$ from equation (\ref{eq:2}), we will be
+able to recover $\mathbf{B}$ from equation (\ref{eq:1}).
+
+%TCIMACRO{%
+%\TeXButton{---Note}{\begin{quotation}
+%\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+%\vspace{-.36cm}
+%
+%\noindent \hrulefill
+%\small
+%\singlespacing
+%\color{note}\sffamily}}%
+%BeginExpansion
+\begin{quotation}
+\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+\vspace{-.36cm}
+
+\noindent \hrulefill
+\small
+\singlespacing
+\color{note}\sffamily%
+%EndExpansion
+
+The variance--covariance matrix of residuals. Why $\Sigma _{\mathbf{u}}=%
+\mathsf{E}\left[ \mathbf{u}_{t}\mathbf{u}_{t}^{\prime }\right] ?$ The
+formula for the variance of a univariate time series is $%
+x=[x_{0},x_{1},...,x_{T}]:$%
+\begin{equation*}
+\mathsf{VAR}=\sum_{t=0}^{T}\frac{\left( x_{t}-\bar{x}\right) ^{2}}{N}.
+\end{equation*}%
+But the residuals (both the $\mathbf{u}_{t}$ and the $\mathbf{\varepsilon }%
+_{t}$) have zero mean which implies that formula would be: 
+\begin{equation*}
+\mathsf{VAR}=\sum_{t=0}^{T}\frac{x_{t}^{2}}{N}.
+\end{equation*}%
+In a bivariate VAR\ we would have:%
+\begin{equation*}
+\mathbf{u}_{t}\mathbf{u}_{t}^{\prime }=\left[ 
+\begin{array}{cccc}
+{\footnotesize u}_{1}^{1} & {\footnotesize u}_{2}^{1} & {\footnotesize ...}
+& {\footnotesize u}_{T}^{1} \\ 
+{\footnotesize u}_{1}^{2} & {\footnotesize u}_{2}^{2} & {\footnotesize ...}
+& {\footnotesize u}_{T}^{2}%
+\end{array}%
+\right] \left[ 
+\begin{array}{cc}
+{\footnotesize u}_{1}^{1} & {\footnotesize u}_{1}^{2} \\ 
+{\footnotesize u}_{2}^{1} & {\footnotesize u}_{2}^{2} \\ 
+{\footnotesize ...} & {\footnotesize ...} \\ 
+{\footnotesize u}_{T}^{1} & {\footnotesize u}_{T}^{2}%
+\end{array}%
+\right] =\left[ 
+\begin{array}{cc}
+\sum_{t=0}^{T}\left( u_{t}^{1}\right) ^{2} & \sum_{t=0}^{T}\left(
+u_{t}^{1}u_{t}^{2}\right) \\ 
+- & \sum_{t=0}^{T}\left( u_{t}^{2}\right) ^{2}%
+\end{array}%
+\right] .
+\end{equation*}%
+And therefore 
+\begin{equation*}
+\mathsf{E}\left[ \mathbf{u}_{t}\mathbf{u}_{t}^{\prime }\right] =\left[ 
+\begin{array}{cc}
+\mathsf{VAR}\left[ u^{1}\right] & \mathsf{COV}\left[ u^{1}u^{2}\right] \\ 
+- & \mathsf{VAR}\left[ u^{1}\right]%
+\end{array}%
+\right]
+\end{equation*}
+
+%TCIMACRO{%
+%\TeXButton{---Note End}{\color{black}
+%\noindent \hrulefill 
+%\vspace{-.5cm}
+%
+%\noindent \hrulefill
+%\end{quotation}
+%\bigskip}}%
+%BeginExpansion
+\color{black}
+\noindent \hrulefill 
+\vspace{-.5cm}
+
+\noindent \hrulefill
+\end{quotation}
+\bigskip%
+%EndExpansion
+
+\noindent We can think of (\ref{eq:2}) as a system of nonlinear equations in
+the unknown parameters $a_{11},a_{22},a_{12}$, and $a_{21}$. More in general
+the matrix $\mathbf{A}$ would contain $k\times k$ unknown parameters.
+However, the $\mathbf{\Sigma }_{u}$ matrix ---given its symmetric nature---
+would contain only $k(k\times 1)/2$ parameters. In other words, we have 
+\begin{equation*}
+\mathbf{\Sigma }_{u}=\left[ 
+\begin{array}{cc}
+\sigma _{1}^{2} & \sigma _{12}^{2} \\ 
+- & \sigma _{2}^{2}%
+\end{array}%
+\right] =\frac{1}{a_{11}a_{22}-a_{12}a_{21}}%
+\begin{bmatrix}
+a_{22} & -a_{12} \\ 
+-a_{21} & a_{11}%
+\end{bmatrix}%
+\begin{bmatrix}
+a_{22} & -a_{21} \\ 
+-a_{12} & a_{11}%
+\end{bmatrix}%
+=\mathbf{A}^{-1}\mathbf{A}^{-1\prime }
+\end{equation*}%
+which shows that there are 4 unknowns ($a_{11},a_{22},a_{12},a_{21}$) but
+only 3 equations (corresponding to $\sigma _{1}^{2}$, $\sigma _{12}^{2}$, $%
+\sigma _{2}^{2}$). The system is clearly under-identified, meaning that we
+need at least one additional condition if we want to recover the structural
+parameters. Identification can be achieved in different ways:
+
+\begin{enumerate}
+\item ZERO SHORT-RUN\ RESTRICTIONS (or recursive VAR). In a recursive VAR
+identification is achieved by making the assumption on the contemporaneous
+relations among variables. Since non-diagonal elements of the $\mathbf{A}$
+matrix represent the contemporaneous relation between the \textbf{$x$}$_{t}$%
+, this is equivalent to making assumption about the non-diagonal elements of
+the $\mathbf{A}$ matrix. Specifically, we will assume that the first
+variable is not affected contemporaneously by the others, the second is
+contemporaneously affected by the first variable but not by the others, the
+third is contemporaneously affected by the first and the second and not by
+the others, and so on. In this way the error term in each regression is
+uncorrelated with the error in the preceding equations. The implementation
+of this method can be done by 1) estimating the equations of the VAR by
+carefully including in some of the equations the contemporaneous values of
+other variables as regressors or 2) applying a Cholesky decomposition to the
+error terms of a reduced form VAR (as we shall see below)
+
+\item STRUCTURAL VAR. It uses economic theory to sort out the
+contemporaneous relationships between the variables (the elements of matrix $%
+A$). For instance, we might know from economic theory that $a_{12}$ is equal
+to $0.2$.
+
+\item ZERO LONG-RUN RESTRICTIONS. Similarly to the short-run restrictions,
+identification is achieved by making the assumption that some variables of
+the VAR\ cannot affect some other variables in the long-run. Specifically we
+will assume that the first variable is not affected in the long run by the
+others; the second is affected in the long run by the first variable but not
+by the others, and so on and so forth.
+
+\item SIGN RESTRICTIONS. Identification is achieved by restricting the sign
+of the responses of selected model variables to structural shocks, using
+economic theory as a guidance
+\end{enumerate}
+
+\section{Zero short-run restrictions}
+
+This is the methodology proposed by \cite{Sims1980}. In the context of our
+bi-variate VAR(1), it consists in assuming that one variable has NO
+contemporaneous effect on the other one. For example, assume that $x_{2t}$
+is contemporaneously affected by $x_{1t}$ but not vice-versa. Thus we assume
+that $a_{12}=0$.
+
+A different way to express the same idea is to say that the structural
+innovation $\varepsilon _{1t}$ affects both $x_{1t}$ and $x_{2t}$; while the
+structural innovation $\varepsilon _{2t}$ affects only $x_{2t}$.\footnote{%
+Will see that this corresponds to a triangular decomposition of the error
+term, also called Cholesky decomposition.} With this assumption, we now have
+3 equations and 3 unknown structural parameters, and SVAR is exactly
+identified.
+
+\begin{quotation}
+{%
+%TCIMACRO{%
+%\TeXButton{Assumption}{\noindent {\color{Orange} \textbf{Assumption}}}}%
+%BeginExpansion
+\noindent {\color{Orange} \textbf{Assumption}}%
+%EndExpansion
+.} In what follows we assume that $x_{2t}$ is contemporaneously affected by $%
+x_{1t}$ but not vice-versa. Thus we assume that $a_{12}=0.$
+\end{quotation}
+
+This is equivalent to assume that A is lower triangular:%
+\begin{equation*}
+\left[ 
+\begin{array}{cc}
+a_{11} & {%
+%TCIMACRO{\TeXButton{note}{\color{red}}}%
+%BeginExpansion
+\color{red}%
+%EndExpansion
+{0}} \\ 
+a_{21} & a_{22}%
+\end{array}%
+\right] 
+\begin{bmatrix}
+x_{1t} \\ 
+x_{2t}%
+\end{bmatrix}%
+=\left[ 
+\begin{array}{cc}
+b_{11} & b_{12} \\ 
+b_{21} & b_{22}%
+\end{array}%
+\right] 
+\begin{bmatrix}
+x_{1t-1} \\ 
+x_{2t-1}%
+\end{bmatrix}%
++%
+\begin{bmatrix}
+\varepsilon _{1} \\ 
+\varepsilon _{2}%
+\end{bmatrix}%
+.
+\end{equation*}%
+Or in other words that:
+
+\begin{itemize}
+\item 
+\begin{itemize}
+\item $\varepsilon _{\Delta yt}$ affects contemporaneously all variables,
+namely $\Delta y_{t}$, $\pi _{t}$ and $r_{t}$
+
+\item $\varepsilon _{\pi t}$ affects contemporaneously only $\pi _{t}$ and $%
+r_{t}$, but no $\Delta y_{t}$
+
+\item $\varepsilon _{rt}$ affects contemporaneously only $r_{t}$
+\end{itemize}
+\end{itemize}
+
+\noindent We now have 3 unknowns and 3 equations! To see what are the
+implications of our assumptions on $\mathbf{A}$, first remember that the
+inverse of a lower triangular matrix is also lower triangular%
+\begin{equation*}
+\left[ 
+\begin{array}{cc}
+a_{11} & {%
+%TCIMACRO{\TeXButton{note}{\color{red}}}%
+%BeginExpansion
+\color{red}%
+%EndExpansion
+{0}} \\ 
+a_{21} & a_{22}%
+\end{array}%
+\right] ^{-1}=\left[ 
+\begin{array}{cc}
+\tilde{a}_{11} & {%
+%TCIMACRO{\TeXButton{note}{\color{red}}}%
+%BeginExpansion
+\color{red}%
+%EndExpansion
+{0}} \\ 
+\tilde{a}_{21} & \tilde{a}_{22}%
+\end{array}%
+\right]
+\end{equation*}%
+Now pre-multiply the VAR\ by $\mathbf{A}^{-1}$%
+\begin{equation*}
+\begin{bmatrix}
+x_{1t} \\ 
+x_{2t}%
+\end{bmatrix}%
+=\left[ 
+\begin{array}{cc}
+f_{11} & f_{12} \\ 
+f_{21} & f_{22}%
+\end{array}%
+\right] 
+\begin{bmatrix}
+x_{1t-1} \\ 
+x_{2t-1}%
+\end{bmatrix}%
++\left[ 
+\begin{array}{cc}
+_{11} & {%
+%TCIMACRO{\TeXButton{note}{\color{red}}}%
+%BeginExpansion
+\color{red}%
+%EndExpansion
+{0}} \\ 
+\tilde{a}_{21} & \tilde{a}_{22}%
+\end{array}%
+\right]%
+\begin{bmatrix}
+\varepsilon _{1} \\ 
+\varepsilon _{2}%
+\end{bmatrix}%
+\end{equation*}%
+Which implies that 
+\begin{equation*}
+\left\{ 
+\begin{array}{ll}
+x_{1t} & =...+\tilde{a}_{11}\varepsilon _{1}\smallskip \\ 
+x_{2t} & =...+\tilde{a}_{21}\varepsilon _{1}+\tilde{a}_{22}\varepsilon _{2}%
+\end{array}%
+\right.
+\end{equation*}%
+We normally implement this identification scheme \emph{via} a {Cholesky
+decomposition} of $\Sigma _{\mathbf{u}}$:%
+\begin{equation*}
+\Sigma _{\mathbf{u}}=\mathbf{P}^{\prime }\mathbf{P,}
+\end{equation*}%
+where $\mathbf{P}^{\prime }$ is lower triangular. Note that%
+\begin{equation*}
+\Sigma _{\mathbf{u}}=\mathbf{P}^{\prime }\mathbf{P}\text{ \ \ \ \ but also \
+\ \ \ }\Sigma _{\mathbf{u}}=\mathbf{A}^{-1}\mathbf{A}^{-1\prime }
+\end{equation*}%
+and that $\mathbf{A}^{-1}$ is lower triangular as $\mathbf{P}^{\prime }$.
+Then it musty follow that $\mathbf{P}^{\prime }\mathbf{=A}%
+^{-1}\Longrightarrow $ Identification!
+
+%TCIMACRO{%
+%\TeXButton{---Note}{\begin{quotation}
+%\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+%\vspace{-.36cm}
+%
+%\noindent \hrulefill
+%\small
+%\singlespacing
+%\color{note}\sffamily}}%
+%BeginExpansion
+\begin{quotation}
+\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+\vspace{-.36cm}
+
+\noindent \hrulefill
+\small
+\singlespacing
+\color{note}\sffamily%
+%EndExpansion
+
+Don't be scared of Cholesky decomposition! It's a kind of square root of a
+matrix. As in Excel you type \texttt{sqrt()} in Matlab you type \texttt{%
+chol()}. A symmetric and positive definite matrix $\mathbf{X}$ can be
+decomposed as:%
+\begin{equation*}
+\mathbf{X}=\mathbf{P}^{\prime }\mathbf{P,}
+\end{equation*}%
+where $\mathbf{P}$ is an upper triangular matrix (and therefore $\mathbf{P}%
+^{\prime }$ is lower triangular). The formula is 
+\begin{equation*}
+\mathbf{X}=%
+\begin{bmatrix}
+a & b \\ 
+b & c%
+\end{bmatrix}%
+\ \ \ \mathbf{P}=%
+\begin{bmatrix}
+\sqrt{a} & \frac{b}{\sqrt{a}} \\ 
+0 & \sqrt{c-\frac{b^{2}}{a}}%
+\end{bmatrix}%
+\end{equation*}
+
+%TCIMACRO{%
+%\TeXButton{---Note End}{\color{black}
+%\noindent \hrulefill 
+%\vspace{-.5cm}
+%
+%\noindent \hrulefill
+%\end{quotation}
+%\bigskip}}%
+%BeginExpansion
+\color{black}
+\noindent \hrulefill 
+\vspace{-.5cm}
+
+\noindent \hrulefill
+\end{quotation}
+\bigskip%
+%EndExpansion
+
+\subsection{Zero short-run restrictions in Matlab}
+
+The computation of the $\mathbf{A}^{-1}$ matrix in Matlab is
+straightforward. Consider the following \texttt{DATA} matrix (as the one
+considered above):%
+\begin{equation*}
+\mathtt{DATA}=\mathbf{x}^{\prime }=\left[ 
+\begin{array}{cc}
+x_{11} & x_{21} \\ 
+x_{12} & x_{22} \\ 
+... & ... \\ 
+x_{1T} & x_{2T}%
+\end{array}%
+\right] .
+\end{equation*}%
+and a bivariate VAR(1) with no constant and no trend (for
+simplicity):\medskip
+
+\texttt{VARout = VARmodel(Y,0,1);}\medskip
+
+\noindent The results are stored in the \texttt{VARout} structure as follows:%
+\begin{eqnarray*}
+\mathtt{VARout.beta} &=&\mathbf{F}^{\prime }=\left[ 
+\begin{array}{cc}
+f_{11} & f_{21} \\ 
+f_{12} & f_{22}%
+\end{array}%
+\right] , \\
+\mathtt{VARout.sigma} &=&\mathbf{\Sigma }_{u}=%
+\begin{bmatrix}
+\sigma _{1}^{2} & \sigma _{12}^{2} \\ 
+- & \sigma _{2}^{2}%
+\end{bmatrix}%
+.
+\end{eqnarray*}%
+First, let's transform the matrix of estimated coefficients to be consistent
+with the notation above, namely:\medskip
+
+\texttt{F = transpose(VARout.beta);}\medskip
+
+\noindent where \texttt{F }$\mathbf{=F\ }$and rename the VCV\ matrix of the
+reduced form residuals:\medskip
+
+\texttt{sigma = VARout.sigma;}\medskip
+
+\noindent where \texttt{sigma }$=\mathbf{\Sigma }_{u}$. The $\mathbf{A}^{-1}$
+matrix can now be computed with the following line of code:\medskip
+
+\texttt{invA = chol(sigma)';}\medskip
+
+\noindent where \texttt{invA }$=\mathbf{A}^{-1}$ is a lower triangular
+matrix.
+
+\section{Structural VARs}
+
+Reduced form VAR representations, such as those introduced by \cite{Sims1980}%
+, do not allow for instantaneous relationship among the dependent variables.
+As a result, there is a correlation structure among the error term that is
+left undetermined. The zero short-run restrictions identification scheme
+described above allows to decouple the correlation structure in the
+reduced-form residuals and to recover the structural errors.
+
+The recursive structure implied by the zero short-run restrictions
+identification scheme, however, may not always be sensible. There have been
+many different types of restriction suggested in order to achieve the
+identification of the structural shocks. A summary of different types of
+restriction can be found in \cite{ChristianoEichenbaumEvans1999}.
+
+\section{Zero long-run restrictions}
+
+This section will focus on identification based on long-run restrictions. As
+an example of long-run restrictions, let us consider the \cite%
+{BlanchardQuah1989} identification of demand and supply shocks. Economic
+theory usually tells us a lot more about what will happen in the long-run,
+rather than exactly what will happen today. For instance, theory tells us
+that whatever positive aggregate demand shocks do in the short-run, in the
+long-run they have no effect on output and a positive effect on the price
+level. This suggests an alternative approach: to use these
+theoretically-inspired long-run restrictions to identify shocks and impulse
+responses.
+
+Consider a reduced form bivariate VAR as in equation \ref{eq:var_reduced_c}
+and its structural representation:%
+\begin{eqnarray*}
+\mathbf{x}_{t} &=&\mathbf{Fx}_{t-1}+\mathbf{u}_{t} \\
+\mathbf{Ax}_{t} &=&\mathbf{Bx}_{t-1}+\mathbf{\varepsilon }_{t}.
+\end{eqnarray*}%
+To simplify the notation, as we have done above we define $\mathbf{A}%
+^{-1}\equiv \mathbf{\tilde{A}}$. We can therefore re-write the VAR as:%
+\begin{equation*}
+\mathbf{x}_{t}=\mathbf{\Phi x}_{t-1}+\mathbf{\tilde{A}\varepsilon }_{t},
+\end{equation*}%
+and express the VCV matrix of the residuals of the reduced form VAR as:%
+\begin{equation}
+\mathbf{\Sigma }_{u}=\mathsf{E}\left[ \mathbf{u}_{t}\mathbf{u}_{t}^{\prime }%
+\right] =\mathsf{E}\left[ \mathbf{\tilde{A}\varepsilon }_{t}\mathbf{%
+\varepsilon }^{\prime }\mathbf{\tilde{A}}^{\prime }\right] =\mathbf{\tilde{A}%
+\Sigma }_{\varepsilon }\mathbf{\tilde{A}}^{\prime }=\mathbf{\tilde{A}\tilde{A%
+}}^{\prime }.  \label{eq:sigma_u_BQ}
+\end{equation}
+
+If a structural shock hits in time $t$, its long run impact on the level of $%
+\mathbf{x}_{t}$ ---given that the VAR is stable, i.e. that is if eigenvalues
+of $\mathbf{F}$ are are inside unit circle--- is given by:%
+\begin{equation}
+\begin{array}{l}
+\mathbf{x}_{t+\infty }=\mathbf{\tilde{A}\varepsilon }_{t}\mathbf{+F\tilde{A}%
++F}^{2}\mathbf{\tilde{A}\varepsilon }_{t}+...+\mathbf{F}^{\infty }\mathbf{%
+\tilde{A}\varepsilon }_{t}, \\ 
+\mathbf{x}_{t}=\left( \mathbf{I}-\mathbf{F}\right) ^{-1}\mathbf{\tilde{A}%
+\varepsilon }_{t},%
+\end{array}
+\label{eq:VMA_red}
+\end{equation}%
+where remember that the series $\mathbf{I}+\mathbf{F}+\mathbf{F}^{2}+...%
+\mathbf{F}^{\infty }=\left( \mathbf{I}-\mathbf{F}\right) ^{-1}$ if the
+eigenvalues of $\mathbf{F}$ are smaller than one. Moreover we can simplify
+the above expression by defining: 
+\begin{equation}
+\mathbf{x}_{t}=\mathbf{D\varepsilon }_{t},  \label{eq:VMA_struct}
+\end{equation}%
+where $\mathbf{D}=\left( \mathbf{I}-\mathbf{F}\right) ^{-1}\mathbf{\tilde{A}}
+$. The matrix $\mathbf{D}$ represents the cumulative effect (from $t$ to $%
+t+\infty $) of a shock hitting in period $t$.
+
+The idea of Blanchard and Quah is the following. According to the natural
+rate hypothesis, demand-side shocks will have no long-run effect on the
+level of output, while supply-side shocks (e.g., productivity shocks) will
+have a permanent effect on it. Assume that $\varepsilon _{1t}$ is the supply
+side shock and that $\varepsilon _{2t}$ is the demand side shock: we can
+rewrite (%
+\index{eq:VMA\_struct}) such that the cumulated effect of $\varepsilon _{2t}$
+on $x_{1t}$ is equal to zero by assuming:%
+\begin{equation*}
+\left[ 
+\begin{array}{c}
+x_{1t} \\ 
+x_{2t}%
+\end{array}%
+\right] =\left[ 
+\begin{array}{cc}
+d_{11} & 0 \\ 
+d_{21} & d_{22}%
+\end{array}%
+\right] \left[ 
+\begin{array}{c}
+\varepsilon _{1t} \\ 
+\varepsilon _{2t}%
+\end{array}%
+\right] ,
+\end{equation*}%
+by imposing $d_{12}=0$.
+
+How can we compute the value of $\mathbf{D}$? First let's compute $\mathbf{DD%
+}^{\prime }$:%
+\begin{equation*}
+\mathbf{DD}^{\prime }=\left( \mathbf{I}-\mathbf{F}\right) ^{-1}\mathbf{%
+\tilde{A}\tilde{A}}^{\prime }\left( \left( \mathbf{I}-\mathbf{F}\right)
+^{-1}\right) ^{\prime },
+\end{equation*}%
+\newline
+and then remember from equation (\ref{eq:sigma_u_BQ}) that $\mathbf{\tilde{A}%
+\tilde{A}}^{\prime }=\mathbf{\Sigma }_{u}$. Therefore, all elements of that
+the right hand side of the previous equation are known and $\mathbf{DD}%
+^{\prime }$ is pinned down:%
+\begin{equation*}
+\mathbf{DD}^{\prime }=\left( \mathbf{I}-\mathbf{F}\right) ^{-1}\mathbf{%
+\Sigma }_{u}\left( \left( \mathbf{I}-\mathbf{F}\right) ^{-1}\right) ^{\prime
+}.
+\end{equation*}%
+Now that we know $\mathbf{DD}^{\prime }$, how can we pin down $\mathbf{D}$?
+To solve for $\mathbf{D}$, remember that both $\mathbf{DD}^{\prime }$ and $%
+\left( \mathbf{I}-\mathbf{F}\right) ^{-1}\mathbf{\Sigma }_{u}\left( \left( 
+\mathbf{I}-\mathbf{F}\right) ^{-1}\right) ^{\prime }$ are symmetric matrices.
+
+All symmetric matrices have a unique upper diagonal matrix $\mathbf{P}$ such
+that $\mathbf{P}^{\prime }\mathbf{P}$ equals the original symmetric matrix
+(the Cholesky factor of the symmetric matrix). If we take the Cholesky
+decomposition of $\left( \mathbf{I}-\mathbf{F}\right) ^{-1}\mathbf{\Sigma }%
+_{u}\left( \left( \mathbf{I}-\mathbf{F}\right) ^{-1}\right) ^{\prime }$ such
+that: 
+\begin{equation*}
+\mathbf{P}^{\prime }\mathbf{P=}\left( \mathbf{I}-\mathbf{F}\right) ^{-1}%
+\mathbf{\Sigma }_{u}\left( \left( \mathbf{I}-\mathbf{F}\right) ^{-1}\right)
+^{\prime },
+\end{equation*}%
+and we assume that $d_{12}=0$ (as we did above), $\mathbf{D}$ is uniquely
+pinned down by:%
+\begin{equation*}
+\mathbf{D}=\left[ 
+\begin{array}{cc}
+d_{11} & 0 \\ 
+d_{21} & d_{22}%
+\end{array}%
+\right] =\mathbf{P}^{\prime }
+\end{equation*}%
+Now that we know $\mathbf{D}$, we can easily recover the structural matrix $%
+\mathbf{A}^{-1}=\mathbf{\tilde{A}}=\left( \mathbf{I}-\mathbf{F}\right) 
+\mathbf{D}$.
+
+%TCIMACRO{%
+%\TeXButton{---Note}{\begin{quotation}
+%\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+%\vspace{-.36cm}
+%
+%\noindent \hrulefill
+%\small
+%\singlespacing
+%\color{note}\sffamily}}%
+%BeginExpansion
+\begin{quotation}
+\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+\vspace{-.36cm}
+
+\noindent \hrulefill
+\small
+\singlespacing
+\color{note}\sffamily%
+%EndExpansion
+
+The computation of the $\mathbf{D}$ matrix in Matlab is straightforward.
+Consider a bivariate VAR(1) with no constant and no trend (as the one
+considered above):\medskip
+
+\texttt{VARout = VARmodel(Y,0,1);}
+
+\texttt{F = transpose(VARout.beta);}
+
+\texttt{sigma = VARout.sigma}\medskip ;
+
+\noindent where \texttt{F }$\mathbf{=F}$ and \texttt{sigma }$=\mathbf{\Sigma 
+}_{u}$. The $\mathbf{D}$ matrix can now be computed with the following lines
+of code:\medskip
+
+\texttt{Finf = inv(eye(length(F))-F);}
+
+\texttt{D = chol(Finf*sigma*Finf')';}\medskip
+
+\noindent where \texttt{Finf }$\mathbf{=\left( \mathbf{I}-\mathbf{F}\right)
+^{-1}}$ and \texttt{D }$\mathbf{=D}$. Finally, the structural matrix $%
+\mathbf{A}^{-1}$ can also be computed as\medskip
+
+\texttt{invA = Finf\TEXTsymbol{\backslash}D;}\medskip
+
+\noindent where \texttt{invA }$=\mathbf{\tilde{A}}=\mathbf{A}^{-1}$.
+
+%TCIMACRO{%
+%\TeXButton{---Note End}{\color{black}
+%\noindent \hrulefill 
+%\vspace{-.5cm}
+%
+%\noindent \hrulefill
+%\end{quotation}
+%\bigskip}}%
+%BeginExpansion
+\color{black}
+\noindent \hrulefill 
+\vspace{-.5cm}
+
+\noindent \hrulefill
+\end{quotation}
+\bigskip%
+%EndExpansion
+
+Therefore, we just computed a matrix $\mathbf{D}$, such that $\varepsilon
+_{2t}$ has no long-run effect on $x_{1t}$. In their original paper,
+Blanchard and Quah used a bivariate VAR in the log-difference of GDP ($%
+\Delta y_{t}$) and the level of unemployment rate ($u_{t}$). The
+lower-diagonal assumption thus meant that of the two structural shocks only $%
+\varepsilon _{1t}$ ---what they label a supply shock--- could have a
+long-run effect on the level of output (i.e., the cumulated response of $%
+\Delta y_{t}$).
+
+\section{Sign restrictions}
+
+In the zero short-run restriction identification we used the fact that%
+\begin{equation*}
+\mathbf{\hat{\Sigma}}_{u}=\mathbf{A}^{-1}\mathbf{\Sigma }_{\varepsilon
+}\left( \mathbf{A}^{-1}\right) ^{\prime }\text{ \ \ \ and \ \ \ }\mathbf{%
+\hat{\Sigma}}_{u}=\mathbf{P}^{\prime }\mathbf{P,}
+\end{equation*}%
+where the lower triangular $\mathbf{P}^{\prime }$ matrix is the Cholesky
+decomposition of the variance-covariance matrix of the reduced-form error
+terms. Remember that Identification was achieved by assuming that $\mathbf{A}%
+^{-1}$ was also lower triangular.
+
+Note however that such decomposition is not unique. Specifically, for a
+given orthonormal matrix $\mathbf{S}$ such that:%
+\begin{equation*}
+\mathbf{S}^{\prime }\mathbf{S}=\mathbf{I},
+\end{equation*}%
+we have that:%
+\begin{equation*}
+\mathbf{\hat{\Sigma}}_{u}=\mathbf{A}^{-1}\mathbf{\Sigma }_{\varepsilon
+}\left( \mathbf{A}^{-1}\right) ^{\prime }=\mathbf{P}^{\prime }\mathbf{S}%
+^{\prime }\mathbf{SP=}\mathcal{P}^{\prime }\mathcal{P}\mathbf{.}
+\end{equation*}%
+where $\mathcal{P}^{\prime }$ is generally not lower triangular anymore.
+Therefore, the system of equations implied by $\mathbf{A}^{-1}\left( \mathbf{%
+A}^{-1}\right) ^{\prime }=\mathcal{P}^{\prime }\mathcal{P}$ can be solved
+(there are as many equations as the number of unknowns!): but is the
+solution plausible? Identification is achieved by checking whether the
+impulse response function (formally defined in the section below) implied by
+this solution satisfy a set of a priori (and possibly theory-driven) sign
+restrictions.
+
+Specifically, the sign restriction identification procedure can be
+summarized by the following steps:
+
+\begin{enumerate}
+\item Draw a random orthonormal matrix $\mathbf{S}^{\prime }$
+
+\item Compute the implied $\mathbf{A}^{-1}=\mathbf{P}^{\prime }\mathbf{S}%
+^{\prime }$ where $\mathbf{P}^{\prime }$ is the Cholesky decomposition of $%
+\mathbf{\hat{\Sigma}}_{u}$
+
+\item Compute the impulse response associated with $\mathbf{A}^{-1}$. Are
+the sign restrictions satisfied?
+
+\begin{enumerate}
+\item Yes. Store the impulse response
+
+\item No. Discard the impulse response
+\end{enumerate}
+
+\item Perform $N\ $replications and report the median impulse response (and
+its confidence intervals)
+\end{enumerate}
+
+%TCIMACRO{%
+%\TeXButton{---Note}{\begin{quotation}
+%\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+%\vspace{-.36cm}
+%
+%\noindent \hrulefill
+%\small
+%\singlespacing
+%\color{note}\sffamily}}%
+%BeginExpansion
+\begin{quotation}
+\noindent \rule{1cm}{.4pt}   {\scshape Note}   \hrulefill
+\vspace{-.36cm}
+
+\noindent \hrulefill
+\small
+\singlespacing
+\color{note}\sffamily%
+%EndExpansion
+
+In Matlab we can easily implement the sign restriction identification
+scheme. Consider a bivariate VAR(1) with no constant and no trend (as the
+one considered above):\medskip
+
+\texttt{VARout = VARmodel(Y,0,1);}
+
+\texttt{sigma = VARout.sigma}\medskip ;
+
+\noindent where \texttt{sigma }$=\mathbf{\Sigma }_{u}$. For each draw we can
+compute $\mathbf{A}^{-1}=\mathbf{P}^{\prime }\mathbf{S}^{\prime }$ as
+follows. First we draw a random orthonormal matrix with the \texttt{%
+OrthNorm.m} function\medskip
+
+\texttt{S = OrthNorm(length(sigma));}\medskip
+
+\noindent where \texttt{S }$=\mathbf{S.}$ Then we compute\medskip
+
+\texttt{invA = chol(sigma)'*S';}\medskip
+
+\noindent where \texttt{invA }$=\mathbf{A}^{-1}=\mathbf{P}^{\prime }\mathbf{S%
+}^{\prime }$.
+
+%TCIMACRO{%
+%\TeXButton{---Note End}{\color{black}
+%\noindent \hrulefill 
+%\vspace{-.5cm}
+%
+%\noindent \hrulefill
+%\end{quotation}
+%\bigskip}}%
+%BeginExpansion
+\color{black}
+\noindent \hrulefill 
+\vspace{-.5cm}
+
+\noindent \hrulefill
+\end{quotation}
+\bigskip%
+%EndExpansion
+
+\chapter{IMPULSE RESPONSE FUNCTIONS}
+
+In a VAR we are often interested in obtaining the impulse response
+functions. Impulse responses trace out the response of current and future
+values of each of the variables to a one-unit increase (or to a one-standard
+deviation increase, when the scale matters) in the current value of one of
+the VAR errors, assuming that this error returns to zero in subsequent
+periods and that all other errors are equal to zero.
+
+The implied thought experiment of changing one error while holding the
+others constant makes most sense when the errors are uncorrelated across
+equations, so impulse responses are typically calculated for recursive and
+structural VARs. On the contrary, the estimated error terms $u_{1t}$ and $%
+u_{2t}$ are correlated: it doesn't make much sense to ask \textquotedblleft
+what if $u_{1t}$ has a unit impulse with no change in $u_{2t}$", because
+when I am moving $u_{1t}$, I am moving the structural shock of both
+equations (remember that the $u$'s are a linear combination of the
+structural shocks).
+
+\section{IRF and the moving average representation}
+
+Consider the general structural form of a bivariate VAR(1), $\mathbf{Ax}_{t}=%
+\mathbf{Bx}_{t-1}+\mathbf{\varepsilon }_{t}$, and its reduced form \textbf{$%
+x $}$_{t}=\mathbf{Fx}_{t-1}+\mathbf{u}_{t}$. Using the lag operator, we can
+re-write the same model as:%
+\begin{equation*}
+\left( \mathbf{I}-\mathbf{F}L\right) \mathbf{x}_{t}=\mathbf{u}_{t}.
+\end{equation*}%
+If the roots of $\mathbf{I}-\mathbf{F}L$ lie outside the unit circle, than
+the time series is stationary and we can write:%
+\begin{equation*}
+\mathbf{x}_{t}=\sum_{i=0}^{\infty }\mathbf{F}^{i}\mathbf{u}%
+_{t-i}=\sum_{i=0}^{\infty }\left[ 
+\begin{array}{cc}
+f_{11} & f_{12} \\ 
+f_{21} & f_{22}%
+\end{array}%
+\right] ^{i}\left[ 
+\begin{array}{c}
+u_{1t-i} \\ 
+u_{2t-i}%
+\end{array}%
+\right] .
+\end{equation*}%
+Moreover, since we know that $\mathbf{\tilde{A}\varepsilon }$, we can write
+the above expression as a function of the structural errors:%
+\begin{equation*}
+\mathbf{x}_{t}=\sum_{i=0}^{\infty }\left[ 
+\begin{array}{cc}
+f_{11} & f_{12} \\ 
+f_{21} & f_{22}%
+\end{array}%
+\right] ^{i}%
+\begin{bmatrix}
+\tilde{a}_{11} & \tilde{a}_{12} \\ 
+\tilde{a}_{21} & \tilde{a}_{22}%
+\end{bmatrix}%
+\left[ 
+\begin{array}{c}
+\varepsilon _{1t} \\ 
+\varepsilon _{2t}%
+\end{array}%
+\right] ,
+\end{equation*}%
+or, by defining $\mathbf{F}^{i}\mathbf{\tilde{A}}=\mathbf{\Gamma }^{i}$: 
+\begin{equation*}
+\begin{bmatrix}
+x_{1t} \\ 
+x_{2t}%
+\end{bmatrix}%
+=\sum_{i=0}^{\infty }%
+\begin{bmatrix}
+\gamma _{11} & \gamma _{22} \\ 
+\gamma _{12} & \gamma _{22}%
+\end{bmatrix}%
+^{i}\left[ 
+\begin{array}{c}
+\varepsilon _{1t} \\ 
+\varepsilon _{2t}%
+\end{array}%
+\right] ,
+\end{equation*}%
+which in terms of a system of linear equations is given by:%
+\begin{eqnarray*}
+x_{1t} &=&\varepsilon _{1t}+[\gamma _{11}^{1}\varepsilon _{1,t-1}+\gamma
+_{12}^{1}\varepsilon _{2,t-1}]+[\gamma _{11}^{2}\varepsilon _{1,t-2}+\gamma
+_{12}^{2}\varepsilon _{2,t-2}]+... \\
+x_{2t} &=&\varepsilon _{2t}+[\gamma _{21}^{1}\varepsilon _{1,t-1}+\gamma
+_{22}^{1}\varepsilon _{2,t-1}]+[\gamma _{21}^{2}\varepsilon _{1,t-2}+\gamma
+_{22}^{2}\varepsilon _{2,t-2}]+...
+\end{eqnarray*}%
+Now suppose we are interested in the response of $x_{1t}$ to a shock in the
+structural error of equation 1, $\varepsilon _{1t}$, from period $t$ to
+period $t+h$. First, let's forward the system by $h$ periods:%
+\begin{eqnarray*}
+x_{1t+h} &=&\varepsilon _{1t+h}+[\gamma _{11}^{1}\varepsilon
+_{1,t+h-1}+\gamma _{12}^{1}\varepsilon _{2,t+h-1}]+...+[\gamma
+_{11}^{h}\varepsilon _{1,t}+\gamma _{12}^{h}\varepsilon _{2,t}]+... \\
+x_{2t+h} &=&\varepsilon _{2t+h}+[\gamma _{21}^{1}\varepsilon
+_{1,t+h-1}+\gamma _{22}^{1}\varepsilon _{2,t+h-1}]+...+[\gamma
+_{21}^{h}\varepsilon _{1,t}+\gamma _{22}^{h}\varepsilon _{2,t}]+...
+\end{eqnarray*}%
+Then, we can compute the effect we are interested in as:%
+\begin{equation*}
+\frac{\partial x_{1,t+h}}{\partial \varepsilon _{1,t}}=\gamma _{11}^{h}.
+\end{equation*}%
+The Impulse Response Function is defined as $IRF=\Gamma ^{h}$ for $%
+n=0,1,...H $. The elements of the matrix $\Gamma ^{h}$ are called \textbf{%
+impact multipliers} while the \textbf{long-run cumulated effect} is given by 
+$\sum_{i=1}^{\infty }\Gamma ^{i}$.
+
+\section{How to compute IRFs in practice?}
+
+Let's define $\mathbf{s}_{t}=\left( s_{1t}^{\prime },s_{2t}^{\prime }\right)
+^{\prime }$ as a vector of exogenous impulses that we want to impose to the
+structural errors of the system. Impulse responses allow us to simulate the
+effect of $\mathbf{s}_{t}$ on the dynamics of our VAR\ model.
+
+For example, suppose we are interested in a one standard deviation impulse
+to the structural error of equation of $x_{1}$ that returns to zero in
+subsequent periods. Therefore, the time profile of the impulse will be:%
+\begin{equation*}
+\begin{tabular}{lllll}
+\hline
+$\text{Time (}\tau \text{)}$ &  & $1$ & $2$ & $h$ \\ \hline
+$\text{Impulse to }\varepsilon _{1t}\text{ (}s_{1}\text{)}$ &  & $s_{1,1}=1$
+& $s_{1,2}=0$ & $s_{1,h}=0$ \\ 
+$\text{Impulse to }\varepsilon _{2t}\text{ (}s_{2}\text{)}$ &  & $s_{2,1}=0$
+& $s_{2,2}=0$ & $s_{2,h}=0$ \\ \hline
+\end{tabular}%
+.
+\end{equation*}%
+After identifying the VAR\ with one of the methodologies described above, we
+can use the reduced-form representation of our VAR\ to compute the IRFs.
+Specifically, ewe can write%
+\begin{equation*}
+\mathbf{x}_{t}=\mathbf{Fx}_{t-1}+\mathbf{A}^{-1}\mathbf{s}_{t},
+\end{equation*}%
+which implies that the impulse response $IRF\tau $ in time $\tau =1$ is:%
+\begin{eqnarray*}
+\mathbf{IRF}_{1} &=&\mathbf{A}^{-1}\mathbf{s}_{1}, \\
+\mathbf{IRF}_{\tau } &=&\mathbf{FIRF}_{\tau -1},\text{ \ \ \ \ for }\tau
+=2,...h.
+\end{eqnarray*}
+
+\chapter{HISTORICAL DECOMPOSITIONS}
+
+Take a VAR with trend and constant. Each observation can be written as%
+\begin{equation*}
+\begin{array}{lll}
+\mathbf{x}_{1} & = & \mathbf{c}+1+\mathbf{Fy}_{0}+\mathbf{u}_{1} \\ 
+\mathbf{x}_{2} & = & \mathbf{c}+2+\mathbf{Fy}_{1}+\mathbf{u}_{2}\mathbf{=%
+\mathbf{c}}+2+\mathbf{F(\mathbf{c}}+\mathbf{1}+\mathbf{\mathbf{Fy}_{0}}+%
+\mathbf{\mathbf{u}_{1})+u}_{2}=\mathbf{F}^{2}\mathbf{x}_{0}+\underset{cc}{%
+\underbrace{(\mathbf{Fc}+\mathbf{c)}}}+(\mathbf{F}+\mathbf{2)}+\underset{uu}{%
+\underbrace{(\mathbf{Fu}_{1}+\mathbf{u}_{2})}} \\ 
+\mathbf{x}_{3} & = & \mathbf{c}+3+\mathbf{Fy}_{2}+\mathbf{u}_{3}\mathbf{=F}%
+^{3}\mathbf{x}_{0}+(\mathbf{F}^{2}\mathbf{c}+\mathbf{Fc}+\mathbf{c)}+(%
+\mathbf{F}^{2}+2\mathbf{F}+\mathbf{3)}+(\mathbf{F}^{2}\mathbf{u}_{1}+\mathbf{%
+Fu}_{2}+\mathbf{u}_{3}) \\ 
+& = & ...\ = \\ 
+\mathbf{x}_{T} & = & \mathbf{c}+T+\mathbf{Fy}_{T-1}+\mathbf{u}_{T}\mathbf{=F}%
+^{T}\mathbf{x}_{0}+(\mathbf{F}^{T}\mathbf{c}+...+\mathbf{Fc}+\mathbf{c)}+(%
+\mathbf{F}^{T}+...+\mathbf{F(}T-1)+T\mathbf{)}+(\mathbf{F}^{T}\mathbf{u}%
+_{0}+...+\mathbf{Fu}_{T-1}+\mathbf{u}_{T})%
+\end{array}%
+\end{equation*}%
+Now take structural errors%
+\begin{equation*}
+\begin{array}{lll}
+\mathbf{x}_{1} & = & \mathbf{Fy}_{0}+\mathbf{A}^{-1}\mathbf{\varepsilon }_{1}
+\\ 
+\mathbf{x}_{2} & = & \mathbf{Fy}_{1}+\mathbf{A}^{-1}\mathbf{\varepsilon }_{2}%
+\mathbf{=F(\mathbf{Fy}_{0}}+\mathbf{A}^{-1}\mathbf{\varepsilon }_{1}\mathbf{%
+)+A}^{-1}\mathbf{\varepsilon }_{2}=\mathbf{F}^{2}\mathbf{x}_{0}+\underset{uu}%
+{\underbrace{(\mathbf{FA}^{-1}\mathbf{\varepsilon }_{1}+\mathbf{A}^{-1}%
+\mathbf{\varepsilon }_{2})}} \\ 
+\mathbf{x}_{3} & = & \mathbf{c}+3+\mathbf{Fy}_{2}+\mathbf{u}_{3}\mathbf{=F}%
+^{3}\mathbf{x}_{0}+(\mathbf{F}^{2}\mathbf{c}+\mathbf{Fc}+\mathbf{c)}+(%
+\mathbf{F}^{2}+2\mathbf{F}+\mathbf{3)}+(\mathbf{F}^{2}\mathbf{u}_{1}+\mathbf{%
+Fu}_{2}+\mathbf{u}_{3}) \\ 
+& = & ...\ = \\ 
+\mathbf{x}_{T} & = & \mathbf{c}+T+\mathbf{Fy}_{T-1}+\mathbf{u}_{T}\mathbf{=F}%
+^{T}\mathbf{x}_{0}+(\mathbf{F}^{T}\mathbf{c}+...+\mathbf{Fc}+\mathbf{c)}+(%
+\mathbf{F}^{T}+...+\mathbf{F(}T-1)+T\mathbf{)}+(\mathbf{F}^{T}\mathbf{u}%
+_{0}+...+\mathbf{Fu}_{T-1}+\mathbf{u}_{T})%
+\end{array}%
+\end{equation*}
+
+\singlespacing{\small 
+\bibliographystyle{econometrica}
+\bibliography{References_VAR}
+}
+
+\end{document}

@@ -1,0 +1,152 @@
+*
+* Based upon Uhlig (2005), "What are the effects of monetary policy on
+* output? Results from an agnostic identification procedure." Journal of
+* Monetary Economics, 52, pp 381-419. Pure sign restriction approach.
+*
+* Computes the shocks themselves. (Not included in the paper).
+* The code between ***** lines is what is added to do compute and
+* analyze these.
+*
+open data uhligdata.xls
+calendar(m) 1965:1
+data(format=xls,org=columns) 1965:1 2003:12 $
+   gdpc1 gdpdef cprindex totresns bognonbr fedfunds
+*
+set gdpc1    = log(gdpc1)*100.0
+set gdpdef   = log(gdpdef)*100.0
+set cprindex = log(cprindex)*100.0
+set totresns = log(totresns)*100.0
+set bognonbr = log(bognonbr)*100.0
+*
+system(model=varmodel)
+variables gdpc1 gdpdef cprindex fedfunds bognonbr totresns
+lags 1 to 12
+end(system)
+estimate(noprint)
+*
+source uhligfuncs.src
+*
+dec vect[strings] vl(6)
+compute vl=||"real GDP","GDP price defl","Comm. Price Ind.",$
+   "Fed Funds Rate","Nonborr. Reserv.","Total Reserves"||
+*
+* n1 is the number of draws from the posterior of the VAR
+* n2 is the number of draws from the unit sphere for each draw for the VAR
+* nvar is the number of variables
+* nstep is the number of IRF steps to compute
+* KMAX is the "K" value for the number of steps constrained
+*
+compute n1=200
+compute n2=200
+compute nkeep=1000
+compute nvar=6
+compute nstep=60
+compute KMIN=1
+compute KMAX=4
+*************************************************************************************
+*
+* This is the range over which to compute the shocks
+*
+compute ustart=%regstart(),uend=%regend()
+compute nobsu=uend-ustart+1
+dec vect[series] u(nvar)
+*************************************************************************************
+*
+* This is the standard setup for MC integration of an OLS VAR
+*
+compute sxx    =%decomp(%xx)
+compute svt    =%decomp(inv(%nobs*%sigma))
+compute betaols=%modelgetcoeffs(varmodel)
+compute ncoef  =%rows(sxx)
+compute wishdof=%nobs-ncoef
+*
+* Most draws are going to get rejected. We allow for up to <<nkeep>> good
+* ones. The variable <<accept>> will count the number of accepted draws.
+* GOODRESP will be a RECT(nsteps,nvar) at each accepted draw.
+*
+declare vect[vect] goodshock(nkeep)
+declare vector ik a ones(nvar)
+declare series[rect] irfsquared
+compute ones=%const(1.0)
+*
+compute accept=0
+infobox(action=define,progress,lower=1,upper=n1) "Monte Carlo Integration"
+do draws=1,n1
+   *
+   * Make a draw from the posterior for the VAR and compute its impulse
+   * responses.
+   *
+   compute sigmad  =%ranwisharti(svt,wishdof)
+   compute swish   =%decomp(sigmad)
+   compute betau   =%ranmvkron(swish,sxx)
+   compute betadraw=betaols+betau
+   compute %modelsetcoeffs(varmodel,betadraw)
+   ****************************************************************************
+   *
+   * Use static forecasts over the period for which we want to the
+   * shocks to get the VAR residuals.
+   *
+   forecast(model=varmodel,from=ustart,to=uend,errors=u,static)
+   ****************************************************************************
+   impulse(noprint,model=varmodel,decomp=swish,results=impulses,steps=nstep)
+   *
+   * Do the subdraws over the unit sphere. These give the weights on the
+   * orthogonal components.
+   *
+   do subdraws=1,n2
+      compute a=%ransphere(nvar)
+      *
+      * Check that the responses have the correct signs for steps 1 to
+      * KMAX+1 (+1 because in the paper, the steps used 0-based
+      * subscripts, rather than the 1 based subscripts used by RATS).
+      *
+      if UhligAccept(a,KMIN,KMAX+1,||+4,-3,-2,-5||)==0
+         goto reject
+      *
+      * This is an accepted draw. Copy the information out. If we have
+      * enough good ones, drop out of the overall loop.
+      *
+      compute accept=accept+1
+      *************************************************************************
+      *
+      * Transform the VAR residuals to get the desired shock
+      *
+      dim goodshock(accept)(nobsu)
+      ewise goodshock(accept)(i)=%dot(%xt(u,i+ustart-1),tr(a)*inv(swish))
+      *************************************************************************
+      if accept>=nkeep
+         break
+   :reject
+   end do subdraws
+   if accept>=nkeep
+      break
+   infobox(current=draws)
+end do draws
+infobox(action=remove)
+*
+*******************************************************************************
+*
+* Generate median, upper and lower bounds for the shocks
+*
+declare series upperU lowerU respU
+compute minlower=maxupper=0.0
+smpl 1 accept
+clear upperU lowerU respU
+do k=ustart,uend
+   set work 1 accept = goodshock(t)(k-ustart+1)
+   compute frac=%fractiles(work,||.16,.50,.84||)
+   compute lowerU(k)=frac(1)
+   compute upperU(k)=frac(3)
+   compute respU(k)=frac(2)
+end do k
+*
+* This looks a bit fuzzy when graphed over a long range, so this
+* restricts the graph to just four years.
+*
+smpl 1979:1 1982:12
+graph(ticks,dates,picture="##.##",header="Monetary Policy Shocks") 3
+# respU
+# upperU / 2
+# lowerU / 2
+*******************************************************************************
+

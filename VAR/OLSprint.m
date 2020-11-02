@@ -1,4 +1,4 @@
-function [TABLE, beta] = OLSprint(OLS,vnames,ynames,approx)
+function [TABLE, beta] = OLSprint(OLS,vnames,ynames,approx) 
 % =======================================================================
 % Prints the output of an OLS estimation
 % =======================================================================

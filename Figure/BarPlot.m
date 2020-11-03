@@ -14,8 +14,10 @@ function H = BarPlot(X)
 % Ambrogio Cesa Bianchi, March 2020
 % ambrogio.cesabianchi@gmail.com
 
+
 H(1,:) = bar((X).*(X>0),'stacked'); 
 for ii=1:size(H,2)
+    H(1,ii).FaceColor = cmap(ii);
     H(1,ii).EdgeColor = H(1,ii).FaceColor;
 end
 hold on;

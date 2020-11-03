@@ -84,4 +84,4 @@ plot(zeros(VARopt.nsteps),'-k')
 title('Demand shock')
 legend({'GDP Level';'Unemployment'})
 
-SaveFigure('Figure1');
+SaveFigure('BQ_Figure1');

@@ -1,19 +1,16 @@
 % Replication of the VAR in Gerlter and Karadi (2015, AEJ:M).
 % Figure 1, pag. 61
-%
-% The VAR Toolbox 2.0 is required to run this code. To get the 
+%==========================================================================
+% The VAR Toolbox 3.0 is required to run this code. To get the 
 % latest version of the toolboxes visit: 
-% 
-%       https://sites.google.com/site/ambropo/MatlabCodes
-% 
-% =======================================================================
-% Ambrogio Cesa Bianchi, April 2017
+% https://github.com/ambropo/VAR-Toolbox
+%==========================================================================
+% Ambrogio Cesa Bianchi, November 2020
 % ambrogio.cesabianchi@gmail.com
 
 
-
 %% PRELIMINARIES
-% =======================================================================
+%==========================================================================
 clear all; clear session; close all; clc
 warning off all
 
@@ -28,9 +25,8 @@ IVvnames      = {'ff4_tc'};
 IVnvar        = length(IVvnames);
 
 
-
 %% LOAD DATA
-% =======================================================================
+%==========================================================================
 % Load 
 [xlsdata, xlstext] = xlsread('GK2015_Data.xlsx','VAR_data');
 data   = Num2NaN(xlsdata(:,3:end));
@@ -53,7 +49,7 @@ nobs = size(data,1);
 
 
 %% VAR ESTIMATION
-% =======================================================================
+%==========================================================================
 % VAR specification
 VARnlags = 12; VARconst = 1; ident='oir'; VARtol=.9975; NOBStol=30;
 
@@ -71,55 +67,61 @@ end
 
 % Estimate VAR
 [VAR, VARopt] = VARmodel(ENDO,VARnlags,VARconst);
-
+VAR.IV = IV;
 
 %% CHOLESKY IDENTIFICATION
-% =======================================================================
+%==========================================================================
 disp('Estimate Cholesky IRFs and error bands')
 VARopt.method = 'wild';
 VARopt.nsteps = 48;
 VARopt.ndraws = 200;
-[IRF, VAR] = VARir(VAR,VARopt);
+[IR, VAR] = VARir(VAR,VARopt);
 [INF,SUP,MED,BAR] = VARirband(VAR,VARopt);
 
 % Plot
-figure 
-FigSize(10,20)
+FigSize(20,20)
+idx = 1;
 for ii=1:VARnvar
-    subplot(4,1,ii)
+    subplot(4,2,idx)
     plot(BAR(:,ii),'-r','LineWidth',2); hold on; 
     plot(INF(:,ii),'--r','LineWidth',1); hold on; 
     plot(SUP(:,ii),'--r','LineWidth',1); hold on; 
     plot(zeros(VARopt.nsteps),'-k')
     title(VARvnames_long{ii},'FontWeight','bold')
     axis tight
+    idx = idx + 2;
 end
-print('-dpdf','-r100','Cholesky');
+legend('Cholesky')
 
 
 %% IV IDENTIFICATION
-% =======================================================================
+%==========================================================================
 disp('Estimate IV IRFs and error bands')
+VARopt.ident = 'iv';
 VARopt.method = 'wild';
-[IRFiv, IVout] = VARiriv(VAR,VARopt,IV);
-[INFiv,SUPiv,BARiv] = VARirbandiv(VAR,VARopt,IV);
+[IRiv, VARiv] = VARir(VAR,VARopt);
+[INFiv,SUPiv,MEDiv,BARiv] = VARirband(VAR,VARopt);
 
 % Plot
-figure 
-FigSize(10,20)
 % Note that the routine VARivir normalizes the size of the shock to 1.
 % Therefore, to replicate Figure 1, I premultiply the impulse responses by
 % the size of the shock in teh original paper, namely ~0.2
+idx = 2;
 for ii=1:VARnvar
-    subplot(4,1,ii)
-    plot(0.2.*BARiv(:,ii),'-k','LineWidth',2); hold on; 
-    plot(0.2.*INFiv(:,ii),'--k','LineWidth',1); hold on; 
-    plot(0.2.*SUPiv(:,ii),'--k','LineWidth',1); hold on; 
+    subplot(4,2,idx)
+    plot(BARiv(:,ii),'-k','LineWidth',2); hold on; 
+    plot(INFiv(:,ii),'--k','LineWidth',1); hold on; 
+    plot(SUPiv(:,ii),'--k','LineWidth',1); hold on; 
     plot(zeros(VARopt.nsteps),'-k')
     title(VARvnames_long{ii},'FontWeight','bold')
     axis tight
+    idx = idx + 2;
 end
-print('-dpdf','-r100','IV');
+legend('IV')
+
+%% SAVE
+%==========================================================================
+SaveFigure('IR',1);
 
 
 

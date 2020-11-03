@@ -58,9 +58,9 @@ while 1
         %q*q'
         startingMat = C*q;
         % Check that startingMat*startingMat'=SigmaHat:
-        %startingMat*startingMat'
+        % startingMat*startingMat'
         % Check that first column of startingMat = b
-        %[startingMat(:,1) b]
+        % [startingMat(:,1) b]
     % Otherwise start from a lower Cholesky
     else
         startingMat = chol(sigma,'lower');
@@ -68,9 +68,9 @@ while 1
     counter = counter + 1;
     if counter>VARopt.sr_rot
         disp('---------------------------------------------')
-        disp('The routine could not find any rotation that satisfies the restrictions in SIGN.')
+        disp( 'The routine could not find any rotation that satisfies the restrictions in SIGN.')
         disp(['The max number of rotations (' num2str(VARopt.sr_rot) ') has been reached.']);
-        disp('Change the restrictions or increase VARopt.sr_rot');
+        disp( 'Change the restrictions or increase VARopt.sr_rot');
         disp('---------------------------------------------')
         error('ERROR. See details above');
     end

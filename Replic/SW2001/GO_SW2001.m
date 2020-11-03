@@ -1,18 +1,16 @@
 % Replication of the trivariate VAR in Stock and Watson (2001, JEP).
 % Figure 1 and Table 1.B.
-%
-% The VAR Toolbox 2.0 is required to run this code. To get the 
+%==========================================================================
+% The VAR Toolbox 3.0 is required to run this code. To get the 
 % latest version of the toolboxes visit: 
-% 
-%       https://sites.google.com/site/ambropo/MatlabCodes
-% 
-% =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
+% https://github.com/ambropo/VAR-Toolbox
+%==========================================================================
+% Ambrogio Cesa Bianchi, November 2020
 % ambrogio.cesabianchi@gmail.com
 
 
 %% PRELIMINARIES
-% =======================================================================
+%==========================================================================
 clear all; clear session; close all; clc
 warning off all
 
@@ -24,7 +22,7 @@ vnames = xlstext(1,2:end);
 
 
 %% VAR ESTIMATION
-% =======================================================================
+%==========================================================================
 % Define number of variables and of observations
 [nobs, nvar] = size(X);
 % Set deterministics for the VAR
@@ -40,44 +38,44 @@ disp(' ')
 junk = input('Press enter to continue');
 
 
-%% COMPUTE IRF AND FEVD
-% =======================================================================
+%% COMPUTE IR AND VD
+%==========================================================================
 % Set options some options for IRF calculation
 VARopt.nsteps = 24;
-VARopt.ident = 'oir';
+VARopt.ident = 'ch';
 VARopt.vnames = vnames;
 % Compute IRF
 [IRF, VAR] = VARir(VAR,VARopt);
 % Compute error bands
-[IRFINF,IRFSUP,IRFMED] = VARirband(VAR,VARopt);
+[IRinf,IRsup,IRmed,IRbar] = VARirband(VAR,VARopt);
 % Plot
-VARirplot(IRFMED,VARopt,IRFINF,IRFSUP);
+VARirplot(IRbar,VARopt,IRinf,IRsup);
 
-% Compute FEVD
-[FEVD, VAR] = VARfevd(VAR,VARopt);
-% Compute error bands
-[FEVDINF,FEVDSUP,FEVDMED] = VARfevdband(VAR,VARopt);
-% % Plot
-VARfevdplot(FEVDMED,VARopt,FEVDINF,FEVDSUP);
+% Compute VD
+[VD, VAR] = VARvd(VAR,VARopt);
+% Compute VD error bands
+[VDinf,VDsup,VDmed,VDbar] = VARvdband(VAR,VARopt);
+% Plot VD
+VARvdplot(VDbar,VARopt);
 
 
 %% Print Table 1.B on screen
-% =======================================================================
+%==========================================================================
 % Retrieve Forecast Error Variance Decomposition
-FEVD_Table(1, :) = FEVD(1,:,1);
-FEVD_Table(2, :) = FEVD(4,:,1);
-FEVD_Table(3, :) = FEVD(8,:,1);
-FEVD_Table(4, :) = FEVD(12,:,1);
+FEVD_Table(1, :) = VD(1,:,1);
+FEVD_Table(2, :) = VD(4,:,1);
+FEVD_Table(3, :) = VD(8,:,1);
+FEVD_Table(4, :) = VD(12,:,1);
 
-FEVD_Table(5, :) = FEVD(1,:,2);
-FEVD_Table(6, :) = FEVD(4,:,2);
-FEVD_Table(7, :) = FEVD(8,:,2);
-FEVD_Table(8, :) = FEVD(12,:,2);
+FEVD_Table(5, :) = VD(1,:,2);
+FEVD_Table(6, :) = VD(4,:,2);
+FEVD_Table(7, :) = VD(8,:,2);
+FEVD_Table(8, :) = VD(12,:,2);
 
-FEVD_Table(9, :) = FEVD(1,:,3);
-FEVD_Table(10,:) = FEVD(4,:,3);
-FEVD_Table(11,:) = FEVD(8,:,3);
-FEVD_Table(12,:) = FEVD(12,:,3);
+FEVD_Table(9, :) = VD(1,:,3);
+FEVD_Table(10,:) = VD(4,:,3);
+FEVD_Table(11,:) = VD(8,:,3);
+FEVD_Table(12,:) = VD(12,:,3);
 
 % Print on screen
 disp(' ')

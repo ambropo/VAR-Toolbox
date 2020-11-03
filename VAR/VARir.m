@@ -19,13 +19,13 @@ function [IR, VAR] = VARir(VAR,VARopt)
 %       some additional results, e.g. VAR.B is the strcutral impact matrix
 % =========================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
+% Ambrogio Cesa Bianchi, November 2020
 % ambrogio.cesabianchi@gmail.com
 % -------------------------------------------------------------------------
 % Notes:
 % -----
 % This code follows the notation as in the lecture notes available at
-% https://sites.google.com/site/ambropo/MatlabCodes
+% https://sites.google.com/site/ambropo
 % -----
 % Specifically if Y, u, and e are [NxT] matrices, the following is true:
 % -----
@@ -45,10 +45,10 @@ function [IR, VAR] = VARir(VAR,VARopt)
 if ~exist('VAR','var')
     error('You need to provide VAR structure, result of VARmodel');
 end
-IV = VARopt.IV;
+IV = VAR.IV;
 if strcmp(VARopt.ident,'iv')
     if isempty(IV)
-        error('You need to provide the data for the instrument in VARopt (IV)');
+        error('You need to provide the data for the instrument in VAR (IV)');
     end
 end
 
@@ -99,18 +99,16 @@ VAR.PSI = PSI;
 %% Identification: Recover B matrix
 %==========================================================================
 % B matrix is recovered with Cholesky decomposition
-if strcmp(VARopt.ident,'rec')
+if strcmp(VARopt.ident,'ch')
     [out, chol_flag] = chol(sigma);
     if chol_flag~=0; error('VCV is not positive definite'); end
     B = out';
-    IVflag = 0;
 % B matrix is recovered with Cholesky on cumulative IR to infinity
 elseif strcmp(VARopt.ident,'bq')
     Finf_big = inv(eye(length(Fcomp))-Fcomp); % from the companion
     Finf = Finf_big(1:nvar,1:nvar);
     D  = chol(Finf*sigma*Finf')'; % identification: u2 has no effect on y1 in the long run
     B = Finf\D;
-    IVflag = 0;
 % B matrix is recovered with SR.m
 elseif strcmp(VARopt.ident,'sr')
     if isempty(VAR.B)
@@ -118,7 +116,6 @@ elseif strcmp(VARopt.ident,'sr')
     else
         B = VAR.B;
     end
-    IVflag = 0;
 % B matrix is recovered with external instrument IV
 elseif strcmp(VARopt.ident,'iv')
     % Recover residuals (first variable is the one to be instrumented - order matters!)
@@ -136,13 +133,14 @@ elseif strcmp(VARopt.ident,'iv')
     p_hat = FirstStage.yhat;
 
     % Recover first column of B matrix with second stage regressions
-    b(1,1) = 1;  % Impact IR is normalized to 1
+    b(1,1) = 1;  % Start with impact IR normalized to 1
     sqsp = zeros(size(q,2),1);
     for ii=2:nvar
         SecondStage = OLSmodel(q(:,ii-1),p_hat);
         b(ii,1) = SecondStage.beta(2);
         sqsp(ii-1) = SecondStage.beta(2);
     end
+    % Update size of the shock (ftn 4 of Gertler and Karadi (2015))
     sigma_b = (1/(length(pq)-VAR.ntotcoeff))*...
         (pq-repmat(mean(pq),size(pq,1),1))'*...
         (pq-repmat(mean(pq),size(pq,1),1));
@@ -161,7 +159,7 @@ else
     disp('---------------------------------------------')
     disp('Identification incorrectly specified.')
     disp('Choose one of the following options:');
-    disp('- rec: zero contemporaneous restrictions');
+    disp('- ch: zero contemporaneous restrictions');
     disp('- bq:  zero long-run restrictions');
     disp('- sr:  sign restrictions');
     disp('- iv:  external instrument');

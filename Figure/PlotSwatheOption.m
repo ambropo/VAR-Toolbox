@@ -10,9 +10,13 @@ function SwatheOpt = PlotSwatheOption
 % ambrogio.cesabianchi@gmail.com
 
 %% INITIALIZE VARIABLES
-SwatheOpt.col = rgb('dark grey');
-SwatheOpt.transp = '';
-SwatheOpt.do_dates=0;
-SwatheOpt.frequency = 'q';
+color = bone(8);
+SwatheOpt.swathecol  = color(6,:);
+SwatheOpt.barcol     = color(1,:);
+SwatheOpt.do_dates   = 0;
+SwatheOpt.frequency  = 'q';
 SwatheOpt.swatheonly = 0;
-SwatheOpt.marker = 'none';
+SwatheOpt.marker     = 'none';
+SwatheOpt.transp     = 0;           % Allow for transparency when plotting multiple swathes
+SwatheOpt.alpha      = 1;           % Sets alpha for transparent swathes. Default is 1
+

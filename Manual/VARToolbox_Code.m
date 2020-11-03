@@ -33,7 +33,7 @@ nobs = size(data,1);
 %************************************************************************** 
 
 % Select the list of variables to plot...
-Xvnames      = {'logip','gs1'};
+Xvnames = {'logip','gs1'};
 
 % ... and corresponding labels to be used for plots
 Xvnames_long = {'Industrial Production','1-year Rate'};
@@ -49,7 +49,7 @@ end
 FigSize(26,12)
 for ii=1:Xnvar
     subplot(1,2,ii)
-    H(ii) = plot(X(:,ii),'LineWidth',2,'Color',cmap(ii));
+    H(ii) = plot(X(:,ii),'LineWidth',3,'Color',cmap(1));
     title(Xvnames_long(ii)); 
     DatesPlot(year+(month-1)/12,nobs,6,'m') % Set the x-axis label 
     grid on; 
@@ -60,6 +60,7 @@ lopt = LegOption; lopt.handle = H; LegSubplot(vnames,lopt); FigFont(10);
 
 % Save figure
 SaveFigure('graphics/F1_PLOT',1)
+clf('reset')
 
 
 %% 3. VAR ESTIMATION
@@ -106,14 +107,14 @@ VARopt.vnames = Xvnames_long;
 %************************************************************************** 
 % Identification with zero contemporaneous restrictions is achieved in two 
 % steps: (1) set the identification scheme mnemonic in the structure 
-% VARopt to the desired one, in this case "rec"; (2) run the VARir or the 
+% VARopt to the desired one, in this case "ch"; (2) run the VARir or the 
 % VARvd functions. For the zero contemporaneous restrictions 
 % identification, consider the simple bivariate VAR estimated in the 
 % previous section.
 %-------------------------------------------------------------------------- 
 
 % In the case of zero contemporaneous restrictions set:
-VARopt.ident = 'rec';
+VARopt.ident = 'ch';
 
 % Update the VARopt structure with additional details to be used in IR 
 % calculations and plots
@@ -122,7 +123,7 @@ VARopt.quality = 1;
 VARopt.FigSize = [26,12];
 VARopt.firstdate = year+(month-1)/12;
 VARopt.frequency = 'm';
-VARopt.figname= 'graphics/REC_';
+VARopt.figname= 'graphics/CH_';
 
 % 4.1 IMPULSE RESPONSES
 %-------------------------------------------------------------------------- 
@@ -148,6 +149,7 @@ VARvdplot(VDbar,VARopt);
 [HD, VAR] = VARhd(VAR,VARopt);
 % Plot HD
 VARhdplot(HD,VARopt);
+
 
 %% 5. IDENTIFICATION WITH ZERO LONG-RUN RESTRICTIONS 
 %************************************************************************** 
@@ -190,17 +192,17 @@ VARvdplot(VDbar,VARopt);
 VARhdplot(HD,VARopt);
 
 
-%% 6. IDENTIFICATION WITH EXTERNAL INSTRUMENTS
+%% 5. IDENTIFICATION WITH SIGN RESTRICTIONS
 %************************************************************************** 
-% Identification with external instruments is achieved in three steps: (1) 
-% set the identification scheme mnemonic in the structure VARopt to the 
-% desired one, in this case "iv"; (2) update the VARopt structure with the 
-% external instrument to be used for identification; (3) run the VARir 
-% function. For the external instruments example, consider a larger VAR 
-% with four endogenous variables. 
+% For the sign restrictions example, consider a larger VAR  with four 
+% endogenous variables. Identification with sign restrictions is achieved 
+% in a slightly different way relative to zero contemporaneous or long-run 
+% restrictions. Identification is achieved in two steps: (1) define a 
+% matrix with the sign restrictions that the IRs have to satisfy; (2) run 
+% the SR function. 
 %-------------------------------------------------------------------------- 
 
-% FOUR-VARIABLE VAR ESTIMATION
+% 5.1 FOUR-VARIABLE VAR ESTIMATION
 %-------------------------------------------------------------------------- 
 % Select list of endogenous variables for the VAR estimation with the usual 
 % notation:
@@ -230,52 +232,11 @@ VARopt.nsteps = 60;
 VARopt.quality = 1;
 VARopt.FigSize = [26,12];
 VARopt.firstdate = year+(month-1)/12;
-VARopt.figname= 'graphics/IV_';
+VARopt.figname= 'graphics/SR_';
 VARopt.frequency = 'm';
 
-% IDENTIFICATION
+% 5.2 IDENTIFICATION
 %-------------------------------------------------------------------------- 
-% With the usual notation, select the instrument from the DATA structure:
-IVvnames      = {'ff4_tc'};
-IVvnames_long = {'FF4 futures'};
-IVnvar        = length(IVvnames);
-
-% Create vector of instruments to be used in the VAR
-IV = nan(nobs,IVnvar);
-for ii=1:IVnvar
-    IV(:,ii) = DATA.(IVvnames{ii});
-end
-
-% Identification is achieved with the external instrument IV, which needs
-% to be added to the VARopt structure
-VARopt.IV = IV;
-
-% Update the options in VARopt to be used in IR calculations and plots
-VARopt.ident = 'iv';
-VARopt.method = 'wild';
-
-% Compute IRs
-[IR, VAR] = VARir(VAR,VARopt);
-
-% Compute error bands
-[IRinf,IRsup,IRmed,IRbar] = VARirband(VAR,VARopt);
-
-% Plot impulse responses
-VARopt.FigSize = [26,24];
-VARirplot(IRbar,VARopt,IRinf,IRsup);
-
-
-
-%% 5. IDENTIFICATION WITH SIGN RESTRICTIONS
-%************************************************************************** 
-% Identification with sign restrictions is achieved in a slightly different 
-% way relative to zero contemporaneous or long-run restrictions. 
-% Identification is achieved in two steps: (1) define a matrix with the
-% sign restrictions that the IRs have to satisfy; (2) run the SR function.
-% For the sign restrictions identification, consider the same VAR as in the 
-% previous section.
-%-------------------------------------------------------------------------- 
-
 % Define the shock names
 VARopt.snames = {'Demand Shock','Supply Shock','Monetary Policy Shock','Unidentified'};
 
@@ -290,18 +251,13 @@ SIGN = [-1,       0,       1      0;        ... policy rate
 VARopt.sr_hor = 6;
 
 % Set options the credible intervals
-VARopt.pctg = 68;
+VARopt.pctg = 95;
 
 % The functin SR performs the sign restrictions identification and computes
 % IRs, VDs, and HDs. All the results are stored in SRout
 SRout = SR(VAR,SIGN,VARopt);
-SR1 = sum(SRout.HD.shock(:,:,1),2) + SRout.HD.init + SRout.HD.const;
-plot(SR1(:,1)); hold on;  
-plot(SRout.HD.endo(:,1)); hold on 
-plot(VAR.ENDO(:,1))
-legend('SR1','ENDO1','IP')
 
-% PLOT
+% 5.3 PLOT
 %-------------------------------------------------------------------------- 
 % Plot impulse responses
 VARopt.FigSize = [26,24];
@@ -309,14 +265,99 @@ SRirplot(SRout.IRmed,VARopt,SRout.IRinf,SRout.IRsup);
 
 % Plot variance decompositions
 VARopt.FigSize = [26,24];
-SRvdplot(SRout.VDmed,VARopt);
+SRvdplot(SRout.VD,VARopt);
 
-% Plot hd
+% To plot Plot hd
 VARopt.FigSize = [26,12];
 SRhdplot(SRout.HD,VARopt);
 
 
+%% 6. IDENTIFICATION WITH EXTERNAL INSTRUMENTS
+%************************************************************************** 
+% Identification with external instruments is achieved in three steps: (1) 
+% set the identification scheme mnemonic in the structure VARopt to the 
+% desired one, in this case "iv"; (2) update the VARopt structure with the 
+% external instrument to be used for identification; (3) run the VARir 
+% function. For the external instruments example, we consider the same VAR 
+% as in the sign restrictions example. 
+%-------------------------------------------------------------------------- 
 
+% First update the VARopt structure with additional details to be used for
+% the IR calculations and plots
+VARopt.figname= 'graphics/IV_';
+
+% With the usual notation, select the instrument from the DATA structure:
+IVvnames      = {'ff4_tc'};
+IVvnames_long = {'FF4 futures'};
+IVnvar        = length(IVvnames);
+
+% Create vector of instruments to be used in the VAR
+IV = nan(nobs,IVnvar);
+for ii=1:IVnvar
+    IV(:,ii) = DATA.(IVvnames{ii});
+end
+
+% Identification is achieved with the external instrument IV, which needs
+% to be added to the VARopt structure
+VAR.IV = IV;
+
+% Update the options in VARopt to be used in IR calculations and plots
+VARopt.ident = 'iv';
+VARopt.method = 'wild';
+
+% Compute IRs
+[IR, VAR] = VARir(VAR,VARopt);
+
+% Compute error bands
+[IRinf,IRsup,IRmed,IRbar] = VARirband(VAR,VARopt);
+
+% Can now plot the impulse responses with the usual code
+VARopt.FigSize = [26,24];
+VARirplot(IRbar,VARopt,IRinf,IRsup);
+
+
+%% 7. IDENTIFICATION WITH A MIX OF EXTERNAL INSTRUMENTS AND SIGN RESTRICTIONS
+%************************************************************************** 
+% Identification with external instruments is achieved in three steps: (1) 
+% set the identification scheme mnemonic in the structure VARopt to the 
+% desired one, in this case "iv"; (2) update the VARopt structure with the 
+% external instrument to be used for identification; (3) run the VARir 
+% function. For the external instruments example, we consider the same VAR 
+% as in the sign restrictions example. 
+%-------------------------------------------------------------------------- 
+
+% First update the VARopt structure with additional details to be used for
+% the IR calculations and plots
+VARopt.figname= 'graphics/IVSR_';
+
+% Define the shock names
+VARopt.snames = {'Monetary policy Shock','Demand Shock','Supply Shock','Unidentified'};
+
+% But now we assume that the first shock is identified with the external 
+% instrument. In other words, the first column of the B matrix is given by:
+disp(VAR.b)
+
+% So, we define the sign restrictions only for the aggregate demand, the 
+% aggregate supply, and the un-identified shock
+SIGN = [-1,       0,      0;        ... policy rate
+        -1,      -1,      0;        ... ip        
+        -1,       1,      0;        ... cpi
+         1,       1,      0];       ... ebp
+       % D        S       U   
+
+% Define the number of steps the restrictions are imposed for:
+VARopt.sr_hor = 6;
+
+% Set options the credible intervals
+VARopt.pctg = 95;
+
+% The functin SR performs the sign restrictions identification and computes
+% IRs, VDs, and HDs. All the results are stored in SRout
+SRout = SR(VAR,SIGN,VARopt);
+
+% Plot impulse responses
+VARopt.FigSize = [26,24];
+SRirplot(SRout.IRmed,VARopt,SRout.IRinf,SRout.IRsup);
 
 
 %%

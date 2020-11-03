@@ -48,9 +48,9 @@ function SRout = SR(VAR,SIGN,VARopt)
 % should be specified as:
 % 
 %             shock1      shock2     shock3
-%  SIGN = [ 1           0           0          % VAR1
-%          -1           0           0          % VAR2
-%          -1           0           0];        % VAR3
+%  SIGN = [     1           0           0          % VAR1
+%              -1           0           0          % VAR2
+%              -1           0           0];        % VAR3
 % 
 % That is: the first column defines the signs of the response of the three 
 % variables to the first shock.
@@ -97,37 +97,38 @@ jj = 0; % accepted draws
 ww = 1; % index for printing on screen
 while jj < ndraws
 
-    % Set up VAR_draw for rotations: Only identification uncertainty
-    VAR_draw = VAR;
+    % Set up VAR_draw.(label{1}) for rotations: Only identification uncertainty
+    label  = {['draw' num2str(jj)]};
+    VAR_draw.(label{1}) = VAR;
     VARopt.ident = 'sr';
-    % If selected, set up VAR_draw to consider identification + model uncertainty
+    % If selected, set up VAR_draw.(label{1}) to consider identification + model uncertainty
     if VARopt.sr_mod==1 
         % Draw F and sigma from the posterior and 
         [sigma_draw, Ft_draw] = VARdrawpost(VAR);
-        VAR_draw.Ft = Ft_draw;
-        VAR_draw.sigma = sigma_draw;
+        VAR_draw.(label{1}).Ft = Ft_draw;
+        VAR_draw.(label{1}).sigma = sigma_draw;
     end
     
     % Compute rotated B matrix
-    B = SignRestrictions(SIGN,VAR_draw,VARopt); 
+    B = SignRestrictions(SIGN,VAR_draw.(label{1}),VARopt); 
     
-    % Note: e = (inv(B)*VAR_draw.resid')';
+    % Note: e = (inv(B)*VAR_draw.(label{1}).resid')';
     % Check orthogonality:
-    % corr((inv(B)*VAR_draw.resid')')
+    % corr((inv(B)*VAR_draw.(label{1}).resid')')
     
     % Store B
     jj = jj+1;
     Ball(:,:,jj) = B;
     
-    % Update VAR_draw with the rotated B matrix for IR, VD, and HD
-    VAR_draw.B = B; 
+    % Update VAR_draw.(label{1}) with the rotated B matrix for IR, VD, and HD
+    VAR_draw.(label{1}).B = B; 
 
     % Compute and store IR, VD, HD
-    [aux_irf, VAR_draw] = VARir(VAR_draw,VARopt); 
+    [aux_irf, VAR_draw.(label{1})] = VARir(VAR_draw.(label{1}),VARopt); 
     IRall(:,:,:,jj)  = aux_irf;
-    aux_fevd = VARvd(VAR_draw,VARopt);
+    aux_fevd = VARvd(VAR_draw.(label{1}),VARopt);
     VDall(:,:,:,jj)  = aux_fevd;
-    aux_hd = VARhd(VAR_draw,VARopt);
+    aux_hd = VARhd(VAR_draw.(label{1}),VARopt);
     HDall.shock(:,:,:,jj) = aux_hd.shock;
     HDall.init(:,:,jj)    = aux_hd.init;
     HDall.const(:,:,jj)   = aux_hd.const;
@@ -143,8 +144,8 @@ while jj < ndraws
     end
 
 end
-% disp('-- Done!');
-% disp(' ');
+disp('-- Done!');
+disp(' ');
 
 
 %% Store results
@@ -176,11 +177,13 @@ aux = prctile(VDall,[pctg_inf pctg_sup],4);
 SRout.VDinf = aux(:,:,:,1);
 SRout.VDsup = aux(:,:,:,2);
 
-% Compute IR, VD, and HD based B
+% Compute IR, VD, and HD based on the VARdraw that is closest to the median
+% B matrix
 VARopt.ident = 'sr';
-VAR.B = SRout.B;
-SRout.IR = VARir(VAR,VARopt);
-SRout.VD = VARvd(VAR,VARopt);
-SRout.HD = VARhd(VAR,VARopt);
+label = {['draw' num2str(sel)]};  % Recover the position in VARdraw
+VAR = VAR_draw.(label{1});        % Set a VAR based on the selected VARdraw
+SRout.IR = VARir(VAR,VARopt);     % Compute IR
+SRout.VD = VARvd(VAR,VARopt);     % Compute VD       
+SRout.HD = VARhd(VAR,VARopt);     % Compute HD
 
 

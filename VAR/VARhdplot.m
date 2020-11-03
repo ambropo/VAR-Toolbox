@@ -1,15 +1,17 @@
 function VARhdplot(HD,VARopt)
-% =======================================================================
+%==========================================================================
 % Plot the HD shocks computed with VARhd
-% =======================================================================
+%==========================================================================
 % VARhdplot(HD,VARopt)
-% -----------------------------------------------------------------------
+%--------------------------------------------------------------------------
 % INPUT
 %   - HD: structure from VARhd
 %   - VARopt: options of the VAR (see VARopt from VARmodel)
-% =======================================================================
-% Ambrogio Cesa Bianchi, March 2020
+%==========================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa Bianchi, November 2020
 % ambrogio.cesabianchi@gmail.com
+%--------------------------------------------------------------------------
 
 
 %% Check inputs
@@ -24,7 +26,7 @@ if isempty(vnames)
 end
 
 
-%% Check inputs Define some parameters
+%% Check inputs and define some parameters
 %==========================================================================
 filename = [VARopt.figname 'HD_'];
 quality = VARopt.quality;
@@ -49,8 +51,7 @@ end
 %% Plot
 %==========================================================================
 FigSize(VARopt.FigSize(1),VARopt.FigSize(2))
-for ii=pick:nvars                
-    colormap winter
+for ii=pick:nvars
     H = AreaPlot(squeeze(HD.shock(:,:,ii))); hold on; 
     h = plot(sum(squeeze(HD.shock(:,:,ii)),2),'-k','LineWidth',2);
     if ~isempty(VARopt.firstdate); DatesPlot(VARopt.firstdate,nsteps,8,VARopt.frequency); end

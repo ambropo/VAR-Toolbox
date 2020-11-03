@@ -41,10 +41,16 @@ if ~exist('SwatheOpt','var')
     SwatheOpt = PlotSwatheOption;
 end
 
-if isnumeric(SwatheOpt.col) % in case user provides already the rgb code
-    colrgb = SwatheOpt.col;
+if isnumeric(SwatheOpt.barcol) % in case user provides already the rgb code
+    barcol = SwatheOpt.barcol;
 else % otherwise use rgb to get the code
-    colrgb = rgb(SwatheOpt.col);
+    barcol = rgb(SwatheOpt.barcol);
+end
+
+if isnumeric(SwatheOpt.swathecol) % in case user provides already the rgb code
+    swathecol = SwatheOpt.swathecol;
+else % otherwise use rgb to get the code
+    swathecol = rgb(SwatheOpt.swathecol);
 end
 
 % Number of observations
@@ -81,25 +87,23 @@ end
 % Create the x axis
 xaxis = 1:nobs;
 
-
-
 %% PLOT
 % Initialize patch 
-edgeColor = colrgb+(1-colrgb)*0.55;
-patchSaturation = 1; %How de-saturated or SwatheOpt.transp to make the patch
-if strcmp(SwatheOpt.transp,'transparent')==1
-    faceAlpha = patchSaturation;
-    patchColor = colrgb;
+edgeColor = swathecol+(1-swathecol)*0.55;
+swathealpha = SwatheOpt.alpha; %How de-saturated or SwatheOpt.transp to make the patch
+if SwatheOpt.transp==1
+    faceAlpha = swathealpha;
+    patchColor = swathecol;
     set(gcf,'renderer','openGL')
 else
     faceAlpha = 1;
-    patchColor = colrgb+(1-colrgb)*(1-patchSaturation);
+    patchColor = swathecol+(1-swathecol)*(1-swathealpha);
     set(gcf,'renderer','painters')
 end
 
 % Plot the 'bar' line
 if SwatheOpt.swatheonly==0
-    H.bar = plot(xaxis,bar,'LineWidth',2,'Color',colrgb);
+    H.bar = plot(xaxis,bar,'LineWidth',2,'Color',barcol,'Marker',SwatheOpt.marker);
 end
 
 %Add the error-bar plot elements
@@ -122,7 +126,7 @@ if SwatheOpt.swatheonly==0
     delete(H.bar)
 end
 if SwatheOpt.swatheonly==0
-    H.bar=plot(xaxis,bar,'LineWidth',2,'Color',colrgb,'Marker',SwatheOpt.marker);
+    H.bar=plot(xaxis,bar,'LineWidth',2,'Color',barcol,'Marker',SwatheOpt.marker);
 end
 if ~holdStatus, hold off, end
 

@@ -62,12 +62,12 @@ x_axis = zeros(1,nsteps);
 %================================================
 SwatheOpt = PlotSwatheOption;
 SwatheOpt.marker = '*';
-SwatheOpt.col = cmap(1);
+SwatheOpt.trans = 1;
 FigSize(VARopt.FigSize(1),VARopt.FigSize(2))
 for jj=pick:nshocks                
     for ii=1:nvars
         subplot(row,col,ii);
-        plot(steps,IR(:,ii,jj),'LineStyle','-','Color',cmap(1),'LineWidth',2); hold on
+        plot(steps,IR(:,ii,jj),'LineStyle','-','Color','k','LineWidth',2,'Marker',SwatheOpt.marker); hold on
         if exist('INF','var') && exist('SUP','var')
             PlotSwathe(IR(:,ii,jj),[INF(:,ii,jj) SUP(:,ii,jj)],SwatheOpt); hold on;
         end

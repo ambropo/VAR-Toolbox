@@ -45,7 +45,6 @@ nsteps = VARopt.nsteps;
 ndraws = VARopt.ndraws;
 pctg   = VARopt.pctg;
 method = VARopt.method;
-IV     = VARopt.IV;
 
 Ft      = VAR.Ft;  % rows are coefficients, columns are equations
 nvar    = VAR.nvar;
@@ -57,6 +56,7 @@ nobs    = VAR.nobs;
 resid   = VAR.resid;
 ENDO    = VAR.ENDO;
 EXOG    = VAR.EXOG;
+IV      = VAR.IV;
 
 INF = zeros(nsteps,nvar,nvar);
 SUP = zeros(nsteps,nvar,nvar);
@@ -70,7 +70,6 @@ y_artificial = zeros(nobs+nlag,nvar);
 
 %% Loop over the number of draws
 %===============================================
-VARopt_draw = VARopt;
 tt = 1; % numbers of accepted draws
 ww = 1; % index for printing on screen
 while tt<=ndraws
@@ -93,7 +92,6 @@ while tt<=ndraws
             rr = 1-2*(rand(nobs,size(IV,2))>0.5);
             u = resid.*(rr*ones(size(IV,2),nvar));
             Z = [IV(1:nlag,:); IV(nlag+1:end,:).*rr];
-            VARopt_draw.IV = Z;
         else
             rr = 1-2*(rand(nobs,1)>0.5);
             u = resid.*(rr*ones(1,nvar));
@@ -158,11 +156,16 @@ while tt<=ndraws
     else
         [VAR_draw, ~] = VARmodel(y_artificial,nlag,const);
     end
+    % If "iv" identification is selected, update VAR_draw with bootstrapped 
+    %instrument 
+    if exist('Z','var')
+        VAR_draw.IV = Z;
+    end
     
 %% STEP 4: calculate "ndraws" impulse responses and store them
-    % Uses options from VARopt_draw (where the only varying object is the 
-    % bootstrapped instrumnent) and parameters from VAR_draw (from step 3)
-    [IR_draw, VAR_draw] = VARir(VAR_draw,VARopt_draw);  
+    % Uses options from VARopt and parameters from VAR_draw (from step 3)
+    % to compute IRFs
+    [IR_draw, VAR_draw] = VARir(VAR_draw,VARopt);  
     if VAR_draw.maxEig<.9999
         IR(:,:,:,tt) = IR_draw;
         tt=tt+1;

@@ -160,6 +160,7 @@ VAR.B   = [];   % structural impact matrix (need identification: see VARir/VARfe
 VAR.b   = [];   % first columns of structural impact matrix (need identification: see VARir/VARfevd)
 VAR.PSI = [];   % Wold multipliers (computed only with VARir/VARfevd)
 VAR.Fp  = [];   % Recursive F by lag (useful to compute MA representation)
+VAR.IV  = [];   % External instruments for identification
 
 
 

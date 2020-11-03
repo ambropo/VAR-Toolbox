@@ -6,16 +6,16 @@ function VARopt = VARoption
 % VARopt = VARoption
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
+% Ambrogio Cesa Bianchi, November 2020
 % ambrogio.cesabianchi@gmail.com
 
-VARopt.vnames    = [];      % endogenous variables' names
-VARopt.vnames_ex = [];      % exogenous variables' names
-VARopt.snames    = [];      % shocks' names (for sign restriction only)
+VARopt.vnames    = [];      % endogenous variables names
+VARopt.vnames_ex = [];      % exogenous variables names
+VARopt.snames    = [];      % shocks names (for sign restriction only)
 VARopt.nsteps    = 40;      % number of steps for computation of IRFs and FEVDs
 VARopt.impact    = 0;       % size of the shock for IRFs: 0=1stdev, 1=unit shock
 VARopt.shut      = 0;       % forces the IRF of one variable to zero
-VARopt.ident     = 'rec';   % identification method for IRFs ('rec' short-run restr, 'bq' long-run restr, 'sr' sign restr)
+VARopt.ident     = 'ch';    % identification method for IRFs ('ch' zero short-run restr, 'bq' zero long-run restr, 'sr' sign restr, 'iv' external instrument)
 VARopt.recurs    = 'wold';  % method for computation of recursive stuff ('wold' form MA representation, 'comp' for companion form)
 VARopt.ndraws    = 100;     % number of draws for bootstrap or sign restrictions
 VARopt.mult      = 10;      % multiple of draws to be printed at screen.
@@ -24,8 +24,6 @@ VARopt.method    = 'bs';    % methodology for error bands, 'bs' for standard boo
 VARopt.sr_hor    = 1;       % number of periods that sign restrcitions are imposed on
 VARopt.sr_rot    = 500000;  % max number of rotations for finding sign restrictions
 VARopt.sr_mod    = 1;       % model uncertainty for sign restrictions (1=yes, 0=no)
-VARopt.IV        = [];      % external proxy for identification with external instruments
-VARopt.b         = [];      % first known columns of B matrix for sign restrictions procedure
 VARopt.pick      = 0;       % selects one variable for IRFs and FEVDs plots (0 => plot all)
 VARopt.quality   = 1;       % quality of exported figures: 1=high (ghostscript required), 0=low
 VARopt.suptitle  = 0;       % title on top of figures

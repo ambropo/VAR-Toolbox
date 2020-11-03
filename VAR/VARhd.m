@@ -24,7 +24,7 @@ function [HD, VAR] = VARhd(VAR,VARopt)
 if ~exist('VAR','var')
     error('You need to provide VAR structure, result of VARmodel');
 end
-IV = VARopt.IV;
+IV = VAR.IV;
 if strcmp(VARopt.ident,'iv')
     disp('---------------------------------------------')
     disp('Historical decomposition not available with')
@@ -53,18 +53,16 @@ nobs    = size(Y,1);                      % number of observations
 %% Identification: Recover B matrix
 %==========================================================================
 % B matrix is recovered with Cholesky decomposition
-if strcmp(VARopt.ident,'rec')
+if strcmp(VARopt.ident,'ch')
     [out, chol_flag] = chol(sigma);
     if chol_flag~=0; error('VCV is not positive definite'); end
     B = out';
-    IVflag = 0;
 % B matrix is recovered with Cholesky on cumulative IR to infinity
 elseif strcmp(VARopt.ident,'bq')
     Finf_big = inv(eye(length(Fcomp))-Fcomp); % from the companion
     Finf = Finf_big(1:nvar,1:nvar);
     D  = chol(Finf*sigma*Finf')'; % identification: u2 has no effect on y1 in the long run
     B = Finf\D;
-    IVflag = 0;
 % B matrix is recovered with SR.m
 elseif strcmp(VARopt.ident,'sr')
     if isempty(VAR.B)
@@ -72,7 +70,6 @@ elseif strcmp(VARopt.ident,'sr')
     else
         B = VAR.B;
     end
-    IVflag = 0;
 % B matrix is recovered with external instrument IV
 elseif strcmp(VARopt.ident,'iv')
     disp('---------------------------------------------')
@@ -85,7 +82,7 @@ else
     disp('---------------------------------------------')
     disp('Identification incorrectly specified.')
     disp('Choose one of the following options:');
-    disp('- rec: zero contemporaneous restrictions');
+    disp('- ch: zero contemporaneous restrictions');
     disp('- bq:  zero long-run restrictions');
     disp('- sr:  sign restrictions');
     disp('- iv:  external instrument');

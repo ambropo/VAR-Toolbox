@@ -66,7 +66,6 @@ steps = 1:1:nsteps;
 x_axis = zeros(1,nsteps);
 
 
-
 %% Plot
 %=========
 % Area plot

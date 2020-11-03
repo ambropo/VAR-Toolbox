@@ -17,6 +17,7 @@ function H = AreaPlot(X)
 
 H(1,:) = area((X).*(X>0),'LineStyle','none'); 
 for ii=1:size(H,2)
+    H(1,ii).FaceColor = cmap(ii);
     H(1,ii).EdgeColor = H(1,ii).FaceColor;
 end
 hold on;

@@ -15,4 +15,4 @@ The VAR\ Toolbox is not meant to be efficient, but rather to be transparent and 
 
 - Utils: codes that allow the smooth functioning if the Toolbox.
 
-VAR: the codes for VAR estimation, identification, computation of the impulse response functions, FEVD, HD.
+- VAR: the codes for VAR estimation, identification, computation of the impulse response functions, FEVD, HD.

@@ -1,0 +1,26 @@
+\BOOKMARK [1][-]{section.1}{Installing the VAR Toolbox}{}% 1
+\BOOKMARK [1][-]{section.2}{VAR Toolbox: High level description}{}% 2
+\BOOKMARK [1][-]{section.3}{VAR basics note [Notes] }{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Vector Autoregressions}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{The Identification Problem note [Notes]}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Common Identification schemes}{section.3}% 6
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Identification by zero contemporaneous restrictions}{subsection.3.3}% 7
+\BOOKMARK [3][-]{subsubsection.3.3.2}{Identification by zero long-run restrictions}{subsection.3.3}% 8
+\BOOKMARK [3][-]{subsubsection.3.3.3}{Identification by sign restrictions}{subsection.3.3}% 9
+\BOOKMARK [3][-]{subsubsection.3.3.4}{External instruments}{subsection.3.3}% 10
+\BOOKMARK [3][-]{subsubsection.3.3.5}{Combining sign restrictions and external instruments}{subsection.3.3}% 11
+\BOOKMARK [2][-]{subsection.3.4}{Structural Dynamic Analysis}{section.3}% 12
+\BOOKMARK [3][-]{subsubsection.3.4.1}{Impulse response functions}{subsection.3.4}% 13
+\BOOKMARK [3][-]{subsubsection.3.4.2}{Forecast error variance decompositions}{subsection.3.4}% 14
+\BOOKMARK [3][-]{subsubsection.3.4.3}{Historical decompositions}{subsection.3.4}% 15
+\BOOKMARK [1][-]{section.4}{Data: Load \046 Plotnote [Matlab]}{}% 16
+\BOOKMARK [1][-]{section.5}{VAR estimation note [Matlab]}{}% 17
+\BOOKMARK [1][-]{section.6}{The Identification Problem note [Notes]}{}% 18
+\BOOKMARK [1][-]{section.7}{Common Identification schemes}{}% 19
+\BOOKMARK [2][-]{subsection.7.1}{Identification by zero contemporaneous restrictions}{section.7}% 20
+\BOOKMARK [2][-]{subsection.7.2}{Identification by zero long-run restrictions}{section.7}% 21
+\BOOKMARK [2][-]{subsection.7.3}{Variance decompositions}{section.7}% 22
+\BOOKMARK [2][-]{subsection.7.4}{Historical decompositions}{section.7}% 23
+\BOOKMARK [1][-]{appendix.1}{Appendix}{}% 24
+\BOOKMARK [2][-]{subsection.1.1}{The Identification Problem note [Notes]}{appendix.1}% 25
+\BOOKMARK [2][-]{subsection.1.2}{Impulse responses}{appendix.1}% 26

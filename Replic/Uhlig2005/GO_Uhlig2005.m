@@ -14,22 +14,42 @@
 clear all; clear session; close all; clc
 warning off all
 
-% Load data
-[xlsdata, xlstext] = xlsread('Uhlig2005_Data.xls','DATA');
+%% DATA
+% =======================================================================
+% Load data 
+[xlsdata, xlstext] = xlsread('Uhlig2005_Data.xlsx','Sheet1');
+dates = xlstext(3:end,1);
+vnames_long = xlstext(1,2:end);
+vnames = xlstext(2,2:end);
+nvar = length(vnames);
+data   = Num2NaN(xlsdata);
+for ii=1:length(vnames)
+    DATA.(vnames{ii}) = data(:,ii);
+end
+year = str2double(xlstext{3,1}(1:4));
+month = str2double(xlstext{3,1}(6));
+nobs = size(data,1);
 
-% Define and transform (if needed)
-dates = xlstext(2:end,1);
-vnames = xlstext(1,2:end);
-X(:,1:3) = log(xlsdata(:,1:3))*100;
-X(:,4)   = xlsdata(:,4);
-X(:,5:6) = log(xlsdata(:,5:6))*100;
-X = xlsdata(:,2:end);
-VARnvar = size(X,2);
+% Transform selected variables
+tempnames = {'y','pi','comm','nbres','ff'};
+temptreat = {'log','log','log','log','log'};
+tempscale = [100,100,100,100,100];
+for ii=1:length(tempnames)
+    aux = {['d' tempnames{ii}]};
+    DATA.(aux{1}) = tempscale(ii)*XoX(DATA.(tempnames{ii}),1,temptreat{ii});
+end
 
 %% VAR ESTIMATION
 % =======================================================================
-% Define number of variables and of observations
-[nobs, nvar] = size(X);
+% Define variables 
+Xvnames      = vnames;
+Xvnames_long = vnames_long;
+Xnvar        = length(Xvnames);
+% Construct endo
+X = nan(nobs,Xnvar);
+for ii=1:Xnvar
+    X(:,ii) = DATA.(Xvnames{ii});
+end
 % Set deterministics for the VAR
 det = 1;
 % Set number of nlags
@@ -40,11 +60,16 @@ nlags = 12;
 
 %% SIGN RESTRICTIONS
 % =======================================================================
-% Set options for IRFs and SR
+% Set options
+VARopt.vnames = Xvnames_long;
 VARopt.nsteps = 60;
+VARopt.snames = {'Mon. Policy Shock'};
 VARopt.ndraws = 500;
-VARopt.snames = {'MonPol Shock'};
-VARopt.vnames = vnames;
+VARopt.quality = 1;
+VARopt.FigSize = [26,8];
+VARopt.firstdate = year+(month-1)/12;
+VARopt.frequency = 'm';
+VARopt.figname= 'graphics/Uhlig_';
 
 % Define sign restrictions : positive 1, negative -1, unrestricted 0
 SIGN = [ 0,0,0,0,0,0;  % Real GDP
@@ -67,7 +92,7 @@ SRout = SR(VAR,SIGN,VARopt);
 % Plot
 FigSize(20,24)
 idx = [1 3 5 2 4 6];
-for ii=1:VARnvar
+for ii=1:Xnvar
     subplot(3,2,idx(ii))
     PlotSwathe(SRout.IRmed(:,ii,1),[SRout.IRinf(:,ii,1) SRout.IRsup(:,ii,1)]); hold on
     plot(zeros(VARopt.nsteps),'--k');
@@ -76,7 +101,7 @@ for ii=1:VARnvar
 end
 
 % Save
-SaveFigure('Figure6',1)
+SaveFigure('Uhligh_Replication',1)
 
 
 

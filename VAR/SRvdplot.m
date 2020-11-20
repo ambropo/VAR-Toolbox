@@ -92,4 +92,4 @@ else
     print('-dpdf','-r100',FigName);
 end
 
-close all
+% close all

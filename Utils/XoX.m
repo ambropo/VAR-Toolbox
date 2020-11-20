@@ -18,8 +18,10 @@ function OUT = XoX(DATA,frequency,type)
 %	- OUT: matrix DATA(T,N) of rates of change. The first # (=frequency) 
 %     observations are NaN
 % =========================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogiocesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa Bianchi, November 2020
+% ambrogio.cesabianchi@gmail.com
+% -------------------------------------------------------------------------
 
 if ~exist('type','var')
     type = 'logdiff';
@@ -31,8 +33,9 @@ if frequency>nobs
     error('Frequency is larger than the number of observations')
 end
 
-
-if strcmp(type,'logdiff')
+if strcmp(type,'log')
+    OUT = log(DATA);
+elseif strcmp(type,'logdiff')
     OUT = log(DATA(1+frequency:end,:))-log(DATA(1:end-frequency,:));
     OUT = [nan(frequency,nvar); OUT];
 elseif strcmp(type,'rate')

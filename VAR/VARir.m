@@ -99,18 +99,18 @@ VAR.PSI = PSI;
 %% Identification: Recover B matrix
 %==========================================================================
 % B matrix is recovered with Cholesky decomposition
-if strcmp(VARopt.ident,'ch')
+if strcmp(VARopt.ident,'short')
     [out, chol_flag] = chol(sigma);
     if chol_flag~=0; error('VCV is not positive definite'); end
     B = out';
 % B matrix is recovered with Cholesky on cumulative IR to infinity
-elseif strcmp(VARopt.ident,'bq')
+elseif strcmp(VARopt.ident,'long')
     Finf_big = inv(eye(length(Fcomp))-Fcomp); % from the companion
     Finf = Finf_big(1:nvar,1:nvar);
     D  = chol(Finf*sigma*Finf')'; % identification: u2 has no effect on y1 in the long run
     B = Finf\D;
 % B matrix is recovered with SR.m
-elseif strcmp(VARopt.ident,'sr')
+elseif strcmp(VARopt.ident,'sign')
     if isempty(VAR.B)
         error('You need to provide the B matrix with SR.m and/or SignRestrictions.m')
     else
@@ -159,9 +159,9 @@ else
     disp('---------------------------------------------')
     disp('Identification incorrectly specified.')
     disp('Choose one of the following options:');
-    disp('- ch: zero contemporaneous restrictions');
-    disp('- bq:  zero long-run restrictions');
-    disp('- sr:  sign restrictions');
+    disp('- short: zero contemporaneous restrictions');
+    disp('- long:  zero long-run restrictions');
+    disp('- sign:  sign restrictions');
     disp('- iv:  external instrument');
     disp('---------------------------------------------')
     error('ERROR. See details above');

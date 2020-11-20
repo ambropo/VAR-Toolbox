@@ -100,7 +100,7 @@ while jj < ndraws
     % Set up VAR_draw.(label{1}) for rotations: Only identification uncertainty
     label  = {['draw' num2str(jj)]};
     VAR_draw.(label{1}) = VAR;
-    VARopt.ident = 'sr';
+    VARopt.ident = 'sign';
     % If selected, set up VAR_draw.(label{1}) to consider identification + model uncertainty
     if VARopt.sr_mod==1 
         % Draw F and sigma from the posterior and 
@@ -179,7 +179,7 @@ SRout.VDsup = aux(:,:,:,2);
 
 % Compute IR, VD, and HD based on the VARdraw that is closest to the median
 % B matrix
-VARopt.ident = 'sr';
+VARopt.ident = 'sign';
 label = {['draw' num2str(sel)]};  % Recover the position in VARdraw
 VAR = VAR_draw.(label{1});        % Set a VAR based on the selected VARdraw
 SRout.IR = VARir(VAR,VARopt);     % Compute IR

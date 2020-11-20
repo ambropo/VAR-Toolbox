@@ -15,7 +15,7 @@ clear all; clear session; close all; clc
 warning off all
 
 % Load data
-[xlsdata, xlstext] = xlsread('BQ1989_Data.xls','Sheet1');
+[xlsdata, xlstext] = xlsread('BQ1989_Data.xlsx','Sheet1');
 % Define and transform (if needed)
 X = xlsdata;
 vnames = xlstext(1,2:end);
@@ -37,7 +37,7 @@ nlags = 8;
 % =======================================================================
 % Set options some options for IRF calculation
 VARopt.nsteps = 40;
-VARopt.ident = 'bq';
+VARopt.ident = 'long';
 VARopt.vnames = vnames;
 VARopt.FigSize = [26,12];
 
@@ -58,14 +58,8 @@ VARvdplot(VDbar,VARopt);
 
 %% REPLICATE FIGURE 1 OF BLANCHARD AND QUAH
 % =======================================================================
-% Note that, when using Blanchard Quah identification, the code VARir 
-% assumes that u2 has no effect on y1, that is shock 2 is the demand shock
-
-% Differently, Blanchard Quah assume that u1 has no effect on y1. 
-% Therefore our responses for shock 2 are flipped
-
-FigSize(26,12)
-
+FigSize(26,8)
+% Plot supply shock
 subplot(1,2,1)
 plot(cumsum(IR(:,1,1)),'LineWidth',2.5,'Color',cmap(1))
 hold on
@@ -74,7 +68,7 @@ hold on
 plot(zeros(VARopt.nsteps),'--k')
 title('Supply shock')
 legend({'GDP Level';'Unemployment'})
-
+% Plot demand shock
 subplot(1,2,2)
 plot(cumsum(-IR(:,1,2)),'LineWidth',2.5,'Color',cmap(1))
 hold on
@@ -83,5 +77,6 @@ hold on
 plot(zeros(VARopt.nsteps),'-k')
 title('Demand shock')
 legend({'GDP Level';'Unemployment'})
-
-SaveFigure('BQ_Figure1');
+% Save
+SaveFigure('BQ_Replication',1);
+clf('reset')

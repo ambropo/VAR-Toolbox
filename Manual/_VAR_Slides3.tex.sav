@@ -1,0 +1,2812 @@
+% Tikz
+%-----------------------------------------------------
+%\pgfmathsetseed{1}
+% Hand writing font
+%-----------------------------------------------------
+% Fix soul parameters for highlighting
+%-----------------------------------------------------
+% Miniscule font
+%-----------------------------------------------------
+% \tiny: 5/6
+% Appearance (notes and page setup)
+%-----------------------------------------------------
+%\hypersetup{pdfpagelayout={OnePage}}
+% New font size for tables
+%-----------------------------------------------------
+% Define notesize for notes to figures/tables
+%-----------------------------------------------------
+% Text color box
+%-----------------------------------------------------
+%\begin{tcolorbox}[colback=gray!10,colframe=gray!10]
+%text
+%\end{tcolorbox}
+% Show notes
+%-----------------------------------------------------
+% Beamer features
+%-----------------------------------------------------
+% Colors
+%-----------------------------------------------------
+% Page setup
+%-----------------------------------------------------
+% With all sections
+%\defbeamertemplate*{footline}{shadow theme}{\leavevmode\hbox{\begin{beamercolorbox}[wd=1.02\paperwidth, ht=2.5ex, dp=1.125ex, leftskip=.3cm plus1fil,rightskip=0.3cm]{author in head/foot}\insertsectionnavigationhorizontal{.90\textwidth}{}{} \hspace{.3cm} \hfill \# \insertframenumber\end{beamercolorbox}}}
+% One section at the time
+% Itemize set up
+%-----------------------------------------------------
+% Slides margins
+%----------------------------------------------------
+% Title slide set up
+%----------------------------------------------------
+% Other stuff
+%-----------------------------------------------------
+% Authors/institutes/date/etc
+%-----------------------------------------------------
+
+
+\documentclass[10pt,english,t,aspectratio=169,ignorenonframetext,handout]{beamer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{etex}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{pgfpages}
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage[labelsep=space,labelfont=bf,skip=1pt,sf,small]{caption}
+\usepackage{booktabs}
+\usepackage{bbding}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{mathtools}
+\usepackage{setspace}
+\usepackage{pifont}
+\usepackage{changepage}
+\usepackage{moresize}
+\usepackage[default,oldstyle,scale=0.95]{opensans}
+\usepackage[utf8]{inputenc}
+\usepackage{colortbl,xcolor}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{eurosym}
+
+\setcounter{MaxMatrixCols}{10}
+%TCIDATA{OutputFilter=Latex.dll}
+%TCIDATA{Version=5.50.0.2960}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{BibliographyScheme=Manual}
+%TCIDATA{LastRevised=Saturday, November 14, 2020 22:51:13}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{Language=American English}
+
+\makeatletter
+\newcommand{\miniscule}{\@setfontsize\miniscule{4}{6}}
+\makeatother
+\setbeameroption{show notes}
+\setbeamertemplate{note page}[plain]
+\makeatletter
+\newcommand*\tablesize{\@setfontsize\tablesize{7.25}{8.0}}
+\makeatother
+\let\notesize\footnotesize
+\renewcommand{\arraystretch}{1.15}
+\newcolumntype{Y}{>{\centering\arraybackslash\leavevmode}X}
+\newcolumntype{S}{>{\centering\arraybackslash\leavevmode\color{gray!25}}X}
+\newenvironment{changemargin}[2]{\begin{list}{}{\setlength{\topsep}{0pt}\setlength{\leftmargin}{#1}\setlength{\rightmargin}{#2}\setlength{\listparindent}{\parindent}\setlength{\itemindent}{\parindent}\setlength{\parsep}{\parskip}}\item[]}{\end{list}}
+\useinnertheme{rounded}
+\setbeamertemplate{navigation symbols}{}
+\definecolor{title}{RGB}{0,0,90}
+\definecolor{math}{RGB}{0,0,150}
+\definecolor{note}{RGB}{49,79,179}
+\definecolor{light}{RGB}{70,130,180}
+\definecolor{red}{RGB}{200,0,0}
+\definecolor{gold}{RGB}{218,165,32}
+\definecolor{green}{RGB}{0,179,0}
+\definecolor{purple}{RGB}{150,40,160}
+\definecolor{brick}{RGB}{203, 92, 65}
+\definecolor{maroon}{RGB}{128,0,0}
+\setbeamercolor{button}{bg=light,fg=white}
+\setbeamercolor{titlelike}{fg=title,bg=white}
+\setbeamercolor{frametitle}{fg=title,bg=white}
+\setbeamercolor{math text}{fg=title!80}
+\setbeamercolor{section in head/foot}{fg=white,bg=title}
+\setbeamertemplate{section in head/foot shaded}[default][30]
+\defbeamertemplate*{headline}{shadow theme}{\leavevmode\hbox{}}
+\setbeamercolor{author in head/foot}{fg=white,bg=title}
+\setbeamercolor{title in head/foot}{fg=white,bg=title}
+\defbeamertemplate*{footline}{shadow theme}{\leavevmode\hbox{\begin{beamercolorbox}[wd=1.01\paperwidth, ht=2.5ex, dp=1.125ex, leftskip=.3cm plus1fil,rightskip=0.3cm]{author in head/foot}\insertshorttitle \insertsection \hspace{.3cm} \hfill \insertframenumber\end{beamercolorbox}}}
+\setbeamertemplate{itemize items}[triangle]
+\defbeamertemplate{itemize subitem}{second}{{\ssmall\raisebox{.03cm}{\ding{81}}}}
+\setbeamertemplate{itemize subitem}[second]
+\defbeamertemplate{itemize subsubitem}{third}{{\ssmall\raisebox{.03cm}{\ding{59}}}}
+\setbeamertemplate{itemize subsubitem}[third]
+\setbeamertemplate{enumerate items}[default]
+\setbeamercolor{itemize item}{fg=title!80}
+\setbeamercolor{itemize subitem}{fg=title!80}
+\setbeamercolor{itemize subsubitem}{fg=title!80}
+\setbeamercolor{enumerate item}{fg=title!80}
+\setbeamercolor{enumerate subitem}{fg=title!80}
+\setbeamersize{text margin left=0.2cm,text margin right=0.3cm}
+\setbeamerfont{frametitle}{series=\bfseries,size={\fontsize{14}{15}}}
+\setbeamerfont{title}{series=\bfseries,size={\fontsize{16}{17}}}
+\setbeamerfont{frametitle}{series=\bfseries}
+\def\EE{\mathbb{E}}
+\graphicspath{{./graphics/}}
+\def\newblock{\hskip .11em plus .33em minus .07em }
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+\institute{\inst{1}Bank of England, CEPR, \& CfM}
+\input{tcilatex}
+\begin{document}
+
+\title[VAR models]{\textbf{A Primer on Vector Autoregressions}}
+\author[]{A. Cesa-Bianchi\inst{1}}
+\date{\today }
+
+%=============================================================
+
+\section{Introduction}
+
+\begin{frame}
+\lbrack plain]
+\titlepage{
+\begin{center}
+\color{note}{\scriptsize *The views expressed in this paper are those of the author(s) and do not necessarily represent \newline the views of the Bank of England or its committees.}
+\end{center}}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+\bigskip
+\begin{equation*}
+\text{\textbf{[DISCLAIMER]}}
+\end{equation*}
+
+\bigskip \bigskip
+
+\centering
+\begin{minipage}{.8\textwidth}
+These notes are meant to provide intuition on the basic mechanisms of
+VARs\bigskip
+
+As such, most of the material covered here is treated in a very informal
+way\bigskip
+
+If you crave a formal treatment of these topics, you should stop here and
+buy a copy of Hamilton's \textquotedblleft Time Series
+Analysis\textquotedblright
+\end{minipage}
+\end{frame}
+
+\vspace{0.1cm}
+
+\section{VARs}
+
+\begin{frame}
+{\textbf{Macroeconometricians' job}}\bigskip \bigskip \medskip
+
+\begin{itemize}
+\item In their 2001 Journal of Economic Perspectives' article
+\textquotedblleft Vector Autoregressions\textquotedblright\ Stock and Watson
+describe the job of macroeconometricians as consisting of the
+following:\smallskip
+
+\begin{enumerate}
+\item Describe and summarize macroeconomic time series\medskip \pause
+
+\item Make forecasts\medskip \pause
+
+\item Recover the true structure of the macroeconomy from the data\medskip
+\pause
+
+\item Advise macroeconomic policy-makers\bigskip \pause
+\end{enumerate}
+
+\item Vector autoregressive models (VARs) are a statistical tool to perform
+these tasks
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{What can we do with vector autoregressive models?}}\bigskip
+\bigskip \medskip
+
+\begin{itemize}
+\item Consider a bivariate VAR\ with the following variables:\ real GDP\
+growth ($y$) and the policy rate ($r$)\bigskip \medskip \pause
+
+\item A VAR\ can help us answering the following questions\smallskip
+
+\begin{enumerate}
+\item What is the dynamic behavior of these variables? How do these
+variables interact?\medskip \pause
+
+\item What is the most likely behavior of GDP in the next few quarters?
+\medskip \pause
+
+\item What is the effect of a monetary policy shock on GDP?\medskip \pause
+
+\item What has been the historical contribution of monetary policy shocks to
+GDP fluctuations?
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{What is a Vector Autoregression (VAR)?}}\bigskip
+
+\begin{itemize}
+\item Consider a $(2\times 1)$ vector of time series $x_{t}$ of $T$
+observations (and an initial condition $x_{0}$)%
+\begin{equation*}
+x_{t}=\left[
+\begin{array}{c}
+x_{1t} \\
+x_{2t}%
+\end{array}%
+\right] =\left[
+\begin{array}{cccc}
+x_{11} & x_{12} & ... & x_{1T} \\
+x_{21} & x_{22} & ... & x_{2T}%
+\end{array}%
+\right]
+\end{equation*}%
+\pause\medskip
+
+\item A stationary \textbf{structural VAR} of order $1$ is given by%
+\begin{equation*}
+x_{t}=\Phi x_{t-1}+B\varepsilon _{t}\vspace{-0.3cm}
+\end{equation*}%
+where\smallskip
+
+\begin{itemize}
+\item $\Phi $ and $B$ are $(2\times 2)$ matrices of coefficients\medskip
+
+\item $\varepsilon _{t}$ is an $(2\times 1)$ vector of unobservable zero
+mean white noise processes
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{Three different ways of writing the same thing}}\smallskip
+
+\begin{itemize}
+\item There are different ways to write the same structural VAR(1)%
+\begin{equation*}
+x_{t}=\Phi x_{t-1}+B\varepsilon _{t}
+\end{equation*}%
+\pause\vspace{-0.3cm}
+
+\item For example, we can write it in matrix form%
+\begin{equation*}
+\begin{bmatrix}
+x_{1t} \\
+x_{2t}%
+\end{bmatrix}%
+=\left[
+\begin{array}{cc}
+\phi _{11} & \phi _{12} \\
+\phi _{21} & \phi _{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+x_{1t-1} \\
+x_{2t-1}%
+\end{bmatrix}%
++\left[
+\begin{array}{cc}
+b_{11} & b_{12} \\
+b_{21} & b_{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+\varepsilon _{1t} \\
+\varepsilon _{2t}%
+\end{bmatrix}%
+\end{equation*}%
+\pause
+
+\item Or as a system of linear equations%
+\begin{equation*}
+\left\{
+\begin{array}{l}
+x_{1t}=\phi _{11}y_{t-1}+\phi _{12}x_{1,t-1}+b_{11}\varepsilon
+_{1t}+b_{12}\varepsilon _{2t}\smallskip \\
+x_{2t}=\phi _{21}y_{t-1}+\phi _{22}x_{2,t-1}+b_{21}\varepsilon
+_{1t}+b_{22}\varepsilon _{2t}%
+\end{array}%
+\right.
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{The structural shocks}}\bigskip
+
+\begin{itemize}
+\item We defined $\varepsilon _{t}$ as a \emph{vector of unobservable zero
+mean white noise processes}\bigskip \medskip
+
+\item \textbf{What does it mean?} \pause The elements of $\varepsilon _{t}$
+are serially uncorrelated and independent of each other\bigskip \medskip
+
+\item In other words
+\begin{equation*}
+\varepsilon _{t}=(\varepsilon _{1t}^{\prime },\varepsilon _{2t}^{\prime
+})^{\prime }\sim \mathcal{N}(0,I_{2})
+\end{equation*}%
+where\medskip
+\begin{equation*}
+\mathbb{V}(\varepsilon _{t})=\Sigma _{\varepsilon }=\left[
+\begin{array}{cc}
+1 & 0 \\
+0 & 1%
+\end{array}%
+\right] \ \ \ \ \ \ \text{and}\ \ \ \ \ \ CORR(\varepsilon _{t})=\left[
+\begin{array}{cc}
+1 & 0 \\
+0 & 1%
+\end{array}%
+\right]
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{Why is it called `structural' VAR?}}\medskip
+
+\begin{itemize}
+\item Go back to our bivariate structural VAR(1)%
+\begin{equation*}
+\begin{bmatrix}
+x_{1t} \\
+x_{2t}%
+\end{bmatrix}%
+=\left[
+\begin{array}{cc}
+\phi _{11} & \phi _{12} \\
+\phi _{21} & \phi _{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+x_{1t-1} \\
+x_{2t-1}%
+\end{bmatrix}%
++\left[
+\begin{array}{cc}
+b_{11} & b_{12} \\
+b_{21} & b_{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+\varepsilon _{1t} \\
+\varepsilon _{2t}%
+\end{bmatrix}%
+\end{equation*}
+
+\item The structural VAR\ can be thought of as a description of the true
+structure of the economy\smallskip
+
+\begin{itemize}
+\item E.g.:\ an approximation of the structure of a DSGE\ model\bigskip
+\end{itemize}
+
+\item The \textbf{structural shocks} are shocks with a well-defined economic
+interpretation\smallskip
+
+\begin{itemize}
+\item E.g.:\ TFP\ shocks or monetary policy shocks\medskip
+
+\item As $\varepsilon _{t}\sim \mathcal{N}(0,I_{2})$ we can move one shock
+keeping the other shocks fixed\medskip
+
+\item That is:\ we can focus on the causal effect of one shock at the time
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{Structural VARs can answer many interesting questions...}}\medskip
+
+\begin{itemize}
+\item Go back to our bivariate structural VAR(1). To make a concrete
+example, assume that\smallskip
+
+\begin{itemize}
+\item $x_{1}$ and $x_{2}$ are output growth ($y_{t}$) and a short-term safe
+interest rate ($r_{t}$)\medskip
+
+\item $\varepsilon _{1t}$ and $\varepsilon _{2t}$ are a demand shock ($%
+\varepsilon _{t}^{Demand}$) and a monetary policy shock\ ($\varepsilon
+_{t}^{MonPol}$)\medskip
+
+\item $B$ is known (we'll get back to this in a second)\medskip
+\end{itemize}
+
+\begin{equation*}
+\begin{bmatrix}
+y_{t} \\
+r_{t}%
+\end{bmatrix}%
+=%
+\begin{bmatrix}
+\phi _{11} & \phi _{12} \\
+\phi _{21} & \phi _{22}%
+\end{bmatrix}%
+\begin{bmatrix}
+y_{t-1} \\
+r_{t-1}%
+\end{bmatrix}%
++%
+\begin{bmatrix}
+b_{11} & b_{12} \\
+b_{21} & b_{22}%
+\end{bmatrix}%
+\begin{bmatrix}
+\varepsilon _{t}^{Demand} \\
+\varepsilon _{t}^{MonPol}%
+\end{bmatrix}%
+\end{equation*}%
+\vspace{-0.15cm}
+
+\item Then:\smallskip
+
+\begin{itemize}
+\item The coefficient $b_{12}$ captures the `impact effect' (i.e. at time $t$%
+) of a monetary policy shock on output\medskip
+
+\item The $\Phi $ matrix allows us to trace the effects of the monetary
+policy shock over time (i.e. in $t+1$, $t+2$,...)\medskip
+
+\item We can add additional variables and look at other shocks: aggregate
+supply, oil price,...
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{... but the estimation of structural VARs is tricky}}
+
+\begin{itemize}
+\item \textbf{Problem} \ The structural shocks $\varepsilon _{t}$ are
+unobserved. How can we estimate $B$?
+\begin{equation*}
+\begin{bmatrix}
+y_{t} \\
+r_{t}%
+\end{bmatrix}%
+=%
+\begin{bmatrix}
+\phi _{11} & \phi _{12} \\
+\phi _{21} & \phi _{22}%
+\end{bmatrix}%
+\begin{bmatrix}
+y_{t-1} \\
+r_{t-1}%
+\end{bmatrix}%
++%
+\begin{bmatrix}
+b_{11} & b_{12} \\
+b_{21} & b_{22}%
+\end{bmatrix}%
+\begin{bmatrix}
+\varepsilon _{t}^{Demand} \\
+\varepsilon _{t}^{MonPol}%
+\end{bmatrix}%
+\end{equation*}%
+\pause
+
+\item Best we can do is to `bundle' the $\varepsilon _{t}$ into a single
+object:
+\begin{equation*}
+u_{t}=B\varepsilon _{t}\Rightarrow
+\begin{bmatrix}
+u_{1t} \\
+u_{2t}%
+\end{bmatrix}%
+\left[
+\begin{array}{cc}
+b_{11} & b_{12} \\
+b_{21} & b_{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+\varepsilon _{t}^{Demand} \\
+\varepsilon _{t}^{MonPol}%
+\end{bmatrix}%
+\Rightarrow \left\{
+\begin{array}{c}
+u_{yt}=b_{11}\varepsilon _{t}^{Demand}+b_{12}\varepsilon _{t}^{MonPol} \\
+u_{rt}=b_{21}\varepsilon _{t}^{Demand}+b_{22}\varepsilon _{t}^{MonPol}%
+\end{array}%
+\right.
+\end{equation*}
+
+\item Why is this useful?\ The VAR\ becomes%
+\begin{equation*}
+x_{t}=\Phi x_{t-1}+u_{t}
+\end{equation*}%
+\vspace{-.15cm}\vspace{-0.15cm}
+
+\item Now we can estimate $\Phi $ and $u_{t}$ with OLS\ (where $u_{t}$ will
+be OLS residuals)
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{The reduced-form VAR}}\bigskip
+
+\begin{itemize}
+\item This alternative formulation of the VAR is called the \textbf{%
+reduced-form} VAR\ representation
+\begin{equation*}
+x_{t}=\Phi x_{t-1}+u_{t}
+\end{equation*}%
+\pause
+
+\item In matrix form%
+\begin{equation*}
+\begin{bmatrix}
+y_{t} \\
+r_{t}%
+\end{bmatrix}%
+=%
+\begin{bmatrix}
+\phi _{11} & \phi _{12} \\
+\phi _{21} & \phi _{22}%
+\end{bmatrix}%
+\begin{bmatrix}
+y_{t-1} \\
+r_{t-1}%
+\end{bmatrix}%
++%
+\begin{bmatrix}
+u_{1t} \\
+u_{2t}%
+\end{bmatrix}%
+\medskip
+\end{equation*}
+
+\item Or as a system of linear equations%
+\begin{equation*}
+\left\{
+\begin{array}{c}
+y_{t}=\phi _{11}y_{t-1}+\phi _{12}r_{t-1}+u_{yt} \\
+r_{t}=\phi _{21}y_{t-1}+\phi _{22}r_{t-1}+u_{rt}%
+\end{array}%
+\right.
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{The reduced-form covariance matrix}}\bigskip \medskip
+
+\begin{itemize}
+\item A key object of interest in VARs is the covariance matrix of the
+reduced-form residuals%
+\begin{equation*}
+\Sigma _{u}=\left[
+\begin{array}{cc}
+\sigma _{y}^{2} & \sigma _{yr}^{2} \\
+\sigma _{yr}^{2} & \sigma _{r}^{2}%
+\end{array}%
+\right]
+\end{equation*}
+
+\item Differently from the structural shocks (which are orthogonal), the
+reduced-form residuals are correlated among each other\bigskip
+
+\item This is because the elements of $u_{t}$ inherit all the
+contemporaneous relations among the endogenous variables $x_{t}$\bigskip
+
+\item To see that, apply the variance operator to the definition of $%
+u_{t}=B\varepsilon _{t}$ to get
+\begin{equation*}
+\mathbb{V}(u_{t})\equiv \Sigma _{u}=\mathbb{E}\left[ u_{t}u_{t}^{\prime }%
+\right] =\mathbb{E}\left[ B\varepsilon _{t}\varepsilon _{t}^{\prime
+}B^{\prime }\right] =B\mathbb{E}\left[ \varepsilon _{t}\varepsilon
+_{t}^{\prime }\right] B^{\prime }=BB^{\prime }
+\end{equation*}%
+\medskip
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{The reduced-form covariance matrix (cont'd)}}\bigskip
+
+\begin{itemize}
+\item \textbf{Implication \ }Differently from structural VARs, the reduced
+form innovations are not informative about how shocks (e.g. to demand or
+supply) propagate through the VAR\bigskip
+
+\item An innovation to $u_{1t}$ could be driven by either $\varepsilon _{1t}$
+or $\varepsilon _{2t}$ (and vice versa)%
+\begin{equation*}
+\left\{
+\begin{array}{c}
+u_{yt}=b_{11}\varepsilon _{t}^{Demand}+b_{12}\varepsilon _{t}^{MonPol} \\
+u_{rt}=b_{21}\varepsilon _{t}^{Demand}+b_{22}\varepsilon _{t}^{MonPol}%
+\end{array}%
+\right.
+\end{equation*}
+
+\item To make causal statements\ (e.g. the effects on $x_{i1}$ of a shock to
+$\varepsilon _{2t}$)\ we need to find a way to recover $B$\bigskip
+
+\item To do that, we will exploit the fact that $\Sigma _{u}=BB^{\prime }$ $%
+\Rightarrow $ This is the essence of \textbf{identification} in VARs
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{The Wold representation}}\medskip
+
+\begin{itemize}
+\item Before turning to identification, let's introduce another
+representation of the VAR\ that will be useful later\bigskip \medskip
+
+\item Start from the structural VAR\ representation
+\begin{equation*}
+x_{t}=\Phi x_{t-1}+B\varepsilon _{t}
+\end{equation*}
+
+\item The Wold representation can be obtained by substituting recursively
+the elements on the right hand side of the equal sign%
+\begin{equation*}
+{\small
+\begin{array}{lll}
+x_{t} & = & \Phi x_{t-1}+B\varepsilon _{t} \\
+& = & \Phi \left( \Phi x_{t-2}+B\varepsilon _{t-1}\right) +B\varepsilon
+_{t}=\Phi ^{2}x_{t-2}+\Phi B\varepsilon _{t-1}+B\varepsilon _{t} \\
+& = & ...\ = \\
+& = & \Phi ^{\infty }x_{t-\infty }+\sum\limits_{j=0}^{\infty }\Phi
+^{j}B\varepsilon _{t-j}%
+\end{array}%
+}
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{The Wold representation (cont'd)}}\bigskip \medskip
+
+\begin{itemize}
+\item Of course, in practical applications, we don't have time series of
+infinite length\bigskip
+
+\item For a finite time series of $T$ observations (i.e. $%
+x_{1},x_{2},...,x_{T}$) plus an initial conditon $x_{0}$, the $T^{th}$
+observation can be written as\medskip
+\begin{equation*}
+x_{T}=\Phi ^{T}x_{0}+\sum\limits_{j=0}^{T-1}\Phi ^{j}B\varepsilon _{T-j}
+\end{equation*}
+
+\item The Wold representation shows that each observation ($x_{t}$) can be
+re-written as a combination of \smallskip
+
+\begin{itemize}
+\item The cumulative sum of the past structural shocks \medskip
+
+\item An initial condition
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{The general form of the stationary structural VAR(p) model}}\bigskip
+
+\begin{itemize}
+\item The basic bivariate VAR(1) model used so far may be too parsimonious
+to sufficiently summarize the dynamic relations of the data\bigskip \pause
+
+\item Model can be enriched with along the following dimensions\smallskip
+
+\begin{itemize}
+\item Increase the number of endogenous variables ($k$)\medskip
+
+\item Increase the number of lags ($p$)\medskip
+
+\item Add deterministic terms (e.g. time trend or seasonal dummy
+variables)\medskip
+
+\item Add exogenous variables (e.g. price of oil from the point of view of a
+small country)\bigskip \medskip \pause
+\end{itemize}
+
+\item The general form of the VAR(p) model with deterministic terms ($Z_{t}$%
+) and exogenous variables ($W_{t}$) is given by\medskip
+\begin{equation*}
+x_{t}=\Phi _{1}x_{t-1}+\Phi _{2}x_{t-2}+...+\Phi _{p}x_{t-p}+\Lambda
+Z_{t}+\Psi W_{t}+B\varepsilon _{t}
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\section{The identification problem}
+
+\begin{frame}
+\vspace{3cm}\color{title} \centering{\huge \textbf{The Identification Problem%
+}}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{Back to our estimated VAR}} \bigskip
+
+\begin{itemize}
+\item We have seen above that with OLS we can only estimate the reduced-form
+VAR\ (not the structural VAR) \bigskip
+
+\item Assume we already estimated a reduced-form VAR, so that $\Phi $ and $%
+u_{t}$ are known:%
+\begin{equation*}
+\begin{bmatrix}
+y_{t} \\
+r_{t}%
+\end{bmatrix}%
+=\left[
+\begin{array}{cc}
+\phi _{11} & \phi _{12} \\
+\phi _{21} & \phi _{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+y_{t-1} \\
+r_{t-1}%
+\end{bmatrix}%
++%
+\begin{bmatrix}
+u_{t}^{y} \\
+u_{t}^{r}%
+\end{bmatrix}%
+\medskip
+\end{equation*}
+
+\item Imagine that you are asked the following:\ \emph{What is the effect of
+a monetary policy shock on GDP growth?}\bigskip
+
+\item Unfortunately, the reduced form innovations ($u_{t}^{y}$ or $u_{t}^{r}$%
+) are not going to help us in answering the question
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{Reduced-form VARs do not tell us anything about the causality}}
+
+\begin{itemize}
+\item To see that, assume that the `true' (and unobserved)\ model of the
+economy is given by%
+\begin{equation*}
+\begin{bmatrix}
+y_{t} \\
+r_{t}%
+\end{bmatrix}%
+=\left[
+\begin{array}{cc}
+\phi _{11} & \phi _{12} \\
+\phi _{21} & \phi _{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+y_{t-1} \\
+r_{t-1}%
+\end{bmatrix}%
++\left[
+\begin{array}{cc}
+b_{11} & b_{12} \\
+b_{21} & b_{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+\varepsilon _{t}^{Demand} \\
+\varepsilon _{t}^{MonPol}%
+\end{bmatrix}%
+\end{equation*}
+
+\item It is obvious that the reduced form innovations are a linear
+combination of the two structural shocks%
+\begin{equation*}
+\begin{array}{c}
+u_{t}^{y}=b_{11}\varepsilon _{t}^{Demand}+b_{12}\varepsilon _{t}^{MonPol}{%
+\mathbf{\medskip }} \\
+u_{t}^{\pi }=b_{21}\varepsilon _{t}^{Demand}+b_{22}\varepsilon \varepsilon
+_{t}^{MonPol}%
+\end{array}%
+\end{equation*}
+
+\item For example, an increase in $u_{t}^{r}$ could be due to{\textbf{%
+\smallskip }}
+
+\begin{itemize}
+\item[{[1]}] A positive demand shock that increases both output growth and
+the policy rate ($b_{21}>0$){\textbf{\medskip }}
+
+\item[{[2]}] Or a monetary policy shock that decreases output growth and
+increases the policy rate ($b_{22}>0$)\bigskip
+\end{itemize}
+
+\item How to know whether is [1] or [2]? This is the very nature of the {{%
+\color{note} }}\textbf{identification problem}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{The identification problem\medskip }}
+
+\begin{itemize}
+\item The identification problem consists in finding a mapping from the
+reduced form VAR\ to its structural counterpart%
+\begin{equation*}
+u_{t}\Rightarrow B\varepsilon _{t}
+\end{equation*}
+
+\item To do that, we can exploit the relation between reduced form and
+structural innovations ($u_{t}=B\varepsilon _{t}$)\ to write%
+\begin{equation*}
+\Sigma _{u}=\mathbb{E}\left[ u_{t}u_{t}^{\prime }\right] =\mathbb{E}\left[
+B\varepsilon _{t}\left( B\varepsilon _{t}\right) ^{\prime }\right] =B\mathbb{%
+E}(\varepsilon _{t}\varepsilon _{t}^{\prime })B^{\prime }=B\Sigma
+_{\varepsilon }B^{\prime }=BB^{\prime }
+\end{equation*}
+
+\item The identification problem simply boils down to finding a $B$ matrix
+that satisfies $\Sigma _{u}=BB^{\prime }$\bigskip
+
+\item Unfortunately this is not as easy as it sounds. Why?{\textbf{\medskip }%
+}
+
+\begin{itemize}
+\item \textbf{Hint} \ There are infinite combinations of $B$ that give you
+the same $\Sigma _{u}$
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{The identification problem (cont'd)\smallskip }}
+
+\begin{itemize}
+\item Think of $\Sigma _{u}=BB^{\prime }$ as a system of equations
+\begin{equation*}
+\left[
+\begin{array}{cc}
+\sigma _{y}^{2} & \sigma _{yr}^{2} \\
+- & \sigma _{r}^{2}%
+\end{array}%
+\right] =\left[
+\begin{array}{cc}
+b_{11} & b_{12} \\
+b_{21} & b_{22}%
+\end{array}%
+\right] \left[
+\begin{array}{cc}
+b_{11} & b_{21} \\
+b_{12} & b_{22}%
+\end{array}%
+\right]
+\end{equation*}
+
+\item Can be rewritten as%
+\begin{equation*}
+\left\{
+\begin{array}{l}
+\sigma _{y}^{2}=b_{11}^{2}+b_{12}^{2} \\
+\sigma _{yr}^{2}=b_{11}b_{21}+b_{12}b_{22} \\
+\sigma _{yr}^{2}=b_{11}b_{21}+b_{12}b_{22} \\
+\sigma _{r}^{2}=b_{21}^{2}+b_{22}^{2}%
+\end{array}%
+\right.
+\end{equation*}
+
+\item \textbf{Problem} Because of the symmetry of the $\Sigma _{u}$ matrix,
+the second and the third equation are identical\bigskip
+
+\item We are left with $4$ unknowns (the $b$'s) but only $3$ equations!
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{How to solve the identification problem?\medskip }}
+
+\begin{itemize}
+\item How to solve a system of 3 equations in 4 unknowns?\pause \ Add a
+fourth equation :){\textbf{\smallskip }}
+
+\begin{itemize}
+\item Economic theory can help in providing the `missing' equation\bigskip
+\end{itemize}
+
+\item \textbf{Example} \ If you believe that monetary policy works with a
+lag and has no effect on output growth on impact, you can \emph{assume} $%
+b_{12}=0$\bigskip
+
+\item We just found the fourth equation%
+\begin{equation*}
+\left\{
+\begin{array}{l}
+\sigma _{y}^{2}=b_{11}^{2}+b_{12}^{2} \\
+\sigma _{yr}^{2}=b_{11}b_{21}+b_{12}b_{22} \\
+\sigma _{r}^{2}=b_{21}^{2}+b_{22}^{2} \\
+b_{12}=0%
+\end{array}%
+\right.
+\end{equation*}
+
+\item The system now can be easily solved
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\section{Common identification schemes}
+
+\begin{frame}
+\vspace{3cm}\color{title} \centering{\huge \textbf{Common Identification
+Schemes}}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{Common identification schemes}}\bigskip \bigskip
+
+\begin{itemize}
+\item Zero (recursive)\ contemporaneous restrictions\bigskip
+
+\item Zero (recursive)\ long-run restrictions\bigskip
+
+\item Sign restrictions\bigskip
+
+\item External instruments\bigskip
+
+\item Combining sign restrictions and external instruments\bigskip
+
+\item Other (narrative sign restrictions, maximizatio of forecast error
+variance,...)
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\section{Zero short-run restrictions}
+
+\begin{frame}
+{\textbf{Zero contemporaneous restrictions}}\bigskip \medskip
+
+\begin{itemize}
+\item \textbf{Intuition} \ Identification is achieved by assuming that some
+shocks have zero contemporaneous effect on some of the endogenous
+variables\bigskip\medskip
+
+\item For example, assume that monetary policy has no contemporaneous
+effects on output%
+\begin{equation*}
+\begin{bmatrix}
+y_{t} \\
+r_{t}%
+\end{bmatrix}%
+=\left[
+\begin{array}{cc}
+\phi _{11} & \phi _{12} \\
+\phi _{21} & \phi _{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+y_{t-1} \\
+r_{t-1}%
+\end{bmatrix}%
++\left[
+\begin{array}{cc}
+b_{11} & 0 \\
+b_{21} & b_{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+\varepsilon _{t}^{Demand} \\
+\varepsilon _{t}^{MonPol}%
+\end{bmatrix}%
+\end{equation*}
+\medskip
+
+\item \textbf{Implication} \ We now have 3 structural parameters to estimate
+(instead of 4)\ and 3 restrictions implied by $\Sigma _{u}$
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{Zero contemporaneous restrictions }}{How to achieve identification?} \vspace{-.25cm}
+
+\begin{itemize}
+\item The system of equations implied by $\Sigma _{u}=BB^{\prime }$\ is
+\begin{equation*}
+\left[
+\begin{array}{cc}
+\sigma _{y}^{2} & \sigma _{yr} \\
+- & \sigma _{r}^{2}%
+\end{array}%
+\right] =\left[
+\begin{array}{cc}
+b_{11} & 0 \\
+b_{21} & b_{22}%
+\end{array}%
+\right] \left[
+\begin{array}{cc}
+b_{11} & b_{21} \\
+0 & b_{22}%
+\end{array}%
+\right]
+\end{equation*}
+
+\item This yields%
+\begin{equation*}
+\left\{
+\begin{array}{l}
+\sigma _{y}^{2}=b_{11}^{2} \\
+\sigma _{yr}=b_{11}b_{21} \\
+\sigma _{r}^{2}=b_{21}^{2}+b_{22}^{2}%
+\end{array}%
+\right.
+\end{equation*}
+
+\item And can be easily solved to get:%
+\begin{equation*}
+\left\{
+\begin{array}{l}
+\begin{array}{c}
+b_{11}=\sigma _{y}^{2} \\
+b_{21}=\sigma _{yr}/\sigma _{y}^{2} \\
+b_{22}=\sqrt{\sigma _{r}^{2}-\frac{\sigma _{yr}^{2}}{\sigma _{y}^{2}}}%
+\end{array}%
+\end{array}%
+\right.
+\end{equation*}
+
+\item We can now derive the impact effects of a monetary policy shock on
+output and interest rates
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{Zero contemporaneous restrictions}}
+
+\begin{itemize}
+\item The structural VAR can be rewritten as \
+\begin{equation*}
+\begin{bmatrix}
+y_{t} \\
+\pi _{t}%
+\end{bmatrix}%
+=\left[
+\begin{array}{cc}
+\phi _{11} & \phi _{12} \\
+\phi _{21} & \phi _{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+y_{t-1} \\
+\pi _{t-1}%
+\end{bmatrix}%
++\left[
+\begin{array}{cc}
+\sigma _{y}^{2} & 0 \\
+\sigma _{yr}/\sigma _{y}^{2} & \sqrt{\sigma _{r}^{2}-\frac{\sigma _{yr}^{2}}{%
+\sigma _{y}^{2}}}%
+\end{array}%
+\right]
+\begin{bmatrix}
+\varepsilon _{t}^{Demand} \\
+\varepsilon _{t}^{MonPol}%
+\end{bmatrix}%
+\end{equation*}
+
+\item A one standard deviation shock to monetary policy ($\varepsilon
+_{t}^{MonPol}=1$) in $t$ leads to%
+\begin{equation*}
+\left\{
+\begin{array}{c}
+y_{t}=0 \\
+\pi _{t}=\sqrt{\sigma _{r}^{2}-\frac{\sigma _{yr}^{2}}{\sigma _{y}^{2}}}%
+\end{array}%
+\right.
+\end{equation*}
+
+\item A one standard deviation shock to aggregate demand ($\varepsilon
+_{t}^{Demand}=1$) in $t$ leads to%
+\begin{equation*}
+\left\{
+\begin{array}{c}
+y_{t}=\sigma _{y}^{2} \\
+\pi _{t}=\sigma _{yr}/\sigma _{y}^{2}%
+\end{array}%
+\right.
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{Zero contemporaneous restrictions}}{Aka Cholesky identification}\bigskip
+
+\begin{itemize}
+\item This identification scheme is normally implemented via a Cholesky
+decomposition of $\Sigma _{u}$\bigskip
+
+\item A Cholesky decomposition allows us to decompose $\Sigma _{u}$ into allows us to write%
+\begin{equation*}
+\Sigma _{u}=PP^{\prime }
+\end{equation*}%
+where $P$ is a lower triangular matrix\bigskip
+
+\item In other words%
+\begin{equation*}
+\left[
+\begin{array}{cc}
+\sigma _{y}^{2} & \sigma _{yr}^{2} \\
+\sigma _{yr}^{2} & \sigma _{r}^{2}%
+\end{array}%
+\right] =\left[
+\begin{array}{cc}
+p_{11} & 0 \\
+p_{12} & p_{22}%
+\end{array}%
+\right] \left[
+\begin{array}{cc}
+p_{11} & p_{12} \\
+0 & p_{22}%
+\end{array}%
+\right]
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+{\color{note}{\footnotesize \textbf{[Back to basics]}} \textbf{\ {Cholesky
+decomposition of a matrix}}}\bigskip
+
+\begin{itemize}
+\item The Cholesky decomposition is, rougly speaking, the square root of a
+matrix\medskip
+
+\begin{itemize}
+\item As for a square root, you can't compute a Cholesky decomposition for a
+non positive-definite matrix\bigskip
+\end{itemize}
+
+\item A symmetric and positive-definite matrix $A$ can be decomposed as:%
+\begin{equation*}
+A=PP^{\prime }
+\end{equation*}%
+where $P$ is an lower triangular matrix (and therefore $P^{\prime }$ is
+upper triangular)\bigskip
+
+\item The formula for a $2\times 2$ matrix is%
+\begin{equation*}
+A=%
+\begin{bmatrix}
+a & b \\
+b & c%
+\end{bmatrix}%
+\ \ \ P=%
+\begin{bmatrix}
+\sqrt{a} & \frac{b}{\sqrt{a}} \\
+0 & \sqrt{c-\frac{b}{a}}%
+\end{bmatrix}%
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{Zero contemporaneous restrictions}}{Aka Cholesky identification}\bigskip
+
+\begin{itemize}
+\item To see why the zero contemporaneous restrictions identification can be
+implemented with a Cholesky decomposition of $\Sigma _{u}$ first note that $%
+\Sigma _{u}$ is a positive semi-definite matrix\bigskip
+
+\item Then we can use the Cholesky decomposition to write
+\begin{equation*}
+\Sigma _{u}=PP^{\prime }
+\end{equation*}
+
+\item But remember that we assumed that $B$ is also lower triangular ($%
+b_{12}=0$) and that%
+\begin{equation*}
+\Sigma _{u}=BB^{\prime }
+\end{equation*}
+
+\item As both $P$ and $B$ are lower triangular, it must follow that $P=B$
+\end{itemize}
+\end{frame}
+
+\section{Zero long-run restrictions}
+
+\begin{frame}
+{\textbf{Zero long-run restrictions}}\bigskip \bigskip \bigskip
+
+\begin{itemize}
+\item \textbf{Intuition} \ Identification is achieved by assuming that some
+shocks have zero cumulative effect on some of the endogenous variables in
+the long run\bigskip\medskip
+
+\item For example, assume that monetary policy has no cumulative effect on
+the level of output in the long run\bigskip\medskip
+
+\item But how can we impose restrictions on the long-run cumulative effect
+of a structural shock?
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{Zero long-run restrictions}}{How to compute the cumulative long-run
+effects of shocks?}
+
+\begin{itemize}
+\item Re-write the VAR as%
+\begin{equation*}
+x_{t}=\Phi x_{t-1}+B\varepsilon _{t}
+\end{equation*}%
+\pause\smallskip
+
+\item If a shock hits in $t$, its cumulative (long run) impact on $x_{t}$
+would be%
+\begin{equation*}
+x_{t,t+\infty }=B\varepsilon _{t}+\Phi B\varepsilon _{t}+\Phi
+^{2}B\varepsilon _{t}+...+\Phi ^{\infty }B\varepsilon _{t}
+\end{equation*}%
+\pause\smallskip
+
+\item We can rewrite%
+\begin{equation*}
+x_{t,t+\infty }=\sum\limits_{j=0}^{\infty }\Phi ^{j}B\varepsilon _{t}=\left(
+I-\Phi \right) ^{-1}B\varepsilon _{t}=C\varepsilon _{t}
+\end{equation*}%
+where $C\equiv \left( I-\Phi \right) ^{-1}$ is the cumulative effect of the
+shock $\varepsilon _{t}$ from time $t$ to $\infty $
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{Zero long-run restrictions}}{How to compute the cumulative long-run
+effects of shocks?}\bigskip
+
+\begin{itemize}
+\item What is the intuition for $C$?\bigskip
+
+\item Go back to our output growth / policy rate example
+\begin{equation*}
+\begin{bmatrix}
+y_{t,t+\infty } \\
+r_{t,t+\infty }%
+\end{bmatrix}%
+=\left[
+\begin{array}{cc}
+c_{11} & c_{12} \\
+c_{21} & c_{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+\varepsilon _{t}^{Demand} \\
+\varepsilon _{t}^{MonPol}%
+\end{bmatrix}%
+\end{equation*}%
+\pause
+
+\item Take the first equation: $y_{t,t+\infty }=c_{11}\varepsilon
+_{t}^{Demand}+c_{12}\varepsilon _{t}^{MonPol}$\smallskip
+
+\begin{itemize}
+\item The coefficient $c_{12}$ represents the cumulative impact of a
+monetary policy shock (hitting in $t$) on the \emph{level} GDP in the
+long-run\medskip
+
+\item If you believe in the long-run neutrality of monetary policy you would
+expect $c_{12}=0$
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{Zero long-run restrictions}}{How to achieve identification?}%
+\medskip
+
+\begin{itemize}
+\item Remember that $C\equiv \left( I-\Phi \right) ^{-1}B$ and $B$ is
+unobserved. So, how does this help with the identification of $B$? \bigskip
+
+\item To achieve identification define $\Omega \equiv CC^{\prime }$ and note
+that\smallskip
+
+\begin{enumerate}
+\item $\Omega $ is known!%
+\begin{equation*}
+\Omega =\left( \left( I-\Phi \right) ^{-1}\right) BB^{\prime }\left( \left(
+I-\Phi \right) ^{-1}\right) ^{\prime }=\left( \left( I-\Phi \right)
+^{-1}\right) \Sigma _{u}\left( \left( I-\Phi \right) ^{-1}\right) ^{\prime }
+\end{equation*}
+
+\item $\Omega $ is a positive-definite symmetric matrix (so, it admits a
+unique Cholesky decomposition)%
+\begin{equation*}
+\Omega =PP^{\prime }
+\end{equation*}%
+\vspace{-.15cm}
+
+\item Because of our assumption that $C$ is lower triangular, it follows
+that $P=C$\bigskip
+\end{enumerate}
+
+\item We achieved identification $B=\left( I-\Phi \right) P$
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\section{Sign restrictions}
+
+\begin{frame}
+{\textbf{Sign restrictions}}
+
+\begin{itemize}
+\item \textbf{Intuition} \ Exploits prior beliefs (typically informed by
+theroetical models) about the sign that certain\smallskip\ shocks should
+have on certain endogenous variables\bigskip
+
+\item To fix ideas\smallskip
+
+\begin{itemize}
+\item Demand shocks should lead to an increase in output and interest rates
+\medskip
+
+\item Monetary policy shocks should lead to a fall in output for an increase
+in interest rates
+\begin{equation*}
+\begin{tabular}{lcc}
+\hline
+\addlinespace & $\text{Demand}$ ($\varepsilon _{t}^{Demand}$) & Monetary
+Policy ($\varepsilon _{t}^{MonPol}$) \\ \hline
+\addlinespace Output growth ($y_{t}$) & + & - \\
+Short-rate Int. Rate ($r_{t}$) & + & + \\ \hline
+\end{tabular}%
+\end{equation*}
+\end{itemize}
+
+\item But how can we impose restrictions on the signs of the effect of a
+structural shock?
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{Sign restrictions}}
+
+\begin{itemize}
+\item The key intuition is based on the following three steps\smallskip
+
+\begin{enumerate}
+\item Consider a random orthonormal matrix $Q$ such that:%
+\begin{equation*}
+QQ^{\prime }=I_{2}
+\end{equation*}%
+\vspace{-.15cm}
+
+\item Consider the lower triangular $B$ matrix correspoding to the Cholesky
+factor of $\Sigma _{u}$
+\begin{equation*}
+\Sigma _{u}=PP^{\prime }
+\end{equation*}%
+\vspace{-.15cm}
+
+\item The following equality holds%
+\begin{equation*}
+\Sigma _{u}=PP^{\prime }=PQQ^{\prime }P^{\prime }=\underset{B}{\underbrace{%
+\left( PQ\right) }}\underset{B^{\prime }}{\underbrace{\left( PQ\right)
+^{\prime }}}
+\end{equation*}
+\end{enumerate}
+
+\item The matrix $B=PQ$ is a valid `candidate' impact matrix that solves the
+identification problem!\smallskip
+
+\begin{itemize}
+\item Differently from $P$, the matrix $PQ$ is not lower triangular anymore
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{Sign restrictions}}
+
+\begin{itemize}
+\item But $Q$ is a random matrix... Does $B=PQ$ represent a plausible
+solution?\medskip
+
+\item Check that the impact of shocks implied by $B=PQ$ satisfy a set of a
+priori sign restrictions\medskip
+
+\item To do that, consider the structural representation of our VAR%
+\begin{equation*}
+\left[
+\begin{array}{c}
+y_{t} \\
+r_{t}%
+\end{array}%
+\right] =%
+\begin{bmatrix}
+\phi _{11} & \phi _{12} \\
+\phi _{21} & \phi _{22}%
+\end{bmatrix}%
+\left[
+\begin{array}{c}
+y_{t-1} \\
+r_{t-1}%
+\end{array}%
+\right] +\left[
+\begin{array}{cc}
+b_{11} & b_{12} \\
+b_{21} & b_{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+\varepsilon _{t}^{Demand} \\
+\varepsilon _{t}^{Mon.\ Pol}%
+\end{bmatrix}%
+\end{equation*}%
+\vspace{-.15cm}
+
+\item We can then easily check:%
+\begin{equation*}
+\begin{tabular}{lcc}
+\hline
+\addlinespace & $\text{Demand}$ ($\varepsilon _{t}^{Demand}$) & Monetary
+Policy ($\varepsilon _{t}^{Mon.\ Pol}$) \\ \hline
+\addlinespace Output growth ($y_{t}$) & $b_{11}>0$? & $b_{12}<0$? \\
+Short-rate Int. Rate($r_{t}$) & $b_{21}>0$? & $b_{22}>0$? \\ \hline
+\end{tabular}%
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{Sign restriction in steps}}
+
+\begin{enumerate}
+\item[{[1]}] Draw a random orthonormal matrix $Q$\medskip \pause
+
+\item[{[2]}] Compute $B=PQ$ where $Q$ is the Cholesky decomposition of the
+reduced form residuals $\Sigma _{u}$\medskip
+
+\item[{[3]}] Compute the impact effects of shocks associated with $\tilde{B}$%
+\medskip \pause
+
+\item[{[4]}] Are the sign restrictions satisfied?\vspace{0.1cm}
+
+\begin{enumerate}
+\item[{[4.1]}] Yes. Store the impulse response\medskip
+
+\item[{[4.2]}] No. Discard the impulse response\medskip \pause
+\end{enumerate}
+\end{enumerate}
+
+\begin{itemize}
+\item Perform steps [1] to [4.2] $N$ times and construct a distribution of $B
+$ matrices\medskip
+
+\item All matrices in the set $B^{(i)}$ (for $i=1,2,...,N$)\ represent
+admissible solutions to the identification problem\medskip
+
+\item In this sense, sign restricted VARs are only \textbf{set identified}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\section{Structural Dynamic Analysis}
+
+\begin{frame}
+\vspace{3cm}\color{title} \centering{\huge \textbf{Structural Dynamic
+Analysis}}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{Why do we need identification?}}
+
+\begin{itemize}
+\item According to Stock \&\ Watson's list so far we have done
+
+\begin{enumerate}
+\item Describe and summarize macroeconomic time series
+
+\item Make forecasts
+
+\item Recover the true structure of the macroeconomy from the data\medskip
+\pause
+\end{enumerate}
+
+\item How about
+
+\begin{enumerate}
+\item Advise macroeconomic policy-makers\medskip \pause
+\end{enumerate}
+
+\item (A good) identification allows us to address the last point\medskip
+\pause
+
+\item This is normally done by means of {{\color{note} Impulse responses}}, {%
+{\color{note} Forecast error variance decompositions}}, and {{\color{note}
+Historical decompositions}}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{Impulse response functions}}
+
+\begin{itemize}
+\item Impulse response functions ($I\pi $) answer the question:\ What is the
+response over time of each of the variables in a VAR\ to an increase in the
+current value of one of the structural innovations, assuming that:
+
+\begin{itemize}
+\item the structural innovation returns to zero in subsequent periods and
+
+\item all other structural innovations are equal to zero?\medskip \pause
+\end{itemize}
+
+\item The implied thought experiment makes sense only when the innovations
+are uncorrelated across equations (i.e. \ once $B$ has been identified)
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{How to compute {impulse response functions}}}
+
+\begin{itemize}
+\item Consider our simple bivariate VAR%
+\begin{equation*}
+\left[
+\begin{array}{c}
+x_{1t} \\
+x_{2t}%
+\end{array}%
+\right] =%
+\begin{bmatrix}
+\phi _{11} & \phi _{12} \\
+\phi _{21} & \phi _{22}%
+\end{bmatrix}%
+\left[
+\begin{array}{c}
+x_{1t-1} \\
+x_{2t-1}%
+\end{array}%
+\right] +\left[
+\begin{array}{cc}
+b_{11} & b_{12} \\
+b_{21} & b_{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+\varepsilon _{1t} \\
+\varepsilon _{2t}%
+\end{bmatrix}%
+,
+\end{equation*}
+
+\item Define a $2\times 1$ vector of impulse selection ($s$) that takes
+value of one for the structural shock that we want to consider.\medskip
+
+\item For example, to compute the IR\ to the first structural shocks we
+define $s$ as:%
+\begin{equation*}
+s=\left[
+\begin{array}{c}
+1 \\
+0%
+\end{array}%
+\right] .
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{How to compute {impulse response functions (cont'd)}}}
+
+\begin{itemize}
+\item The impulse responses to the structural shock $\varepsilon _{1t}$ can
+be easily computed with the following equation%
+\begin{equation*}
+x_{t}=\Phi x_{t-1}+Bs_{t},
+\end{equation*}%
+which can be computed recursively as follows%
+\begin{equation*}
+\left\{
+\begin{array}{ll}
+I\pi _{t}=Bs, & \ \ \ \ \text{for }t=0, \\
+I\pi _{t}=\Phi \cdot I\pi _{t-1} & \ \ \ \ \text{for }t=2,...,h.%
+\end{array}%
+\right.
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{Forecast error variance decompositions}}
+
+\begin{itemize}
+\item Forecast error variance decompositions\ ($VD$) answer the question
+
+\begin{itemize}
+\item What portion of the variance of the forecast error that is made when
+predicting $x_{i,t+h}$ is due to each structural shock in $\varepsilon _{t}$%
+?\medskip \pause
+\end{itemize}
+
+\item Provide information about the relative importance of each structural
+shock in affecting the variables in the VAR
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{How to compute {forecast error variance decompositions}}}
+
+\begin{itemize}
+\item Consider the 1-step ahead forecast error in our simple bivariate VAR:%
+\begin{equation*}
+x_{t+1}-\mathbb{E}\left[ x_{t+1}\right] =x_{t+1}-\mathbb{E}\left[ \Phi
+x_{t}+u_{t+1}\right] =x_{t+1}-\Phi x_{t}=u_{t+1}
+\end{equation*}
+
+\item -\TEXTsymbol{>}\ 1-step ahead forecast error is the 1-step ahead
+reduced form residual
+
+\item We know that%
+\begin{equation*}
+{\small \left\{
+\begin{array}{c}
+u_{1t+1}=b_{11}\varepsilon _{1t+1}+b_{12}\varepsilon _{2t+1}, \\
+u_{2t+1}=b_{21}\varepsilon _{1t+1}+b_{22}\varepsilon _{2t+1}.%
+\end{array}%
+\right. }
+\end{equation*}
+
+\item What is the variance of $u_{t+1}$?
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\color{note}{\footnotesize \textbf{[Back to basics]}} \textbf{\ Basic
+properties of the variance }}
+
+\begin{itemize}
+\item If X is a random variable $x$ and $a$ is a constant
+
+\begin{itemize}
+\item $\mathbb{V}\left( x+a\right) =\mathbb{V}\left( x\right) $
+
+\item $\mathbb{V}\left( ax\right) =a^{2}\mathbb{V}\left( x\right) $\medskip
+\pause
+\end{itemize}
+
+\item If $Y$ is a random variable and $b$ is a constant
+
+\begin{itemize}
+\item $\mathbb{V}\left( aX+bY\right) =a^{2}V\left( x\right) +b^{2}V\left(
+Y\right) +2abV\left( X,Y\right) $\medskip \pause
+\end{itemize}
+
+\item Since the structural errors are independent, it follows that $%
+COV\left( \varepsilon _{1},\varepsilon _{2}\right) =0$
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{How to compute {forecast error variance decompositions (cont'd)}}}
+
+\begin{itemize}
+\item The variance of the forecast error is given by
+\begin{equation*}
+{\small
+\begin{array}{c}
+\mathbb{V}\left( u_{1t}\right) =b_{11}^{2}\mathbb{V}\left( \varepsilon
+_{1,t+1}\right) +b_{12}^{2}\mathbb{V}\left( \varepsilon _{2,t+1}\right)
+=b_{11}^{2}+b_{12}^{2}\medskip \\
+\mathbb{V}\left( u_{2t}\right) =b_{21}^{2}\mathbb{V}\left( \varepsilon
+_{1,t+1}\right) +b_{22}^{2}\mathbb{V}\left( \varepsilon _{2,t+1}\right)
+=b_{21}^{2}+b_{22}^{2}%
+\end{array}%
+}
+\end{equation*}
+
+\item Variance of $\varepsilon _{t}$ is $1$ and the structural shocks are
+orthogonal to each other.
+
+\item what portion of the variance of the forecast error is due to each
+structural shock?
+\begin{equation*}
+\underset{\text{This sums up to 1}}{\underbrace{\left\{
+\begin{array}{c}
+VD_{x_{1}}^{\varepsilon _{1}}=\frac{b_{11}^{2}}{b_{11}^{2}+b_{12}^{2}}%
+\medskip \\
+VD_{x_{1}}^{\varepsilon _{2}}=\frac{b_{12}^{2}}{b_{11}^{2}+b_{12}^{2}}%
+\medskip%
+\end{array}%
+\right. }}\ \ \ \ \ \ \underset{\text{This sums up to 1}}{\underbrace{%
+\left\{
+\begin{array}{c}
+VD_{x_{2}}^{\varepsilon _{1}}=\frac{b_{21}^{2}}{b_{21}^{2}+b_{22}^{2}}%
+\medskip \\
+VD_{x_{2}}^{\varepsilon _{2}}=\frac{b_{22}^{2}}{b_{21}^{2}+b_{22}^{2}}%
+\medskip%
+\end{array}%
+\right. }}
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{Historical decompositions}}
+
+\begin{itemize}
+\item Historical decompositions ($HD$) answer the question
+
+\begin{itemize}
+\item What portion of the deviation of $x_{i,t}$ from its unconditional mean
+is due to the structural shock $\varepsilon _{i}$?\medskip \pause
+\end{itemize}
+
+\item In the absence of shocks, the variables of a (stable)\ VAR\ will
+converge to their unconditional mean\ (i.e. their equilibrium values or
+steady state)
+
+\item But when a structural shock hits, the endogenous variables move away
+from their equilibrium and then only slowly go back to it
+
+\item If another shock hits in the next period, the variables will be away
+from equilibrium because of the new shock and the persistent effect of the
+old shock.
+
+\item VD\ allow us to know, at each point in time, which shock is
+responsible keeping the endogenous variables away from their steady state
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+{\color{note}{\footnotesize \textbf{[Back to basics]}} \textbf{\ Wold
+representation of a VAR}}
+
+\begin{itemize}
+\item Each observation of our original data can be re-written as the
+cumulative sum of the structural shocks
+
+\item Take for example the last observation of a time series $%
+x_{1},x_{2},...,x_{T}$ (with initial condition $x_{0}$)%
+\begin{equation*}
+{\small
+\begin{array}{lll}
+x_{T} & = & \Phi x_{T-1}+B\varepsilon _{T} \\
+& = & \Phi \left( \Phi x_{T-2}+B\varepsilon _{T-1}\right) +B\varepsilon
+_{T}=\Phi ^{2}x_{T-2}+\Phi B\varepsilon _{T-1}+B\varepsilon _{T} \\
+& = & ...\
+\end{array}%
+}
+\end{equation*}%
+\pause
+
+\item If you keep on iterating%
+\begin{equation*}
+x_{T}=\Phi ^{T}x_{0}+\sum\limits_{j=0}^{T}\Phi ^{j}B\varepsilon _{T-j}
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{How to compute historical decompositions }}
+
+\begin{itemize}
+\item As an example, we compute the $HD$ of the second observation ($x_{2}$)
+of our bivariate VAR\medskip\
+
+\item Write $x_{2}$ as a function of present and past structural shocks ($%
+\varepsilon _{1}$ and $\varepsilon _{2}$) and the initial condition ($x_{0}$)%
+\begin{equation*}
+x_{2}=\underset{init_{2}}{\underbrace{\Phi ^{2}x_{0}}}+\underset{\boldsymbol{%
+\Theta }_{\boldsymbol{1}}}{\underbrace{\Phi B}}\varepsilon _{1}\underset{%
+\boldsymbol{\Theta }_{2}}{+\underbrace{B}}\varepsilon _{2}
+\end{equation*}%
+\pause
+
+\item Re-write $x_{2}$ in matrix form
+\begin{equation*}
+{\small
+\begin{bmatrix}
+x_{1,2} \\
+x_{2,2}%
+\end{bmatrix}%
+=%
+\begin{bmatrix}
+init_{x_{1},2} \\
+init_{x_{2},2}%
+\end{bmatrix}%
++%
+\begin{bmatrix}
+\theta _{11}^{1} & \theta _{12}^{1} \\
+\theta _{21}^{1} & \theta _{22}^{1}%
+\end{bmatrix}%
+\begin{bmatrix}
+\varepsilon _{1,1} \\
+\varepsilon _{2,1}%
+\end{bmatrix}%
++%
+\begin{bmatrix}
+\theta _{11}^{2} & \theta _{12}^{2} \\
+\theta _{21}^{2} & \theta _{22}^{2}%
+\end{bmatrix}%
+\begin{bmatrix}
+\varepsilon _{1,2} \\
+\varepsilon _{2,2}%
+\end{bmatrix}%
+}
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\smallskip \smallskip
+
+\begin{frame}
+{\textbf{How to compute historical decompositions (cont'd)}}
+
+\begin{itemize}
+\item Then $x_{2}$ can be expressed as
+\begin{equation*}
+{\small \left\{
+\begin{array}{l}
+x_{1,2}=init_{x_{1},2}+\theta _{11}^{1}\varepsilon _{1,1}+\theta
+_{12}^{1}\varepsilon _{2,1}+\theta _{11}^{2}\varepsilon _{1,2}+\theta
+_{12}^{2}\varepsilon _{2,2}\medskip \\
+x_{2,2}=init_{x_{2},2}+\theta _{21}^{1}\varepsilon _{1,1}+\theta
+_{22}^{1}\varepsilon _{2,1}+\theta _{21}^{2}\varepsilon _{1,2}+\theta
+_{22}^{2}\varepsilon _{2,2}%
+\end{array}%
+\right. }
+\end{equation*}%
+\pause
+
+\item The historical decomposition is given by
+\begin{equation*}
+\begin{array}{ccc}
+\underset{\text{This sums up to }x_{1,2}}{\underbrace{{\small \left\{
+\begin{array}{l}
+HD_{x_{1},2}^{\varepsilon _{1}}=\theta _{11}^{1}\varepsilon _{1,1}+\theta
+_{11}^{2}\varepsilon _{1,2}\medskip \\
+HD_{x_{1},2}^{\varepsilon _{2}}=\theta _{12}^{1}\varepsilon _{2,1}+\theta
+_{12}^{2}\varepsilon _{2,2}\medskip \\
+HD_{x_{1},2}^{init}=init_{x_{1},2}\medskip%
+\end{array}%
+\right. }}} &  & \underset{\text{This sums up to }x_{2,2}}{\underbrace{%
+{\small \left\{
+\begin{array}{l}
+HD_{x_{2},2}^{\varepsilon _{1}}=\theta _{21}^{1}\varepsilon _{1,2}+\theta
+_{21}^{0}\varepsilon _{1,2}\medskip \\
+HD_{x_{2},2}^{\varepsilon _{2}}=\theta _{22}^{1}\varepsilon _{2,2}+\theta
+_{22}^{0}\varepsilon _{2,2}\medskip \\
+HD_{x_{2},2}^{init}=init_{x_{2},2}\medskip%
+\end{array}%
+\right. }}}%
+\end{array}%
+\end{equation*}%
+where $HD_{x_{1},2}^{\varepsilon _{1}}$ is the contribution of present and
+past shocks to $\varepsilon _{1}$ to $x_{1}$ in period $t=2$.
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\section{VAR\ Estimation}
+
+\begin{frame}
+\vspace{3cm}\color{title} \centering{\huge \textbf{VAR\ Estimation} }
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{A simple bivariate VAR\ model}}\bigskip
+
+\begin{itemize}
+\item US\ monthly data from 1989q1to 2019q4 on output growth ($y_{t}$) and
+inflation ($\pi _{t}$)\bigskip
+\end{itemize}
+
+\begin{figure}[h]
+\centering\includegraphics[width=.85\textwidth]{DATA_BivariateVAR.pdf}
+\end{figure}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{We can now estimate the VAR with some real data}}\bigskip \bigskip
+
+\begin{itemize}
+\item We fit a VAR(1) with a constant%
+\begin{equation*}
+\begin{bmatrix}
+y_{t} \\
+\pi _{t}%
+\end{bmatrix}%
+=%
+\begin{bmatrix}
+\alpha _{y} \\
+\alpha _{\pi }%
+\end{bmatrix}%
++\left[
+\begin{array}{cc}
+\phi _{11} & \phi _{12} \\
+\phi _{21} & \phi _{22}%
+\end{array}%
+\right]
+\begin{bmatrix}
+y_{t-1} \\
+\pi _{t-1}%
+\end{bmatrix}%
++%
+\begin{bmatrix}
+u_{t}^{y} \\
+u_{t}^{\pi }%
+\end{bmatrix}%
+\end{equation*}
+
+\item This means we are estimating\medskip
+
+\begin{itemize}
+\item $2+4$ coefficients, namely the elements of $\alpha $ and $\Phi $%
+\medskip
+
+\item $2$ variances of the reduced-form residuals, namely $\sigma _{y}^{2}$
+and $\sigma _{\pi }^{2}$\medskip
+
+\item $1$ covariance of the reduced-form residuals, namely $\sigma _{y\pi }$%
+\bigskip
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{OLS\ estimation: Typical VAR\ output}}\bigskip
+
+\begin{itemize}
+\item Six elements in $\alpha$ and $\Phi$\medskip
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrr}
+\toprule & Real GDP ($y$) & CPI ($\pi$) \\
+\midrule constant & 0.435 & 0.3768 \\
+Real GDP (-1) & 0.3992 & 0.1017 \\
+CPI (-1) & -0.1169 & 0.2682 \\
+\bottomrule &  &
+\end{tabular}%
+\end{table}
+
+\item Three elements of $\Sigma_u$\medskip
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrr}
+\toprule & Real GDP ($u_y$) & Inflation ($u_{\pi}$) \\
+\midrule Real GDP ($u_y$) & 0.29 & 0.04 \\
+Inflation ($u_{\pi}$) & 0.04 & 0.21 \\
+\bottomrule &  &
+\end{tabular}%
+\end{table}
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{OLS\ estimation: Typical VAR\ output (cont'd)}}\bigskip
+
+\begin{itemize}
+\item The covariance of the residuals reflects the {{\color{note} \textbf{%
+average contemporaneous relation} }between the endogenous variables}
+\begin{table}[tbph]
+\centering%
+\begin{tabular}{rrr}
+\toprule & Real GDP ($u_{y}$) & Inflation ($u_{\pi }$) \\
+\midrule Real GDP ($u_{y}$) & 0.29 & \textbf{\color{note} 0.04} \\
+Inflation ($u_{\pi }$) & 0.04 & 0.21 \\
+\bottomrule &  &
+\end{tabular}%
+\end{table}
+\pause\medskip
+
+\item In our example output growth and inflation are contemporaneously
+positively correlated\smallskip
+
+\begin{itemize}
+\item It means that, on average, when GDP growth increases inflation
+increases, too\bigskip
+\end{itemize}
+
+\item Does it mean that a shock to output always increase
+inflation?\smallskip
+
+\begin{itemize}
+\item No! Recall that reduced from residuals are not informative about
+structural shocks.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{Model checking \& tuning}}\bigskip
+
+\begin{itemize}
+\item These notes do not cover this aspect in detail but... \bigskip
+
+\item ... before interpreting the VAR results you should check a number of
+assumptions\bigskip \pause
+
+\item Loosely speaking, you need to check that the {{\color{note}
+reduced-form residuals}} are\smallskip
+
+\begin{itemize}
+\item Normally distributed\medskip
+
+\item Not autocorrelated\medskip
+
+\item Not heteroskedastic (i.e., have constant variance)\bigskip \pause
+\end{itemize}
+
+\item ... and that the VAR is stationary (we'll see in a second what it
+means)
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{Model checking: why the residuals?}}\bigskip
+
+\begin{itemize}
+\item The VAR believes that%
+\begin{equation*}
+x\sim {\small \mathcal{N}(}\mu ,\sigma ){\small \ \ \ \Longrightarrow \ \ \ }%
+\left\{ {\small
+\begin{array}{lll}
+x_{1} & \sim & \mathcal{N}(\mu _{1},\sigma _{y}^{2}) \\
+x_{2} & \sim & \mathcal{N}(\mu _{2},\sigma _{r}^{2})%
+\end{array}%
+}\right.
+\end{equation*}
+
+\item If the data that we feed into the VAR\ has not these features, the
+residuals will inherit them\bigskip \pause
+
+\item Note that\smallskip
+
+\begin{itemize}
+\item Mean ($\mu $) and variance\ ($\sigma _{yr}^{2}$) are constant $%
+\Longrightarrow $ The data have to be stationary!\medskip \pause
+
+\item The mean ($\mu $) and variance\ ($\sigma _{yr}^{2}$) are not known a
+priori \medskip \pause
+
+\item At each point in time $x_{t}$ does not generally coincide with $\mu $
+because of (i) shocks hitting at $t$ and (ii) shocks that have hit in the
+past and that are slowly dying out \medskip \pause
+
+\item The average of $x_{t}$ over a given sample does not necessarily
+coincide with $\mu $
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{The unconditional mean of the VAR}}\bigskip
+
+\begin{itemize}
+\item The unconditional mean of the\ VAR can be easily computed by recursive
+substitution\medskip
+
+\item In general, we can write
+\begin{equation*}
+{\small
+\begin{array}{lll}
+\mathbb{E}[x_{t}] & = & \mathbb{E}[\alpha +\Phi x_{t-1}+u_{t}]=\smallskip \\
+& = & \alpha +\Phi \mathbb{E[}x_{t-1}\mathbb{]}=\alpha +\Phi \alpha +\Phi
+^{2}\mathbb{E[}x_{t-2}]=\smallskip \\
+& = & ...\ =\smallskip \\
+& = & \sum\limits_{j=0}^{\infty }\Phi ^{j}\alpha +\Phi ^{\infty }x_{t-\infty
+}\medskip%
+\end{array}%
+}
+\end{equation*}%
+\pause
+
+\item If VAR\ is stationary, from the last expression we get%
+\begin{equation*}
+\mathbb{E}[x_{t}]=\left( I-\Phi \right) ^{-1}\alpha
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\color{note}{\footnotesize \textbf{[Back to basics]}} \textbf{\ {Geometric
+series } }}
+
+\begin{itemize}
+\item Consider the following sum $\sum\limits_{j=0}^{T}A^{j}$\medskip
+
+\item When $T\rightarrow \infty $ we have:
+\begin{equation*}
+(1+A+A^{2}+...+A^{\infty })=\left( I-A\right) ^{-1}
+\end{equation*}%
+if and only if:
+
+\begin{itemize}
+\item $\left\vert eig(Y\mathbf{)}\right\vert <1$ when $A$ is a matrix\medskip
+
+\item $A<1$ when $A$ is a number\bigskip \pause
+\end{itemize}
+
+\item Therefore, getting back to our VAR, when $T$ is large enough we have%
+\begin{equation*}
+\sum\limits_{j=0}^{T-1}A^{j}+A^{T}x_{0}=\left( I-\Phi \right) ^{-1}\alpha +%
+\underset{\approx 0}{\underbrace{\Phi ^{T}x_{0}}}=\left( I-\Phi \right)
+^{-1}\alpha
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{Stationary VAR, stationary data}}\bigskip
+
+\begin{itemize}
+\item A VAR\ is stationary (or stable) when
+\begin{equation*}
+\left\vert eig(\Phi )\right\vert <1\bigskip
+\end{equation*}
+
+\item If this condition is satisfied\smallskip
+
+\begin{itemize}
+\item The VAR's unconditional mean is $\mathbf{(}I-\Phi \mathbf{)}%
+^{-1}\alpha $ \medskip
+
+\item That is:\ the VAR's equilibrium or steady state\bigskip
+\end{itemize}
+
+\item In absence of shocks, {a stable VAR\ variable will converge to its
+unconditional mean at a rate that depends on }$\Phi $
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\begin{frame}
+{\textbf{Some VAR\ limitations}}\bigskip
+
+\begin{itemize}
+\item VARs are {{\color{note} linear}} models of {{\color{note} stationary
+data}}\bigskip
+
+\item ... but often macro data\smallskip
+
+\begin{itemize}
+\item is non-linear (crisis periods)\medskip
+
+\item is non-stationary (trends, breaks, etc.)\medskip
+
+\item displays time-varying variance (Great Moderation vs. Great
+Recession)\bigskip \pause
+\end{itemize}
+
+\item All these elements have to be taken into account when analyzing the
+output from VAR\ analysis (especially when estimated over the sample period
+we use these days which features all the above)
+\end{itemize}
+\end{frame}
+
+\vspace{0.1cm}
+
+\section{Examples}
+
+\begin{frame}
+%TCIMACRO{\TeXButton{section}{\color{title} \centering \Large}}%
+%BeginExpansion
+\color{title} \centering \Large%
+%EndExpansion
+\textbf{\textquotedblleft Famous VAR\ Examples\textquotedblright }
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{Examples of different identification schemes}}
+
+\begin{itemize}
+\item Zero short-run restrictions
+
+\begin{itemize}
+\item Stock \& Watson\ (2001). \textquotedblleft Vector
+Autoregressions,\textquotedblright\ Journal of Economic Perspectives\medskip
+\pause
+\end{itemize}
+
+\item Zero long-run restrictions
+
+\begin{itemize}
+\item Blanchard \&\ Quah (1989). \textquotedblleft The Dynamic Effects of
+Aggregate Demand and Supply Disturbances\textquotedblright , American
+Economic Review\medskip \pause
+\end{itemize}
+
+\item Sign Restrictions
+
+\begin{itemize}
+\item Uhlig (2005). \textquotedblleft What are the effects of monetary
+policy on output? Results from an agnostic identification
+procedure,\textquotedblright\ Journal of Monetary Economics
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\section{Examples: Stock \& Watson\ (2001, JEP)}
+
+\begin{frame}
+{\textbf{Example: zero short-run restrictions}}
+
+\begin{itemize}
+\item Stock \& Watson\ (2001). \textquotedblleft Vector
+Autoregressions,\textquotedblright\ Journal of Economic
+Perspectives\smallskip
+
+\item US\ quarterly data from 1960.I to 2000.IV
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{Monetary policy shocks, inflation and unemployment}}
+
+\begin{itemize}
+\item Objective: infer the causal influence of monetary policy on
+unemployment, inflation and interest rates\pause
+
+\item Assumptions
+
+\begin{itemize}
+\item MP\ ($r_{t}$) reacts contemporaneously to movements in inflation and
+in unemployment
+
+\item MP shocks ($\varepsilon_{3t}$) do not affect inflation and
+unemployment within the quarter of the shock\smallskip \pause%
+\begin{equation*}
+\left[
+\begin{array}{ccc}
+a_{11} & {\color{note}{0}} & {\color{note}{0}} \\
+a_{21} & a_{22} & {\color{note}{0}} \\
+a_{31} & a_{32} & a_{33}%
+\end{array}%
+\right]
+\begin{bmatrix}
+\pi _{t} \\
+ur_{t} \\
+r_{t}%
+\end{bmatrix}%
+=\left[
+\begin{array}{ccc}
+b_{11} & b_{12} & b_{13} \\
+b_{21} & b_{22} & b_{23} \\
+b_{31} & b_{32} & b_{33}%
+\end{array}%
+\right]
+\begin{bmatrix}
+\pi_{t-1} \\
+ur_{t-1} \\
+r_{t-1}%
+\end{bmatrix}%
++%
+\begin{bmatrix}
+\varepsilon_{2t} \\
+\varepsilon_{urt} \\
+\varepsilon_{3t}%
+\end{bmatrix}%
+\end{equation*}
+\end{itemize}
+
+\item Do these assumptions make sense?
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{The effect of a monetary policy shock}}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{The other two shocks are identified by definition... but how can we
+interpret them?}}
+
+\begin{itemize}
+\item How about $\varepsilon_{\pi }$ and $\varepsilon_{ur}$? They represent
+an aggregate supply and a demand equation...
+
+\begin{itemize}
+\item The shock to $\varepsilon_{\pi }$ affects all variables
+contemporaneously
+
+\item The shock to $\varepsilon_{ur}$ affects $r_{t}$ contemporaneously but
+not $\pi _{t}$\pause\bigskip
+\end{itemize}
+
+\item Do these assumptions make sense?\pause\bigskip
+
+\item \lbrack Some shocks may be better identified than others]
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{Aggregate demand and aggregate supply shocks}}
+
+\begin{minipage}{.48\textwidth}
+\begin{figure}[h]
+\begin{flushleft}
+\small
+\begin{itemize}
+\item Shock to $\varepsilon_{2t}$ behaves as a negative aggregate supply shock
+\end{itemize}
+\vspace{.3cm}
+%\includegraphics[width=.99\textwidth]{SWirf1.pdf}
+\end{flushleft}
+\end{figure}
+\end{minipage}\ \pause\
+\begin{minipage}{.48\textwidth}
+\begin{figure}[h]
+\begin{flushleft}
+\small
+\begin{itemize}
+\item Shock to $\varepsilon_{u t}$ behaves as a negative aggregate demand shock
+\end{itemize}
+%\vspace{.3cm}\includegraphics[width=.99\textwidth]{SWirf2.pdf}
+\end{flushleft}
+\end{figure}
+\end{minipage}
+\end{frame}
+
+\smallskip
+
+\begin{frame}
+{\textbf{Forecast error variance decomposition}}
+
+\begin{table}[tbph]
+{\small \centering%
+\begin{tabular}{lrrrrrrrrrrr}
+\addlinespace\toprule & \multicolumn{3}{c}{Inflation} &  &
+\multicolumn{3}{c}{Unemployment} &  & \multicolumn{3}{c}{Fed Funds} \\
+\midrule & $\varepsilon_{\pi }$ & $\varepsilon_{ur}$ & $\varepsilon_{r}$ &
+& $\varepsilon_{\pi }$ & $\varepsilon_{ur}$ & $\varepsilon_{r}$ &  & $%
+\varepsilon_{\pi }$ & $\varepsilon_{ur}$ & $\varepsilon_{r}$ \\
+\cline{2-4}\cline{6-8}\cline{10-12}
+t = 1 & 1.00 & 0.00 & 0.00 &  & 0.00 & 1.00 & 0.00 &  & 0.02 & 0.20 & 0.79
+\\
+t = 4 & 0.88 & 0.10 & 0.01 &  & 0.02 & 0.96 & 0.02 &  & 0.09 & 0.51 & 0.41
+\\
+t = 8 & 0.83 & 0.16 & 0.01 &  & 0.10 & 0.76 & 0.13 &  & 0.11 & 0.60 & 0.29
+\\
+t = 12 & 0.83 & 0.15 & 0.02 &  & 0.21 & 0.60 & 0.19 &  & 0.15 & 0.59 & 0.26
+\\
+\bottomrule &  &  &  &  &  &  &  &  &  &  &
+\end{tabular}%
+}
+\end{table}
+\end{frame}
+
+\smallskip
+
+\section{Examples: Blanchard \&\ Quah (1989, AER)}
+
+\begin{frame}
+{\textbf{Example: zero long-run restrictions}}
+
+\begin{itemize}
+\item Blanchard \&\ Quah (1989). \textquotedblleft The Dynamic Effects of
+Aggregate Demand and Supply Disturbances\textquotedblright , American
+Economic Review\smallskip
+
+\item US\ quarterly data from 1948.I to 1987.IV
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{Economic theory and the long-run}}
+
+\begin{itemize}
+\item Economic theory usually tells us a lot more about what will happen in
+the long-run, rather than exactly what will happen today\smallskip \pause
+
+\begin{itemize}
+\item Demand-side shocks have no long-run effect on output, while
+supply-side shocks do\smallskip \pause
+
+\item Monetary policy shocks have no long-run effect on output\smallskip
+\pause
+
+\item ...\medskip
+\end{itemize}
+
+\item This suggests an alternative approach: to use these
+theoretically-inspired long-run restrictions to identify shocks and impulse
+responses
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{Blanchard \&\ Quah's identification assumptions}}
+
+\begin{itemize}
+\item There are two types of disturbances affecting unemployment and
+output\medskip \pause
+
+\item The first has no long-run effect on either unemployment or output
+level\medskip \pause
+
+\item The second has no long-run effect on unemployment, but {{\color{note}
+may have a long-run effect on output level}}\medskip \pause
+
+\item Blanchard \&\ Quah refer to the first as demand disturbances, and to
+the second as supply disturbances (traditional Keynesian view of
+fluctuations)
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{Identification}}
+
+\begin{itemize}
+\item We showed that the long-run cumulative impact of a structural shocks
+is
+\begin{equation*}
+\mathcal{I\pi }_{\tau ,\tau +\infty }=\sum\limits_{j=0}^{\infty }\mathbf{%
+\Phi }^{j}B\varepsilon _{t}=\left( I-\mathbf{\Phi }\right) ^{-1}B\varepsilon
+_{t}=\mathbf{D\varepsilon }_{t}
+\end{equation*}%
+\pause
+
+\item Assume that $\varepsilon_{t}^{y}$ is the supply shock and that $%
+\varepsilon_{t}^{ur}$ is the demand shock\smallskip \pause
+
+\item We can rewrite the VAR\ such that the cumulated effect of $\varepsilon
+_{t}^{ur}$ on $y_{t}$ is equal to zero by assuming%
+\begin{equation*}
+\left[
+\begin{array}{c}
+y_{t} \\
+ur_{t}%
+\end{array}%
+\right] =\left[
+\begin{array}{cc}
+d_{11} & {\color{note}}0 \\
+d_{21} & d_{22}%
+\end{array}%
+\right] \left[
+\begin{array}{c}
+\varepsilon_{t}^{y} \\
+\varepsilon_{t}^{ur}%
+\end{array}%
+\right]
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{Aggregate demand and supply shocks}}
+
+\begin{minipage}{.48\textwidth}
+\begin{figure}[h]
+\begin{flushleft}
+\small
+\begin{itemize}
+\item Aggregate supply shock initially increases unemployment
+(puzzle of hours to producticvity shocks)
+\end{itemize}
+\vspace{.3cm}
+%\includegraphics[width=.99\textwidth]{BQirf1.pdf}
+\end{flushleft}
+\end{figure}
+\end{minipage}\ \pause\
+\begin{minipage}{.48\textwidth}
+\begin{figure}[h]
+\begin{flushleft}
+\small
+\begin{itemize}
+\item Aggregate demand shocks have a hump-shaped effect on output and unemployment
+\end{itemize}
+%\vspace{.3cm}\includegraphics[width=.99\textwidth]{BQirf2.pdf}
+\end{flushleft}
+\end{figure}
+\end{minipage}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{How can we check the long-run \textquotedblleft
+neutrality\textquotedblright\ of demand shocks on output level?}}
+
+\begin{itemize}
+\item Let's simply plot the cumulative sum of the impulse responses of
+output growth
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\section{Examples: Uhlig (2005, JME)}
+
+\begin{frame}
+{\textbf{Example: sign restrictions}}
+
+\begin{itemize}
+\item Uhlig (2005). \textquotedblleft What are the effects of monetary
+policy on output? Results from an agnostic identification
+procedure,\textquotedblright\ Journal of Monetary Economics\smallskip
+
+\item US\ monthly data from 1965.I to 2003.XII
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{What are the effects of monetary policy on output?}}
+
+\begin{itemize}
+\item Before asking what are the effects of a monetary policy shocks we
+should be asking, {{\color{note} what is a monetary policy shock?}}\medskip
+\pause
+
+\item In the inflation targeting era a monetary policy shock is an increase
+in the policy rate that
+
+\begin{itemize}
+\item is ordered last in a Cholesky decomposition?
+
+\item has no permanent effect on output?
+
+\item ....?
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{What is a monetary policy shock?}}
+
+\begin{itemize}
+\item According to conventional wisdom, monetary contractions should
+\smallskip
+
+\begin{enumerate}
+\item Raise the federal funds rate\smallskip \pause
+
+\item Lower prices\smallskip \pause
+
+\item Decrease non-borrowed reserves\smallskip \pause
+
+\item Reduce real output
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{Again... What are the effects of monetary policy on output?}}
+
+\begin{itemize}
+\item Standard identification schemes do not fully accomplish the 4 points
+above\medskip
+
+\begin{itemize}
+\item {{\color{note} Liquidity puzzle}}: when identifying monetary policy
+shocks as surprise increases in the stock of money, interest rates tend to
+go down, not up\smallskip \pause
+
+\item {{\color{note} Price puzzle}}: after a contractionary monetary policy
+shock, even with interest rates going up and money supply going down,
+inflation goes up rather than down\bigskip \pause
+\end{itemize}
+
+\item Successful identification needs to deliver results matching the
+conventional wisdom
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{Uhlig's identification assumptions}}
+
+\begin{itemize}
+\item Uhlig's assumption: a \textquotedblleft
+contractionary\textquotedblright\ monetary policy shock does not lead to
+
+\begin{itemize}
+\item Increases in prices
+
+\item Increase in non-borrowed reserves
+
+\item Decreases in the federal funds rate\medskip \pause
+\end{itemize}
+
+\item How about output? Since is the response of interest, we leave it
+unrestricted
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{[Reminder] How to compute sign restrictions}}
+
+\begin{enumerate}
+\item Estimate from the reduced-form VAR \textbf{$\Phi $}, ${\mathbf{u}_{t}}$%
+, and $\Sigma _{\mathbf{u}}$\medskip \pause
+
+\item Draw a random orthonormal matrix $\mathbf{S}^{\prime }$, compute $%
+\mathbf{P}^{\prime }=$\texttt{chol(}$\Sigma _{\mathbf{u}}$\texttt{)} and
+recover $B=\mathbf{P}^{\prime }\mathbf{S}^{\prime }$\medskip \pause
+
+\item Compute the impulse response using\medskip\ \pause
+
+\item Are the sign restrictions satisfied? Yes. Store the impulse response
+// No. Discard the impulse response\medskip \pause
+
+\item Perform $N$ replications and report the median impulse response (and
+its confidence intervals)
+\end{enumerate}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{What happens when you do sign restrictions }}
+
+\begin{itemize}
+\item First draw: signs are correct, I keep it!
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{What happens when you do sign restrictions }}
+
+\begin{itemize}
+\item Second draw: signs are not correct, I discard it!
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{What happens when you do sign restrictions }}
+
+\begin{itemize}
+\item After a while...
+\end{itemize}
+\end{frame}
+
+\vspace{.1cm}
+
+\begin{frame}
+{\textbf{What are the effects of monetary policy on output?}}
+
+\begin{itemize}
+\item Ambiguous effect on real GDP $\Longrightarrow $\ Long-run monetary
+neutrality
+\end{itemize}
+\end{frame}
+
+\end{document}

@@ -6,3 +6,5 @@
 *.gz
 *.toc
 *.vrb
+*.aux
+*.log

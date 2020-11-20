@@ -7,9 +7,7 @@ The VAR Toolbox is not meant to be efficient, but rather to be transparent and a
 
 - Auxiliary: codes that I borrowed from other public sources. Each m-file has a reference to the original source.
 
-- ExportFig: this is a toolbox available at Oliver Woodford's website for exporting high quality figures.
-
--- To enable this option, the Toolbox requires Ghostscript installed on your computer (freely available at www.ghostscript.com).
+- ExportFig: this is a toolbox available at Oliver Woodford's website for exporting high quality figures. To enable this option, the Toolbox requires Ghostscript installed on your computer (freely available at www.ghostscript.com).
 
 - Figure: codes for plotting high quality figures
 

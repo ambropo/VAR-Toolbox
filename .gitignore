@@ -1,3 +1,8 @@
-/log
-/tmp
-/tex
+*.tex
+*.nav
+*.bib
+*.out
+*.snm
+*.gz
+*.toc
+*.vrb

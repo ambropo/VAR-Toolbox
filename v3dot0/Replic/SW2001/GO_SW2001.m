@@ -16,15 +16,24 @@ warning off all
 
 % Load data
 [xlsdata, xlstext] = xlsread('SW2001_Data.xlsx','Sheet1');
-% Define and transform (if needed)
 X = xlsdata;
-vnames = xlstext(1,2:end);
-
+dates = xlstext(3:end,1);
+vnames_long = xlstext(1,2:end);
+vnames = xlstext(2,2:end);
+nvar = length(vnames);
+data   = Num2NaN(xlsdata);
+% Store variables in the structure DATA
+for ii=1:length(vnames)
+    DATA.(vnames{ii}) = data(:,ii);
+end
+% Convert the first date to numeric
+year = str2double(xlstext{3,1}(1:4));
+quarter = str2double(xlstext{3,1}(6));
+% Observations
+nobs = size(data,1);
 
 %% VAR ESTIMATION
 %==========================================================================
-% Define number of variables and of observations
-[nobs, nvar] = size(X);
 % Set deterministics for the VAR
 det = 1;
 % Set number of nlags
@@ -34,16 +43,15 @@ nlags = 4;
 % Print estimation on screen
 VARopt.vnames = vnames;
 [TABLE, beta] = VARprint(VAR,VARopt,2);
-disp(' ')
-junk = input('Press enter to continue');
 
 
 %% COMPUTE IR AND VD
 %==========================================================================
 % Set options some options for IRF calculation
 VARopt.nsteps = 24;
-VARopt.ident = 'ch';
-VARopt.vnames = vnames;
+VARopt.ident = 'short';
+VARopt.vnames = vnames_long;
+VARopt.FigSize = [26,12];
 % Compute IRF
 [IRF, VAR] = VARir(VAR,VARopt);
 % Compute error bands

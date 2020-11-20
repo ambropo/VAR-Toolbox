@@ -1,11 +1,8 @@
-%% 1. PRELIMINARIES
+%% 0. PRELIMINARIES
 %-------------------------------------------------------------------------- 
-delete 'SCREEN.m' 
 clear all; clear session; close all; clc
 warning off all
 addpath(genpath('/Users/jambro/Google Drive/VAR-Toolbox/'))
-addpath('codes')
-
 
 %% 1. LOAD DATA
 %************************************************************************** 
@@ -23,7 +20,7 @@ data   = Num2NaN(xlsdata);
 for ii=1:length(vnames)
     DATA.(vnames{ii}) = data(:,ii);
 end
-% Convert the first date 1989q1 to numeric
+% Convert the first date to numeric
 year = str2double(xlstext{3,1}(1:4));
 quarter = str2double(xlstext{3,1}(6));
 % Observations
@@ -84,7 +81,7 @@ for ii=1:Xnvar
     DatesPlot(year+(quarter-1)/4,nobs,6,'q') % Set the x-axis label 
     grid on; 
 end
-SaveFigure('graphics/DATA_BivariateVAR',1)
+SaveFigure('graphics/BIV_DATA',1)
 clf('reset')
 % Create matrices of variables to be used in the VAR
 X = nan(nobs,Xnvar);
@@ -140,27 +137,30 @@ nobs = size(data,1);
 
 % 4.2 Plot series
 %-------------------------------------------------------------------------- 
-Xvnames      = {'infl','unemp','ff'};
-Xvnames_long = {'Inflation (Percent)','Unemployment (Percent)','Fed Funds (Percent)'};
-Xnvar        = length(Xvnames);
-% Plot selected data
+% Plot all variables in DATA
 FigSize(26,6)
-for ii=1:Xnvar
+for ii=1:nvar
     subplot(1,3,ii)
-    H(ii) = plot(DATA.(Xvnames{ii}),'LineWidth',3,'Color',cmap(1));
-    title(Xvnames_long(ii)); 
+    H(ii) = plot(DATA.(vnames{ii}),'LineWidth',3,'Color',cmap(1));
+    title(vnames_long(ii)); 
     DatesPlot(year+(quarter-1)/4,nobs,6,'q') % Set the x-axis label 
     grid on; 
 end
 SaveFigure('graphics/SW_DATA',1)
 clf('reset')
+
+% 4.3 Set up and estimate VAR
+%-------------------------------------------------------------------------- 
+% Select endo
+Xvnames      = {'infl','unemp','ff'};
+Xvnames_long = {'Inflation (Percent)','Unemployment (Percent)','Fed Funds (Percent)'};
+Xnvar        = length(Xvnames);
+% Create matrices of variables for the VAR
 X = nan(nobs,Xnvar);
 for ii=1:Xnvar
     X(:,ii) = DATA.(Xvnames{ii});
 end
-
-% 4.3 Set up and estimate VAR
-%-------------------------------------------------------------------------- 
+% Estimate VAR
 det = 1;
 nlags = 4;
 [VAR, VARopt] = VARmodel(X,nlags,det);
@@ -228,15 +228,11 @@ nobs = size(data,1);
 
 % 4.2 Plot series
 %-------------------------------------------------------------------------- 
-Xvnames      = {'y','u'};
-Xvnames_long = {'GDP growth (Percent)','Unemployment (Percent)'};
-Xnvar        = length(Xvnames);
-% Plot selected data
 FigSize(26,6)
-for ii=1:Xnvar
+for ii=1:nvar
     subplot(1,2,ii)
-    H(ii) = plot(DATA.(Xvnames{ii}),'LineWidth',3,'Color',cmap(1));
-    title(Xvnames_long(ii)); 
+    H(ii) = plot(DATA.(vnames{ii}),'LineWidth',3,'Color',cmap(1));
+    title(vnames_long(ii)); 
     DatesPlot(year+(quarter-1)/4,nobs,6,'q') % Set the x-axis label 
     grid on; 
 end
@@ -245,10 +241,16 @@ clf('reset')
 
 % 5.3 Set up and estimate VAR
 %-------------------------------------------------------------------------- 
+% Select endo
+Xvnames      = {'y','u'};
+Xvnames_long = {'GDP growth (Percent)','Unemployment (Percent)'};
+Xnvar        = length(Xvnames);
+% Create matrices of variables for the VAR
 X = nan(nobs,Xnvar);
 for ii=1:Xnvar
     X(:,ii) = DATA.(Xvnames{ii});
 end
+% Estimate VAR
 det = 1;
 nlags = 8;
 [VAR, VARopt] = VARmodel(X,nlags,det);
@@ -321,25 +323,20 @@ year = str2double(xlstext{3,1}(1:4));
 month = str2double(xlstext{3,1}(6));
 nobs = size(data,1);
 % Transform selected variables
-tempnames = {'y','pi','comm','nbres','ff'};
-temptreat = {'log','log','log','log','log'};
+tempnames = {'y','pi','comm','nbres','res'};
 tempscale = [100,100,100,100,100];
 for ii=1:length(tempnames)
-    aux = {['d' tempnames{ii}]};
-    DATA.(aux{1}) = tempscale(ii)*XoX(DATA.(tempnames{ii}),1,temptreat{ii});
+    DATA.(tempnames{ii}) = tempscale(ii)*DATA.(tempnames{ii});
 end
 
 % 6.2 Plot series
 %-------------------------------------------------------------------------- 
-Xvnames      = vnames;
-Xvnames_long = vnames_long;
-Xnvar        = length(Xvnames);
-% Plot selected data
+% Plot all variables in DATA
 FigSize(26,18)
-for ii=1:Xnvar
+for ii=1:nvar
     subplot(3,2,ii)
-    H(ii) = plot(DATA.(Xvnames{ii}),'LineWidth',3,'Color',cmap(1));
-    title(Xvnames_long(ii)); 
+    H(ii) = plot(DATA.(vnames{ii}),'LineWidth',3,'Color',cmap(1));
+    title(vnames_long(ii)); 
     DatesPlot(year+(month-1)/12,nobs,6,'m') % Set the x-axis label 
     grid on; 
 end
@@ -348,10 +345,16 @@ clf('reset')
 
 % 6.3 Set up and estimate VAR
 %-------------------------------------------------------------------------- 
+% Select endo
+Xvnames      = vnames;
+Xvnames_long = vnames_long;
+Xnvar        = length(Xvnames);
+% Create matrices of variables for the VAR
 X = nan(nobs,Xnvar);
 for ii=1:Xnvar
     X(:,ii) = DATA.(Xvnames{ii});
 end
+% Estimate VAR 
 det = 1;
 nlags = 12;
 [VAR, VARopt] = VARmodel(X,nlags,det);
@@ -383,7 +386,7 @@ VARopt.pctg = 68;
 % IRs, VDs, and HDs. All the results are stored in SRout
 SRout = SR(VAR,SIGN,VARopt);
 
-% 6.5 REPLICATE UHLIG'S FIGURE 6
+% 6.5 Replicate Uhlig's Figiure 6
 %-------------------------------------------------------------------------- 
 FigSize(26,12)
 for ii=1:Xnvar
@@ -395,6 +398,9 @@ for ii=1:Xnvar
 end
 SaveFigure('graphics/Uhlig_Replication',1)
 clf('reset')
+
+% 6.6 Show what happens in the background
+%-------------------------------------------------------------------------- 
 % Plot all rotations
 FigSize(26,12)
 for ii=1:Xnvar
@@ -434,51 +440,94 @@ SaveFigure('graphics/Uhlig_Replication_2rot',1)
 clf('reset')
 
 
-% %% 6. IDENTIFICATION WITH EXTERNAL INSTRUMENTS
-% %************************************************************************** 
-% % Identification with external instruments is achieved in three steps: (1) 
-% % set the identification scheme mnemonic in the structure VARopt to the 
-% % desired one, in this case "iv"; (2) update the VARopt structure with the 
-% % external instrument to be used for identification; (3) run the VARir 
-% % function. For the external instruments example, we consider the same VAR 
-% % as in the sign restrictions example. 
-% %-------------------------------------------------------------------------- 
-% 
-% % First update the VARopt structure with additional details to be used for
-% % the IR calculations and plots
-% VARopt.figname= 'graphics/IV_';
-% 
-% % With the usual notation, select the instrument from the DATA structure:
-% IVvnames      = {'ff4_tc'};
-% IVvnames_long = {'FF4 futures'};
-% IVnvar        = length(IVvnames);
-% 
-% % Create vector of instruments to be used in the VAR
-% IV = nan(nobs,IVnvar);
-% for ii=1:IVnvar
-%     IV(:,ii) = DATA.(IVvnames{ii});
-% end
-% 
-% % Identification is achieved with the external instrument IV, which needs
-% % to be added to the VARopt structure
-% VAR.IV = IV;
-% 
-% % Update the options in VARopt to be used in IR calculations and plots
-% VARopt.ident = 'iv';
-% VARopt.method = 'wild';
-% 
-% % Compute IRs
-% [IR, VAR] = VARir(VAR,VARopt);
-% 
-% % Compute error bands
-% [IRinf,IRsup,IRmed,IRbar] = VARirband(VAR,VARopt);
-% 
-% % Can now plot the impulse responses with the usual code
-% VARopt.FigSize = [26,24];
-% VARirplot(IRbar,VARopt,IRinf,IRsup);
-% 
-% 
-% %% 7. IDENTIFICATION WITH A MIX OF EXTERNAL INSTRUMENTS AND SIGN RESTRICTIONS
+%% 7. IDENTIFICATION WITH EXTERNAL INSTRUMENTS
+%************************************************************************** 
+% Identification with external instruments is achieved in three steps: (1) 
+% set the identification scheme mnemonic in the structure VARopt to the 
+% desired one, in this case "iv"; (2) update the VARopt structure with the 
+% external instrument to be used for identification; (3) run the VARir 
+% function. For the external instruments example, we consider the same VAR 
+% as in the sign restrictions example. 
+%-------------------------------------------------------------------------- 
+
+% 7.1 Load data from Gertler and Karadi
+%-------------------------------------------------------------------------- 
+[xlsdata, xlstext] = xlsread('GK2015_Data.xlsx','Sheet1');
+dates = xlstext(3:end,1);
+vnames_long = xlstext(1,2:end);
+vnames = xlstext(2,2:end);
+nvar = length(vnames);
+data   = Num2NaN(xlsdata);
+for ii=1:length(vnames)
+    DATA.(vnames{ii}) = data(:,ii);
+end
+year = str2double(xlstext{3,1}(1:4));
+month = str2double(xlstext{3,1}(6));
+nobs = size(data,1);
+
+% 7.2 Plot series
+%-------------------------------------------------------------------------- 
+% Plot all series in DATA
+FigSize(26,18)
+for ii=1:nvar
+    subplot(3,2,ii)
+    H(ii) = plot(DATA.(vnames{ii}),'LineWidth',3,'Color',cmap(1));
+    title(vnames_long(ii)); 
+    DatesPlot(year+(month-1)/12,nobs,6,'m') % Set the x-axis label 
+    grid on; 
+end
+SaveFigure('graphics/GK_DATA',1)
+clf('reset')
+
+% 7.3 Set up and estimate VAR
+%-------------------------------------------------------------------------- 
+% Select endo
+Xvnames_long = {'1yr T-Bill';'Consumer Price Index';'Industrial Production';'Excess Bond Premium';};
+Xvnames      = {'gs1';'logcpi';'logip';'ebp';};
+Xnvar        = length(Xvnames);
+% Create matrices of variables for the VAR
+X = nan(nobs,Xnvar);
+for ii=1:Xnvar
+    X(:,ii) = DATA.(Xvnames{ii});
+end
+% With the usual notation, select the instrument from the DATA structure:
+IVvnames      = {'ff4_tc'};
+IVvnames_long = {'FF4 futures'};
+IVnvar        = length(IVvnames);
+% Create vector of instruments to be used in the VAR
+IV = nan(nobs,IVnvar);
+for ii=1:IVnvar
+    IV(:,ii) = DATA.(IVvnames{ii});
+end
+% Estimate VAR
+det = 1;
+nlags = 12;
+[VAR, VARopt] = VARmodel(X,nlags,det);
+VARopt.vnames = Xvnames_long;
+VARopt.nsteps = 60;
+VARopt.quality = 1;
+VARopt.FigSize = [26,12];
+VARopt.firstdate = year+(month-1)/12;
+VARopt.frequency = 'm';
+VARopt.figname= 'graphics/GK_';
+
+% 7.4 Identification
+%-------------------------------------------------------------------------- 
+% Identification is achieved with the external instrument IV, which needs
+% to be added to the VARopt structure
+VAR.IV = IV;
+% Update the options in VARopt to be used in IR calculations and plots
+VARopt.ident = 'iv';
+VARopt.method = 'wild';
+% Compute IR
+[IR, VAR] = VARir(VAR,VARopt);
+% Compute error bands
+[IRinf,IRsup,IRmed,IRbar] = VARirband(VAR,VARopt);
+% Can now plot the impulse responses with the usual code
+VARirplot(IRbar,VARopt,IRinf,IRsup);
+
+
+% %% 8. IDENTIFICATION WITH A MIX OF EXTERNAL INSTRUMENTS AND SIGN RESTRICTIONS
 % %************************************************************************** 
 % % Identification with external instruments is achieved in three steps: (1) 
 % % set the identification scheme mnemonic in the structure VARopt to the 

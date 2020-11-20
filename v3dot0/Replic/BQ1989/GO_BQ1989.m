@@ -18,7 +18,20 @@ warning off all
 [xlsdata, xlstext] = xlsread('BQ1989_Data.xlsx','Sheet1');
 % Define and transform (if needed)
 X = xlsdata;
-vnames = xlstext(1,2:end);
+dates = xlstext(3:end,1);
+vnames_long = xlstext(1,2:end);
+vnames = xlstext(2,2:end);
+nvar = length(vnames);
+data   = Num2NaN(xlsdata);
+% Store variables in the structure DATA
+for ii=1:length(vnames)
+    DATA.(vnames{ii}) = data(:,ii);
+end
+% Convert the first date to numeric
+year = str2double(xlstext{3,1}(1:4));
+quarter = str2double(xlstext{3,1}(6));
+% Observations
+nobs = size(data,1);
 
 
 %% VAR ESTIMATION
@@ -38,7 +51,7 @@ nlags = 8;
 % Set options some options for IRF calculation
 VARopt.nsteps = 40;
 VARopt.ident = 'long';
-VARopt.vnames = vnames;
+VARopt.vnames = vnames_long;
 VARopt.FigSize = [26,12];
 
 % Compute IR
@@ -47,13 +60,6 @@ VARopt.FigSize = [26,12];
 [IRinf,IRsup,IRmed,IRbar] = VARirband(VAR,VARopt);
 % Plot
 VARirplot(IRbar,VARopt,IRinf,IRsup);
-
-% Compute VD
-[VD, VAR] = VARvd(VAR,VARopt);
-% Compute error bands
-[VDinf,VDsup,VDmed,VDbar] = VARvdband(VAR,VARopt);
-% Plot
-VARvdplot(VDbar,VARopt);
 
 
 %% REPLICATE FIGURE 1 OF BLANCHARD AND QUAH

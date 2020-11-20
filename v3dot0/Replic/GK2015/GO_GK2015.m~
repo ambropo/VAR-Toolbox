@@ -16,7 +16,7 @@ warning off all
 
 %% LOAD DATA
 %==========================================================================
-% Load data 
+% Load data from US macro data set
 [xlsdata, xlstext] = xlsread('GK2015_Data.xlsx','Sheet1');
 dates = xlstext(3:end,1);
 vnames_long = xlstext(1,2:end);
@@ -47,7 +47,7 @@ IVvnames      = {'ff4_tc'};
 IVnvar        = length(IVvnames);
 
 % VAR specification
-VARnlags = 12; VARconst = 1;
+VARnlags = 12; VARconst = 1; ident='short'; VARtol=.9975; NOBStol=30;
 
 % Create matrices of variables for the VAR
 ENDO = nan(nobs,VARnvar);
@@ -68,7 +68,6 @@ VAR.IV = IV;
 %% CHOLESKY IDENTIFICATION
 %==========================================================================
 disp('Estimate Cholesky IRFs and error bands')
-VARopt.ident='short'; 
 VARopt.method = 'wild';
 VARopt.nsteps = 48;
 VARopt.ndraws = 200;
@@ -118,7 +117,7 @@ legend('IV')
 
 %% SAVE
 %==========================================================================
-SaveFigure('GK_Replication',1);
+SaveFigure('GK_Figure1',1);
 
 
 

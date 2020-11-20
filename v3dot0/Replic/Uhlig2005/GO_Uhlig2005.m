@@ -31,12 +31,10 @@ month = str2double(xlstext{3,1}(6));
 nobs = size(data,1);
 
 % Transform selected variables
-tempnames = {'y','pi','comm','nbres','ff'};
-temptreat = {'log','log','log','log','log'};
+tempnames = {'y','pi','comm','nbres','res'};
 tempscale = [100,100,100,100,100];
 for ii=1:length(tempnames)
-    aux = {['d' tempnames{ii}]};
-    DATA.(aux{1}) = tempscale(ii)*XoX(DATA.(tempnames{ii}),1,temptreat{ii});
+    DATA.(tempnames{ii}) = tempscale(ii)*DATA.(tempnames{ii});
 end
 
 %% VAR ESTIMATION

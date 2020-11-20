@@ -123,7 +123,7 @@ disp(eig(VAR.Fcomp))
 % previous section.
 %-------------------------------------------------------------------------- 
 
-% 4.1 Load data from Stock and Watson (2001)
+% 4.1 Load data from Stock and Watson
 %-------------------------------------------------------------------------- 
 [xlsdata, xlstext] = xlsread('data/SW2001_Data.xlsx','Sheet1');
 dates = xlstext(3:end,1);
@@ -211,7 +211,7 @@ VARhdplot(HD,VARopt);
 % as in the previous section.
 %-------------------------------------------------------------------------- 
 
-% 4.1 Load data from Stock and Watson (2001)
+% 4.1 Load data from Blanchard and Quah
 %-------------------------------------------------------------------------- 
 [xlsdata, xlstext] = xlsread('data/BQ1989_Data.xlsx','Sheet1');
 dates = xlstext(3:end,1);
@@ -306,7 +306,7 @@ clf('reset')
 % the SR function. 
 %-------------------------------------------------------------------------- 
 
-% 6.1 Load data from Uhlig (2005)
+% 6.1 Load data from Uhlig
 %-------------------------------------------------------------------------- 
 [xlsdata, xlstext] = xlsread('Uhlig2005_Data.xlsx','Sheet1');
 dates = xlstext(3:end,1);
@@ -329,7 +329,7 @@ for ii=1:length(tempnames)
     DATA.(aux{1}) = tempscale(ii)*XoX(DATA.(tempnames{ii}),1,temptreat{ii});
 end
 
-% 4.2 Plot series
+% 6.2 Plot series
 %-------------------------------------------------------------------------- 
 Xvnames      = vnames;
 Xvnames_long = vnames_long;
@@ -346,14 +346,14 @@ end
 SaveFigure('graphics/Uhlig_DATA',1)
 clf('reset')
 
-% 5.3 Set up and estimate VAR
+% 6.3 Set up and estimate VAR
 %-------------------------------------------------------------------------- 
 X = nan(nobs,Xnvar);
 for ii=1:Xnvar
     X(:,ii) = DATA.(Xvnames{ii});
 end
 det = 1;
-nlags = 8;
+nlags = 12;
 [VAR, VARopt] = VARmodel(X,nlags,det);
 VARopt.vnames = Xvnames_long;
 VARopt.nsteps = 60;
@@ -364,7 +364,7 @@ VARopt.firstdate = year+(month-1)/12;
 VARopt.frequency = 'm';
 VARopt.figname= 'graphics/Uhlig_';
 
-% 5.2 IDENTIFICATION
+% 6.4 IDENTIFICATION
 %-------------------------------------------------------------------------- 
 % Define the shock names
 VARopt.snames = {'Mon. Policy Shock'};
@@ -383,7 +383,7 @@ VARopt.pctg = 68;
 % IRs, VDs, and HDs. All the results are stored in SRout
 SRout = SR(VAR,SIGN,VARopt);
 
-%% 5.3 REPLICATE UHLIG'S FIGURE 6
+% 6.5 REPLICATE UHLIG'S FIGURE 6
 %-------------------------------------------------------------------------- 
 FigSize(26,12)
 for ii=1:Xnvar
@@ -395,7 +395,7 @@ for ii=1:Xnvar
 end
 SaveFigure('graphics/Uhlig_Replication',1)
 clf('reset')
-% 500 rot
+% Plot all rotations
 FigSize(26,12)
 for ii=1:Xnvar
     subplot(2,3,ii)
@@ -407,7 +407,7 @@ for ii=1:Xnvar
 end
 SaveFigure('graphics/Uhlig_Replication_500rot',1)
 clf('reset')
-% 1 rot
+% Plot first rotation
 FigSize(26,12)
 for ii=1:Xnvar
     subplot(2,3,ii)
@@ -419,7 +419,7 @@ for ii=1:Xnvar
 end
 SaveFigure('graphics/Uhlig_Replication_1rot',1)
 clf('reset')
-% 2 rot
+% Plot first two rotations
 FigSize(26,12)
 for ii=1:Xnvar
     subplot(2,3,ii)

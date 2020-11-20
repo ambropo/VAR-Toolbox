@@ -10,9 +10,9 @@ function SwatheOpt = PlotSwatheOption
 % ambrogio.cesabianchi@gmail.com
 
 %% INITIALIZE VARIABLES
-color = bone(8);
-SwatheOpt.swathecol  = color(6,:);
-SwatheOpt.barcol     = color(1,:);
+%color = bone(8);
+SwatheOpt.swathecol  = [138, 178, 212]./255; % color(6,:);
+SwatheOpt.barcol     = [13, 54, 84]./255;    % color(1,:);
 SwatheOpt.do_dates   = 0;
 SwatheOpt.frequency  = 'q';
 SwatheOpt.swatheonly = 0;

@@ -11,7 +11,8 @@ function H = AreaPlot(X)
 % OUTPUT
 %   - H: handle to graph
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2020
+% VAR Toolbox 3.0
+% Ambrogio Cesa Bianchi, November 2020
 % ambrogio.cesabianchi@gmail.com
 
 

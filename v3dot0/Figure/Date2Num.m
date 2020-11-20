@@ -23,9 +23,12 @@ function OUT = Date2Num(dates,frequency)
 % RELATED
 %   - DatesCreate, DatesCount
 % =======================================================================
-% Ambrogio Cesa Bianchi, December 2016
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi, March 2015
 % ambrogiocesabianchi@gmail.com
 % -----------------------------------------------------------------------
+
+
 format long 
 
 % Check inputs

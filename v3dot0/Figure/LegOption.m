@@ -11,8 +11,8 @@ function opt = LegOption
 %   - opt.direction      = default 1, horizontal legend
 % =========================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
-% ambrogio.cesabianchi@gmail.com
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
 % -----------------------------------------------------------------------
 
 opt.hsize        = 0.01;

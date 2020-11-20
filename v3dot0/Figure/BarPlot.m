@@ -11,8 +11,10 @@ function H = BarPlot(X)
 % OUTPUT
 %   - H: handle to graph
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2020
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
+% -----------------------------------------------------------------------
 
 
 H(1,:) = bar((X).*(X>0),'stacked'); 

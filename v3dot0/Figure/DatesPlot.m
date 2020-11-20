@@ -15,9 +15,10 @@ function DatesPlot(fo,nobs,nticks,frequency)
 %           Default: 'q'
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
-% ambrogio.cesabianchi@gmail.com
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
 % -----------------------------------------------------------------------
+
 
 
 % Check inputs

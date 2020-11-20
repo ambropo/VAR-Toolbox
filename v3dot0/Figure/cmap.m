@@ -1,14 +1,25 @@
 function out = cmap(n)
 % =======================================================================
-% Returns a 1x3 row vector for RGB colors.
+% Returns a 1x3 row vector for RGB colors corrending to the n^th element of
+% the following list:
+% - 1 blue
+% - 2 yellow
+% - 3 purple
+% - 4 light blues
+% - 5 red
+% - 6 green
+% - 7 dark red 
 % =======================================================================
 % cmap(n)
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
 %   - n: number of color in the sequence
 % =======================================================================
-% Ambrogio Cesa Bianchi, July 2016
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
+% -----------------------------------------------------------------------
+
 
 colors = [...
     0.000,0.447,0.741 ; % 1 blue

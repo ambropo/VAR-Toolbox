@@ -5,16 +5,17 @@ function HistfitPlot(DATA,names,opt)
 % =======================================================================
 % histplot(DATA,names,row,col,FigTitle,FigName)
 % -----------------------------------------------------------------------
-% INPUTS 
+% INPUT
 %	- DATA    : matrix DATA(i,j)
 %   - names   : cell [1xj], names of the variables
 %
 % OPTIONAL INPUTS
 %   - opt:    : see PlotOption
 % =========================================================================
-% Ambrogio Cesa Bianchi, August 2011
-% ambrogio.cesabianchi@gmail.com
-
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
+% -----------------------------------------------------------------------
 
 % Preliminaries: define the dimension of the data vector DATA
 [nobs, nvars] = size(DATA);
@@ -48,8 +49,8 @@ is_empty = isnan(DATA(:,:));
 
 % Plot
 jj=1;
-for nn=1:nfigures;
-    for kk=1:opt.row*opt.col;
+for nn=1:nfigures
+    for kk=1:opt.row*opt.col
         if jj>nvars % to solve if I put more opt.row*opt.col 
             subplot(opt.row,opt.col,kk)
             x = [0:1:nobs-1]';

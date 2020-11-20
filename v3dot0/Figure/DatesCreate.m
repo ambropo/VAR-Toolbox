@@ -24,8 +24,12 @@ function [dates, dates_short] = DatesCreate(year,nobs,frequency,fo_period)
 % RELATED
 %   - DatesCount, Date2Num
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
+% -----------------------------------------------------------------------
+
+
 
 % Check inputs
 if ~exist('frequency','var')

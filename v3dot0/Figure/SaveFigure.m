@@ -11,9 +11,12 @@ function SaveFigure(path,quality,type)
 %   - quality: 0 standard, 1 high quality [dflt=0]
 %   - type: pdf, png, eps [dflt=pdf], string
 % =======================================================================
-% Ambrogio Cesa Bianchi, April 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
+% -----------------------------------------------------------------------
 
+% Check inputs
 if ~exist('quality','var')
     quality=0;
 end
@@ -21,10 +24,10 @@ if ~exist('type','var')
     type='pdf';
 end
 
+% file type
 if quality 
     set(gcf, 'Color', 'w');
     export_fig(path,['-' type],'-painters')
-%     export_fig(path,'-png','-painters')
 else
     print(['-d' type],'-r100',path)
     print(['-d' type],'-r100',path)

@@ -3,9 +3,15 @@ function FigFont(fsize)
 % Set font in a figure to desired font size
 % =======================================================================
 % FigFont(fsize)
+% -----------------------------------------------------------------------
+% INPUT
+%	- fsize : size of font (numeric)
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
+% -----------------------------------------------------------------------
+
 
 
 %% CHECK INPUT

@@ -7,20 +7,19 @@ function H = PlotSwathe(bar,swathe,SwatheOpt)
 % -------------------------------------------------------------------------
 % INPUT
 %   - bar: line to plot
-%   - swathe: if a vector, draws symmetric swathe around bar. Otherwise draws 
-%     	asymmetric swathe, with first columnn being the upper limit and 
-%       second column being the lower limit
+%   - swathe: if a vector, draws symmetric errorbars. Otherwise draws 
+%     	asymmetric error bars, with first columnn being the upper bar and 
+%       second column being the lower bar
 %--------------------------------------------------------------------------
 % OPTIONAL INPUT
-%   - SwatheOpt.linecol: color of line, can be rgb number or string, e.g. 
-%       'blue'
-%   - SwatheOpt.swathecol: color of swathe (can be rgb number or string, 
-%       e.g 'blue')
-%   - SwatheOpt.transp: 1 for transparency (dflt=0)
+%   - SwatheOpt.col: SwatheOpt.col of the line/patch, can be rgb number (e.g. [1 0 0]
+%       or string (e.g. 'blue')
+%   - SwatheOpt.transp: 'transparent' for transparency, [empty] otherwise. 
+%       Default is [empty]
 %   - nticks: number ticks on the horizontal axis
 %   - fo: first observation (convention: 1987.00 = 1987Q1)
-%   - SwatheOpt.frequency: quarterly ('q') or annual ('y') [dflt='q']
-%   - SwatheOpt.swatheonly: set to 1 to plot only the swathe (dflt=0)
+%   - SwatheOpt.frequency: quarterly ('q') or annual ('y') SwatheOpt.frequency. Default: 'q'
+%   - SwatheOpt.swatheonly: set to 1 to plot only the swathe. Default: 0
 %--------------------------------------------------------------------------
 % OUPUT
 %   - H.bar: handle for the median

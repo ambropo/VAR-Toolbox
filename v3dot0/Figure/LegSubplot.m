@@ -1,6 +1,6 @@
 function LegSubplot(text,opt)
 % =======================================================================
-% This function creates one legend for charts created with "subplot"
+% This function creates a single legend for charts created with "subplot"
 % =======================================================================
 % LegSubplot(text,opt)
 % -----------------------------------------------------------------------
@@ -11,8 +11,8 @@ function LegSubplot(text,opt)
 %   opt  : options for the legend, output of LegOption function
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
-% ambrogio.cesabianchi@gmail.com
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
 % -----------------------------------------------------------------------
 
 

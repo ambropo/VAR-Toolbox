@@ -9,7 +9,7 @@ function FigSize(xdim,ydim)
 %   - ydim: vertical size (in cm)
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa-Bianchi, March 2015
+% Ambrogio Cesa-Bianchi, November 2020
 % ambrogiocesabianchi@gmail.com
 % -----------------------------------------------------------------------
 

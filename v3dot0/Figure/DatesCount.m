@@ -26,8 +26,12 @@ function dates = DatesCount(fo_year,lo_year,frequency,fo_period,lo_period)
 % RELATED
 %   - DatesCreate, Date2Num
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
+% -----------------------------------------------------------------------
+
+
 
 % Check inputs
 if ~exist('frequency','var')

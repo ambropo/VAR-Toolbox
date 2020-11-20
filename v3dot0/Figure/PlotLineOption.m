@@ -2,8 +2,10 @@ function opt = PlotLineOption
 % =======================================================================
 % Optional inputs for PlotLine
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
+% -----------------------------------------------------------------------
 
 opt.row          = 3;                       % rows for subplot
 opt.col          = 4;                       % columns for subplot
@@ -28,3 +30,4 @@ opt.compare      = 0;                       % set to 1 to compare panels
 opt.savename     = 'FIG';                   % figname
 opt.quality      = 0;                       % set to 1 for high quality
 opt.bins         = 40;                      % number of bins for HistfitPlot
+opt.SupTitle     = [];                      % Title of figure 

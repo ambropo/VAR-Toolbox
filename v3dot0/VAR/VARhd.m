@@ -12,8 +12,11 @@ function [HD, VAR] = VARhd(VAR,VARopt)
 % OUTPUT
 %   - HD: structure including the historical decomposition
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi, November 2020
+% ambrogiocesabianchi@gmail.com
+% -----------------------------------------------------------------------
+
 
 % I thank Andrey Zubarev for finding a bug in the contribution of the 
 % exogenous variables when nvar_ex~=0 and nlag_ex>0. 

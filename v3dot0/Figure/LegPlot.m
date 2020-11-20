@@ -10,8 +10,10 @@ function legpos = LegPlot(text,opt)
 % OPTIONAL INPUTS
 %   - opt: options for the legend, output of LegOption function
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
+% -----------------------------------------------------------------------
 
 
 %% Preliminaries

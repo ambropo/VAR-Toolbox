@@ -13,8 +13,10 @@ function nfigures = NumTotFigures(row,col,nvar)
 % OUTPUT
 %	- nfigures: number of charts per subplot
 % =========================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi, March 2015
+% ambrogiocesabianchi@gmail.com
+% -----------------------------------------------------------------------
 
 NumGraphXPage = row*col;
 

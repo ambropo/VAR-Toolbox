@@ -59,7 +59,7 @@ end
 if ~append
     output = varargin{1};
     varargin = varargin(2:end);
-end
+end 
 % Create the command file
 if isTempDirOk
     cmdfile = [tempname '.txt'];

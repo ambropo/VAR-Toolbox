@@ -1,4 +1,4 @@
-function results =  adf(x,p,l)
+function results =  adf(x,p,l) 
 % PURPOSE: carry out DF tests on a time-series vector
 % Is there a positive probability that results.adf > results.crit? If so 
 % (e.g., prob >0.10) we fail to reject the null of I(1)

@@ -1,2 +1,2 @@
 function out = NoSpace(str)
-out = str(~isspace(str))
+out = str(~isspace(str));

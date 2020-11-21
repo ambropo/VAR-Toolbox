@@ -8,3 +8,4 @@
 *.vrb
 *.aux
 *.log
+/aux

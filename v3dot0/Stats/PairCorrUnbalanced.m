@@ -24,11 +24,15 @@ function [PC, TABLE] = PairCorrUnbalanced(DATA,labels,absolute)
 %	- TABLE: formatted table of pairwise correlation with titles
 % =======================================================================
 % EXAMPLE
-% DATA = rand(50,4);
-% [PC, TABLE] = PairCorrUnbalanced(DATA)
+%   DATA = rand(50,4);
+%   [PC, TABLE] = PairCorrUnbalanced(DATA)
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
+
 
 
 

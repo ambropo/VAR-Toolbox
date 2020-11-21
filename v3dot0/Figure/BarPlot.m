@@ -11,9 +11,14 @@ function H = BarPlot(X)
 % OUTPUT
 %   - H: handle to graph
 % =======================================================================
+% EXAMPLE
+%   X = randn(20,2);
+%   H = BarPlot(X)
+% =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa-Bianchi, March 2015
+% Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
 % -----------------------------------------------------------------------
 
 

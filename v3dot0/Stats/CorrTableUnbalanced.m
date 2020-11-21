@@ -5,14 +5,22 @@ function [CORR, TABLE] = CorrTableUnbalanced(x,vnames)
 % out = CorrTable(x,vnames)
 % -----------------------------------------------------------------------
 % INPUT
-%   - x: T obs (rows) x N series (columns)
-%   - vnames: cell array with vnames of the N series
+%   - x: matrix (rows x cols) [double]
+%   - vnames: array (1 x cols) with names of the (cols) series [cell]
 % -----------------------------------------------------------------------
 % OUTPUT
 %   - CORR: correlation matrix [double]
-%   - TABLE: table of correlation matrix with titles
+%   - TABLE: table of correlation matrix with titles [cell]
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
+% EXAMPLE
+%   x = rand(50,2);
+%   [CORR, TABLE] = CorrTableUnbalanced(x,{'Consumption','Investment'})
+% =========================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 % vnames must be a row vector

@@ -22,12 +22,15 @@ function [PC, TABLE] = PairCorr(DATA,labels,absolute)
 %       and log-diff)
 %	- TABLE: formatted table of pairwise correlation with titles
 % =========================================================================
-% Example
-% DATA = rand(50,4);
-% [PC TABLE] = PairCorr(DATA)
+% EXAMPLE
+%   DATA = rand(50,4);
+%   [PC TABLE] = PairCorr(DATA)
 % =========================================================================
-% Ambrogio Cesa Bianchi, March 2015
-
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 

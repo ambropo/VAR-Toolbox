@@ -6,24 +6,33 @@ function DatesPlot(fo,nobs,nticks,frequency)
 % DatesPlot(fo,nobs,nticks,frequency)
 % -----------------------------------------------------------------------
 % INPUT
-%   - fo: date of first observation (convention: 1987.00 = 1987Q1)
-%   - nobs: number of observations
-%   - tick: number ticks
-%--------------------------------------------------------------------------
-% OPTIONAL INPUT
-%   - frequency : monthly ('m'), quarterly ('q') or annual ('y') frequency. 
-%           Default: 'q'
-% =======================================================================
-% VAR Toolbox 3.0
-% Ambrogio Cesa-Bianchi, March 2015
-% ambrogiocesabianchi@gmail.com
+%   - fo   : date of first observation (1987.00 = 1987Q1) [double]
+%   - nobs : number of observations [double]
+%   - tick : number ticks [double]
 % -----------------------------------------------------------------------
-
+% OPTIONAL INPUT
+%   - frequency : monthly ('m'), quarterly ('q') or annual ('y') frequency
+%           [char] [dflt='q']
+% =======================================================================
+% EXAMPLE
+%   X = rand(20,1);
+%   [dates, datesnum] = DatesCreate(2000,20,'q',1);
+%   plot(X)
+%   DatesPlot(datesnum(1),20,5,'q')
+% =========================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 % Check inputs
 if ~exist('frequency','var')
     frequency = 'q';
+end
+if ~(strcmp(frequency,'y') || strcmp(frequency,'q') || strcmp(frequency,'m'))
+    error('Frequency should be either ''y'', ''q'', or ''m''')
 end
 
 

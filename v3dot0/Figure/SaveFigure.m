@@ -5,15 +5,16 @@ function SaveFigure(path,quality,type)
 % SaveFig(path,quality)
 % -----------------------------------------------------------------------
 % INPUT
-%   - path: path wehere to save the file
+%   - path: path wehere to save the file [char]
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
-%   - quality: 0 standard, 1 high quality [dflt=0]
-%   - type: pdf, png, eps [dflt=pdf], string
+%   - quality: 0 standard, 1 high quality [dflt=0] [double]
+%   - type: pdf, png, eps [dflt=pdf] [char]
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa-Bianchi, March 2015
+% Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
 % -----------------------------------------------------------------------
 
 % Check inputs

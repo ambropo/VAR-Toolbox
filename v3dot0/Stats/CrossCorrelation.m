@@ -1,41 +1,40 @@
-function [OUT, lags] = CrossCorrelation(X,Y,lag,chart,row,col,title_Y,title_X,name)
+function [OUT, lags] = CrossCorrelation(X,Y,lag,do_plot,Yname)
 % =========================================================================
-% Computes the cross-correlation between X_t+lag and Y_t. If specified, it
-% plots it
+% Computes the cross-correlation between the vector X (Tx1) and each column 
+% of the matrix Y (TxN). If specified, it plots it
 % =========================================================================
-% [OUT lags] = CrossCorrelation(X,Y,lag,chart,row,col,title_Y,title_X,name)
+% [OUT lags] = CrossCorrelation(X,Y,lag,chart,row,col,)
 % -------------------------------------------------------------------------
 % INPUT
-%   - X   = vector (Tx1) to compute the correlation at different lead/lags
-%   - Y   = matrix (TxN) of series
-%   - lag = scalar of the length of lags
+%   - X   = vector (Tx1) of interest [double]
+%   - Y   = matrix (TxN) to correlate X with [double]
+%   - lag = length of lags to consider [double]
 % -------------------------------------------------------------------------
 % OPTIONAL INPUT:
-%   - chart   = string: 'plot' to plot charts      (default 'no_plot')
-%   - row     = scalar number of row in subplot    (default 2)
-%   - col     = scalar number of col in subplot    (default 3)
-%   - title_Y = cell (1xN) titles of Y             (default 'series #')
-%   - title_X = cell (1x1) title of X for suptitle (default no suptitle)
-%   - name    = string, file name to be saved      (default 'CrossCorr')
+%   - do_plot = 1 for plot           [dflt 0]
+%   - Yname = array (1xN) name of Y  [dflt Y#]
 % -------------------------------------------------------------------------
 % OUTPUT
-%   - OUT  = matrix (2*lag+1,N) of cross-corr (every column is a variable)
-%   - lags = vector of lags used (useful for plots)
+%   - OUT  = matrix (2*lag+1,N) of cross-correlations, where every column
+%           is a variable [double]
+%   - lags = vector of lags used [double]
 % =========================================================================
-% Example
-% X = rand(50,1);
-% Y = rand(50,6);
-% [OUT lags] = CrossCorrelation(X,Y,5,'plot')
+% EXAMPLE
+%   X = rand(50,1);
+%   Y = rand(50,2);
+%   [OUT lags] = CrossCorrelation(X,Y,5,1,{'Consumption','Investment'})
 % =========================================================================
-% Ambrogio Cesa Bianchi, March 2015
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 %% Check inputs
 %==========================================================================
-
 [a, b] = size(X);
 [c, d] = size(Y);
-
 if a ~= c
     disp('Error: vectors must have the same lenght')
     return
@@ -46,9 +45,8 @@ elseif lag >= a-2
     disp('Error: too few observations. Reduce the number of lags')
     return
 end
-
-if exist('chart','var')==0
-    chart = 'no_plot';
+if exist('do_plot','var')==0
+    do_plot = 0;
 else
 end
 
@@ -63,7 +61,7 @@ for jj=1:lag
     m = m+1;
 end
 
-% Contenporaneous correlation
+% Contemporaneous correlation
 for ii=1:d
     OUT(m,ii) = corr(X,Y(:,ii));
 end
@@ -81,93 +79,33 @@ lags = -lag:1:lag;
 
 %% Plot an istogram with the cross correlations
 %==========================================================================
-if strmatch(chart,'plot') == 1
+if do_plot
     
-    % If there are no title_Y, create title_Y (series1, series2,...)
-    if exist('title_Y','var') == 0
-        aux1 = 'series';
-        title_Y(1,d) = {[]}; 
+    % If there are no Yname, create Yname (Y1, Y2,...)
+    if ~exist('Yname','var')
+        aux1 = 'Y';
+        Yname(1,d) = {[]}; 
         for ii=1:d
-            title_Y(1,ii) = {[aux1 num2str(ii)]};
+            Yname(1,ii) = {[aux1 num2str(ii)]};
         end
         clear aux1 
-    else
     end
    
-    % Some parameters for the charts
-    font_size = 12;
-
     % Dimension of the matrix to plot
     dim=size(OUT);
-    last = dim(1);
-    NumTotVar   = dim(2);
-    Xaxis       = zeros(last,1);
-
-    if exist('row','var')==0 && exist('col','var')==0
-        row = 2; 
-        col = 3;
-    end
-
-    % Determine how many figures are produced
-    NumGraphXPage = row*col;
-    p = floor(NumTotVar./NumGraphXPage);
-    q = (NumTotVar./NumGraphXPage);
-    if NumGraphXPage>=NumTotVar
-        NumTotFigures=1;
-    elseif p==q
-        NumTotFigures=p;
-    else
-        NumTotFigures=p+1;
-        rest = NumTotVar-(NumTotFigures-1)*NumGraphXPage;
-    end
-    clear p q
-
-    % Store in is_empty the NaN column in the plot matrices (if any)
-    is_empty = isnan(OUT(:,:));
-
+    ntotlags = dim(1);
+    ntotvars = dim(2);
+    row = round(sqrt(ntotvars));
+    col = ceil(sqrt(ntotvars));
+    
     % Plot
-    jj=1;
-    for n=1:NumTotFigures;
-        for j=1:NumGraphXPage;
-            if jj>NumTotVar % to solve if I put more NumGraphXPage 
-                subplot(row,col,j)
-                plot(1:10,'LineStyle','none')
-                axis off
-            else
-                if is_empty(1,jj)==1
-                    jj=jj+1;
-                else
-                    subplot(row,col, j);
-    %                 bar(lags,OUT(:,jj),'b');
-                    stem(lags,OUT(:,jj),'*k','fill','LineWidth',1)
-    %                 plot(lags,Xaxis,'k-');
-                    grid off;
-                    message=strcat(title_Y(:,jj));
-                    title(message,'FontSize',font_size);
-                    set( gca,'FontSize',font_size-3   );
-                    set( gca, 'Box','off'           );
-    %                 set(gca, 'XTick', 0:last/NumTicks:last); % set the number of ticks
-    %                 xlabel('Lags','Fontsize',font_size-3)
-    %                 ylabel('Correlation','Fontsize',font_size-3)
-                    jj=jj+1;
-                end
-            end
-        end
-
-        % Save the image
-        if exist('name','var') == 1
-            figname = name;
-        else
-            figname = 'CrossCorr';
-        end
-        if NumTotFigures > 1
-            figname = [figname num2str(n)];
-        end
-        
-        set(gcf, 'Color', 'w');
-        export_fig(figname,'-pdf','-png')
-        clf('reset');
+    for jj=1:row*col
+        if jj>ntotvars; break; end
+        subplot(row,col,jj);
+        stem(lags,OUT(:,jj),'*k','fill','LineWidth',1)
+        grid off;
+        title(Yname(jj));
+        set(gca, 'XTick', -lag:lag); % set the number of ticks
     end
-    close all
 end
  

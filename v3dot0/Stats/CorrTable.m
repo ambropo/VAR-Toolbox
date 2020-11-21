@@ -5,17 +5,25 @@ function [CORR, TABLE] = CorrTable(x,vnames,pairwise)
 % out = CorrTable(x,vnames)
 % -----------------------------------------------------------------------
 % INPUT
-%   - x: T obs (rows) x N series (columns)
-%   - vnames: cell array with vnames of the N series
+%   - x: matrix (rows x cols) [double]
+%   - vnames: array (1 x cols) with names of the (cols) series [cell]
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
 %   - pairwise: default 0, change to 1 to compute pairwise correlations
 % -----------------------------------------------------------------------
 % OUTPUT
 %   - CORR: correlation matrix [double]
-%   - TABLE: table of correlation matrix with titles
+%   - TABLE: table of correlation matrix with titles [cell]
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
+% EXAMPLE
+%   x = rand(50,2);
+%   [CORR, TABLE] = CorrTable(x,{'Consumption','Investment'})
+% =========================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
+% -----------------------------------------------------------------------
 
 % If no dimension is specified, set it to 1
 if ~exist('pairwise','var')
@@ -47,17 +55,14 @@ end
 nans = isnan(CORR);
 
 % Transform table into cell array
-table = num2cell(CORR);
-
-% Substitue NaNs with -
-% table(nans) = {'--'};
+TAB = num2cell(CORR);
 
 % Add vnames on top
-table = [vnames ; table];
+TAB = [vnames ; TAB];
 
 % Add vnames on the left
 aux = [{''} vnames]';
-TABLE = [aux table];
+TABLE = [aux TAB];
 
 % Print using mprint
 info.cvnames = char(vnames);

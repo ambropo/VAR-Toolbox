@@ -11,9 +11,16 @@ function H = AreaPlot(X)
 % OUTPUT
 %   - H: handle to graph
 % =======================================================================
+% EXAMPLE
+%   X = randn(20,2);
+%   H = AreaPlot(X)
+% =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, November 2020
-% ambrogio.cesabianchi@gmail.com
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
+% -----------------------------------------------------------------------
+
 
 
 H(1,:) = area((X).*(X>0),'LineStyle','none'); 

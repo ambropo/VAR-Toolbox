@@ -9,11 +9,13 @@ function PlotLine(DATA,opt)
 % -----------------------------------------------------------------------
 % OPTIONAL INPUTS
 %   - opt: see function PlotLineOption
-% =========================================================================
+% =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa-Bianchi, March 2015
+% Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
 % -----------------------------------------------------------------------
+
 
 
 

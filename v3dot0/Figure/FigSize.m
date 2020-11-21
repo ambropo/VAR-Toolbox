@@ -8,9 +8,14 @@ function FigSize(xdim,ydim)
 %   - xdim: horizontal size (in cm)
 %   - ydim: vertical size (in cm)
 % =======================================================================
+% EXAMPLE
+%   FigSize(12,6)
+%   plot(1:10)
+% =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa-Bianchi, March 2015
+% Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
 % -----------------------------------------------------------------------
 
 

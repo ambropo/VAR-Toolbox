@@ -3,9 +3,11 @@ function opt = PlotLineOption
 % Optional inputs for PlotLine
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa-Bianchi, March 2015
+% Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
 % -----------------------------------------------------------------------
+
 
 opt.row          = 3;                       % rows for subplot
 opt.col          = 4;                       % columns for subplot

@@ -1,4 +1,4 @@
-function legpos = LegPlot(text,opt)
+function LegPlot(text,opt)
 % =======================================================================
 % This function creates a legend outside the chart, centered, & below
 % =======================================================================
@@ -10,14 +10,21 @@ function legpos = LegPlot(text,opt)
 % OPTIONAL INPUTS
 %   - opt: options for the legend, output of LegOption function
 % =======================================================================
+% EXAMPLE
+%   plot(1:10); 
+%   opt = LegOption;
+%   LegPlot({'Plot of \alpha'},opt)
+% =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa-Bianchi, March 2015
+% Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
 % -----------------------------------------------------------------------
 
 
+
 %% Preliminaries
-% =========================================================================
+% =======================================================================
 if ~exist('opt','var')
     opt = LegOption;
 end

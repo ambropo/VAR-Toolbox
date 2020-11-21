@@ -1,6 +1,6 @@
 function LegSubplot(text,opt)
 % =======================================================================
-% This function creates a single legend for charts created with "subplot"
+% This function creates a single legend for charts created with subplot
 % =======================================================================
 % LegSubplot(text,opt)
 % -----------------------------------------------------------------------
@@ -10,14 +10,19 @@ function LegSubplot(text,opt)
 % OPTIONAL INPUTS
 %   opt  : options for the legend, output of LegOption function
 % =======================================================================
+% EXAMPLE
+%   subplot(1,2,1); plot(rand(10,2)); subplot(1,2,2); plot(rand(10,2)); 
+%   opt = LegOption;
+%   LegSubplot({'Plot of \alpha','Plot of \beta'},opt)
+% =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa-Bianchi, March 2015
+% Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
 % -----------------------------------------------------------------------
 
-
 %% Preliminaries
-% =========================================================================
+% =======================================================================
 if ~exist('opt','var')
     opt = LegOption;
 end

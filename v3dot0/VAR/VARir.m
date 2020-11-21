@@ -19,9 +19,10 @@ function [IR, VAR] = VARir(VAR,VARopt)
 %       some additional results, e.g. VAR.B is the strcutral impact matrix
 % =========================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, November 2020
-% ambrogio.cesabianchi@gmail.com
-% -------------------------------------------------------------------------
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
+% -----------------------------------------------------------------------
 % Notes:
 % -----
 % This code follows the notation as in the lecture notes available at

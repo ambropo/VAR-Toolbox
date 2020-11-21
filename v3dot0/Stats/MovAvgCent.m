@@ -7,15 +7,22 @@ function OUT = MovAvgCent(DATA,window)
 % OUT = MovAvg(DATA,window)
 % -----------------------------------------------------------------------
 % INPUT
-%   DATA: T observations DATA window variables
-%   window: window of the moving average
+%   DATA: T observations DATA window variables [double]
+%   window: window of the moving average [double]
 %------------------------------------------------------------------------
 % OUPUT
-%   OUT: T observations DATA window variables matrix (the first windows-1 
-%       obseravations are NaN)
+%   OUT: T x N matrix (the first windows observations are NaN) [double]
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% EXAMPLE
+%   X = rand(20,2);
+%   OUT = MovAvgCent(X,2)
+% =======================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
+
 
     
 if nargin<2, error('Not enough input.'),end

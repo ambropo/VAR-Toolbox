@@ -22,8 +22,8 @@ function [CORR, OUT] = CorrUnbalanced(DATA,labels)
 %	- OUT.table: formatted table of correlation matrix with titles
 % =======================================================================
 % EXAMPLE
-% DATA = rand(50,4);
-% [CORR, OUT] = CorrUnbalanced(DATA)
+%   DATA = rand(50,4);
+%   [CORR, OUT] = CorrUnbalanced(DATA)
 % =======================================================================
 % Ambrogio Cesa Bianchi, April 2017
 % ambrogio.cesabianchi@gmail.com

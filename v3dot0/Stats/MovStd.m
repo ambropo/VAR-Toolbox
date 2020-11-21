@@ -11,28 +11,35 @@ function OUT = MovStd(DATA,window)
 %    - window: window of the moving average
 %------------------------------------------------------------------------
 % OUPUT
-%    - OUT: T observations x N variables matrix (the first windows-1 
-%       obseravations are NaN)
+%    - OUT: T observations x N variables matrix (the first window-1 
+%       observations are NaN)
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% EXAMPLE
+%   DATA = rand(50,4);
+%   OUT = MovStd(DATA,2)
+% =========================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 if nargin<2,                error('Not enough input.'),          end
 if window<=0,               error('window must be positive.'),   end
 if (window~=floor(window)), error('window must be an integer.'), end
 
-if min(size(DATA))==1,
+if min(size(DATA))==1
     DATA = DATA(:); % forces DATA to be a column vector
 end
 
 [nobs,nvar] = size(DATA);
-if window>nobs,
+if window>nobs
     error('window must not be greater than the length of DATA.')
 end
 
 temp = [];
-for row=1:(nobs-window+1),
+for row=1:(nobs-window+1)
     temp = [temp; std(DATA(row:(row+window-1),:))];
 end
 

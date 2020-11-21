@@ -1,15 +1,14 @@
 function SwatheOpt = PlotSwatheOption
-%==========================================================================
-% Optional inputs for VAR analysis. This function is run automatically in
-% the VARmodel function.
-%==========================================================================
-% VARopt = VARoption
+%========================================================================
+% Optional inputs for PlotSwathe
+%========================================================================
+% SwatheOpt = PlotSwatheOption
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa-Bianchi, March 2015
+% Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
 % -----------------------------------------------------------------------
-
 
 %% INITIALIZE VARIABLES
 %color = bone(8);

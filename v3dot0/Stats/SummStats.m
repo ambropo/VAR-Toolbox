@@ -1,4 +1,4 @@
-function [stats, TABLE] = SummStats(TEMP,p,vnames)
+function [STATS, TABLE] = SummStats(DATA,p,vnames)
 % =======================================================================
 % Computes descriptive stats of a time series (or a matrix of time series)
 % =======================================================================
@@ -18,8 +18,16 @@ function [stats, TABLE] = SummStats(TEMP,p,vnames)
 %       ADF(4), ADF(4) Conf, ADF(8), ADF(8) Conf]
 %   - TABLE: cell, matrix with the names of the stats & the stats
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% Updated December 2015
+% EXAMPLE:
+%   DATA = rand(50,4);
+%   [STATS, TABLE] = SummStats(DATA,2,{'Y','G','I','C'})
+% =======================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
+
 
 %% INITIALIZE VARIABLES
 if ~exist('vnames','var')
@@ -29,20 +37,20 @@ else
         vnames=vnames';
     end
 end
-[~, c] = size(TEMP);
+[~, c] = size(DATA);
 
 %% Compute summary statistics NaN are not considered (like in Excel)
-mean    = nanmean(TEMP);
-median  = nanmedian(TEMP);
-max     = nanmax(TEMP);	
-min     = nanmin(TEMP);	
-StDev   = nanstd(TEMP);
+mean    = nanmean(DATA);
+median  = nanmedian(DATA);
+max     = nanmax(DATA);	
+min     = nanmin(DATA);	
+StDev   = nanstd(DATA);
 CV      = StDev./mean;
 
 % Compute autocorrelation coefficient AutoCorr on the maximum number of
 % observation available per series
 for i=1:c
-    X = TEMP(:,i);
+    X = DATA(:,i);
     if isnan(X)==1
         Obs(1,i)  = NaN;
         AutoCorr(1,i)  = NaN;
@@ -97,12 +105,12 @@ for i=1:c
 end
 
 % Create matrix with all summary stats
-stats = [Obs; mean; median; max; min; StDev; AutoCorr; Skew; Kurt; ADF4; ADF4conf; ADF8; ADF8conf; CV];
+STATS = [Obs; mean; median; max; min; StDev; AutoCorr; Skew; Kurt; ADF4; ADF4conf; ADF8; ADF8conf; CV];
 
 % Create titles
 titles ={'Obs'; 'Mean'; 'Median'; 'Max'; 'Min'; 'St. Dev.'; 'Auto Corr.'; 'Skew.'; 'Kurt.'; 'ADF(4)'; 'ADF(4) Conf.'; 'ADF(8)'; 'ADF(8) Conf.'; 'Coeff. Variation'};
 
 % Create cell 
-TABLE = TabPrint(stats,vnames,titles,4);
+TABLE = TabPrint(STATS,vnames,titles,4);
 
 

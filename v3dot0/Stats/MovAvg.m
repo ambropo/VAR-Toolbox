@@ -6,26 +6,33 @@ function OUT = MovAvg(DATA,window)
 % OUT = MovAvg(DATA,window)
 % -----------------------------------------------------------------------
 % INPUT
-%   DATA: T observations x N variables
-%   window: window of the moving average
+%   DATA: T observations x N variables [double]
+%   window: window of the moving average [double]
 %------------------------------------------------------------------------
 % OUPUT
-%   OUT: T observations x N variables matrix (the first windows-1 
-%       obseravations are NaN)
+%   OUT: T x N matrix (the first windows-1 observations are NaN) [double]
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% EXAMPLE
+%   X = rand(20,2);
+%   OUT = MovAvg(X,2)
+% =======================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
+
 
 if nargin<2,                error('Not enough input.'),          end
-if window<=0,               error('window must be positive.'),   end
-if (window~=floor(window)), error('window must be an integer.'), end
+if window<=0,               error('Window must be positive.'),   end
+if (window~=floor(window)), error('Window must be an integer.'), end
 
-if min(size(DATA))==1,
+if min(size(DATA))==1
     DATA = DATA(:); % forces DATA to be a column vector
 end
 
 [nobs,nvar] = size(DATA);
-if window>nobs,
+if window>nobs
     error('window must not be greater than the length of DATA.')
 end
 

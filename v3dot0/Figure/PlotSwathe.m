@@ -1,16 +1,15 @@
 function H = PlotSwathe(bar,swathe,SwatheOpt)
-% =========================================================================
-% Plot a line with a shaded swathe
-% =========================================================================
-% H = PlotSwathe(bar,swathe,SwatheOpt.col,SwatheOpt.transp,nticks,fo,...
-%       SwatheOpt.frequency,SwatheOpt.swatheonly)
-% -------------------------------------------------------------------------
+% =======================================================================
+% Plot a line with a shaded swathe (e.g for impulse responses, etc)
+% =======================================================================
+% H = PlotSwathe(bar,swathe,SwatheOpt)
+% -----------------------------------------------------------------------
 % INPUT
 %   - bar: line to plot
-%   - swathe: if a vector, draws symmetric swathe around bar. Otherwise draws 
-%     	asymmetric swathe, with first columnn being the upper limit and 
-%       second column being the lower limit
-%--------------------------------------------------------------------------
+%   - swathe: if a vector, draws symmetric swathe around bar. Otherwise 
+%       draws asymmetric swathe, with first columnn being the upper limit 
+%       and second column being the lower limit
+%------------------------------------------------------------------------
 % OPTIONAL INPUT
 %   - SwatheOpt.linecol: color of line, can be rgb number or string, e.g. 
 %       'blue'
@@ -21,24 +20,23 @@ function H = PlotSwathe(bar,swathe,SwatheOpt)
 %   - fo: first observation (convention: 1987.00 = 1987Q1)
 %   - SwatheOpt.frequency: quarterly ('q') or annual ('y') [dflt='q']
 %   - SwatheOpt.swatheonly: set to 1 to plot only the swathe (dflt=0)
-%--------------------------------------------------------------------------
+%------------------------------------------------------------------------
 % OUPUT
 %   - H.bar: handle for the median
 %   - H.patch: handle for the patch
 %   - H.swathe: H.swathe(1) handle for upp , H.swathe(2) handle for low
 %   - H.ax: hande for the axis
 %   - H.nobs: number of observations
-% =========================================================================
+% =======================================================================
 % EXAMPLE
-% x = 3*sin(1:50);
-% PlotSwathe(x,1,'dark blue','transparent',2,1970)
-% hold on
-% y = cos(1:50);
-% PlotSwathe(y,1,'light red','transparent',2,1970)
-% =========================================================================
+% x = 3*(1:50);
+% swathe = [1*(1:50);4*(1:50)];
+% PlotSwathe(x,swathe)
+% =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa-Bianchi, March 2015
+% Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
+% March 2015. Updated November 2020
 % -----------------------------------------------------------------------
 
 
@@ -69,6 +67,7 @@ if size(bar,1)>1
 end
 
 % Check if swathe is vector and set error bands
+
 if isvector(swathe)
     % Check if swathe has the right dimension [1 x T]
     if size(swathe,1)>1

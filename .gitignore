@@ -9,3 +9,5 @@
 *.aux
 *.log
 /aux
+/temp
+

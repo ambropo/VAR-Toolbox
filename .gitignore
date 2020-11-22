@@ -9,5 +9,4 @@
 *.aux
 *.log
 /aux
-/temp
-
+/v3dot0/[temp]

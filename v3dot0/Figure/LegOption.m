@@ -11,7 +11,7 @@ function opt = LegOption
 %   - opt.handle : default [], no handle specified 
 %   - opt.interpreter : default 'Tex', otherwise chamge to 'none'
 %   - opt.direction : default 1, horizontal legend
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   plot(1:10); 
 %   opt = LegOption; opt.interpreter = 'Tex'; opt.hsize = 0.4

@@ -11,10 +11,14 @@ function [HD, VAR] = VARhd(VAR,VARopt)
 % -----------------------------------------------------------------------
 % OUTPUT
 %   - HD: structure including the historical decomposition
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   - See VARToolbox_Code.m in "../Primer/"
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa-Bianchi, November 2020
+% Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
 % -----------------------------------------------------------------------
 
 

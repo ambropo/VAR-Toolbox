@@ -8,10 +8,10 @@ function OUT = MovAvg(DATA,window)
 % INPUT
 %   DATA: T observations x N variables [double]
 %   window: window of the moving average [double]
-%------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OUPUT
 %   OUT: T x N matrix (the first windows-1 observations are NaN) [double]
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   X = rand(20,2);
 %   OUT = MovAvg(X,2)

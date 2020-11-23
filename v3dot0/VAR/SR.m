@@ -1,60 +1,41 @@
 function SRout = SR(VAR,SIGN,VARopt)
-% =========================================================================
+% =======================================================================
 % Compute IRs, VDs, and HDs for a VAR model estimated with VARmodel and 
 % identified with sign restrictions
-% =========================================================================
+% =======================================================================
 % SRout = SR(VAR,R,VARopt)
-% -------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % INPUT
 %   - VAR: structure, result of VARmodel function
-%   - R: 3-D matrix containing the sign restrictions (nvar,3,nshocks)
-%       described below
-%   - VARopt: options of the VAR (see VARoption from VARmodel)
-% -------------------------------------------------------------------------
-% OUTPUT
-%   - SRout
-%       * IRall : 4-D matrix of IRs  (nsteps,nvar,nshocks,ndraws)
-%       * IRmed : median of IRall
-%       * IRinf : lower bound of IRall
-%       * IRsup : upper bound of IRall
-% 
-%       * VDall : 4-D matrix of VDs (nsteps,nvar,nshocks,ndraws)
-%       * VDmed : median of VDall
-%       * VDinf : lower bopund of VDall
-%       * VDsup : upper bopund of VDall
-% 
-%       * Ball  : 4-D matrix of Bs (nvar,nvar,nshocks,ndraws)
-%       * Bmed  : median of Ball
-%       * Binf  : lower bound of Ball
-%       * Bsup  : upper bound of Ball
-% 
-%       * HDmed : structure with median of HDall (not reported)
-%       * HDinf : structure with lower bound of HDall (not reported)
-%       * HDsup : structure with upper bound of HDall (not reported)
-% =========================================================================
-% VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
-% ambrogio.cesabianchi@gmail.com
-% -------------------------------------------------------------------------
-% Notes:
-% -----
-% This code follows the notation as in the lecture notes available at
-% https://sites.google.com/site/ambropo/MatlabCodes
-% -----
-% The SIGN matrix has dimension (nvar,nshocks). Assume you have three 
-% variables and you want to identify just one shock, which has positive
-% impact on the first variable, negative impact on the second variable, and 
-% and unrestricted impact on the third variable. The the SIGN matrix 
-% should be specified as:
+%   - SIGN: matrix containing the sign restrictions (nvar,nshocks). 1
+%       stands for positive, -1 for negative, 0 for unrestricted. For
+%       example the following identifies only one shock with positive
+%       impact on the VAR1, and negative imnpact on VAR2 and VAR3
 % 
 %             shock1      shock2     shock3
 %  SIGN = [     1           0           0          % VAR1
 %              -1           0           0          % VAR2
 %              -1           0           0];        % VAR3
 % 
-% That is: the first column defines the signs of the response of the three 
-% variables to the first shock.
-% -----
+%   - VARopt: options of the VAR (see VARoption from VARmodel)
+% -----------------------------------------------------------------------
+% OUTPUT
+%   - SRout
+%       * IRall : 4-D matrix of IRs  (nsteps,nvar,nshocks,ndraws)
+%       * IRmed : median of IRall
+%       * IRinf : lower bound of IRall
+%       * IRsup : upper bound of IRall
+%       * IR    : IR based on true B matrix that is closest to median B
+%       * (similar structure for VD, B, and HD)
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   - See VARToolbox_Code.m in "../Primer/"
+% =======================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 %% Check inputs
@@ -114,7 +95,7 @@ while jj < ndraws
     
     % Note: e = (inv(B)*VAR_draw.(label{1}).resid')';
     % Check orthogonality:
-    % corr((inv(B)*VAR_draw.(label{1}).resid')')
+    % round(corr((inv(B)*VAR_draw.(label{1}).resid')'))
     
     % Store B
     jj = jj+1;

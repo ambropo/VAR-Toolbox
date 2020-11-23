@@ -18,8 +18,11 @@ function ARDL = ARDLmodel(ENDO,nlag,const,EXOG,nlag_ex)
 %   - VAR: structure including VAR estimation results
 %   - VARopt: structure including VAR options (see VARoption)
 % =======================================================================
-% Ambrogio Cesa Bianchi, August 2016
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 %% Check inputs

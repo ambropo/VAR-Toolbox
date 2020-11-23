@@ -9,16 +9,18 @@ function OLS = OLSmodel(y,x,const)
 %	- x: independent variables matrix (nobs x nvar)
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
-%	- const: 0 no constant; 1 constant; 2 constant and trend; 3 constant, 
-%       trend, and trend^2 [dflt = 0]
+%	- const: 0 no constant; 1 constant; 2 constant and trend; 3 constant
+%        and trend^2 [dflt = 0]
 % -----------------------------------------------------------------------
 % OUPUT
 %	- OLS: structure including VAR estimation results
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
-% This script is based on ols.m script by James P. LeSage
 
 
 % Check inputs
@@ -40,13 +42,13 @@ end
 if const==1 %constant
     x = [ones(nobs,1) x];
     nvar = nvar+1;
-elseif const==2 % time trend and constant
+elseif const==2 % trend and constant
     trend = 1:nobs;
     x = [ones(nobs,1) trend' x];
     nvar = nvar+2;
-elseif const==3 % time trend, trend^2, and constant
+elseif const==3 % trend^2, and constant
     trend = 1:nobs;
-    x = [ones(nobs,1) trend' trend'.^2 x];
+    x = [ones(nobs,1) trend'.^2 x];
     nvar = nvar+3;
 end
 

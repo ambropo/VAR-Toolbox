@@ -5,17 +5,24 @@ function out = vec(X,dim)
 % out = vec(X)
 % -----------------------------------------------------------------------
 % INPUT
-%   - X: [r x c] matrix
+%   - X: (TxN) matrix
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
-%   - dim: dimension over which to vectorize [default 1. Set to 2 to get a
-%          row vector]
+%   - dim: dimension over which to vectorize [dflt 1]. Set to 2 to get a
+%          row vector
 % -----------------------------------------------------------------------
 % OUTPUT
 %   - out: [r*c x 1] matrix
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   x = [1 2; 3 4; 5 6; 7 8; 9 10];
+%   out = vec(x,1)
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2016
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 % Check inputs
 if ~exist('dim','var')

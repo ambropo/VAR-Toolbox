@@ -15,10 +15,14 @@ function [TABLE, beta] = VARprint(VAR,VARopt,approx)
 %   - TABLE: table of estimated coefficients, std errors, t-stats, and p 
 %       values in in cell array
 %   - beta: table of estimated coefficients only in cell array
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   - See VARToolbox_Code.m in "../Primer/"
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
-% ambrogio.cesabianchi@gmail.com
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
 % -----------------------------------------------------------------------
 
 

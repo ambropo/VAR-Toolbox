@@ -4,8 +4,8 @@ function [PC, TABLE] = PairCorr(DATA,labels,absolute)
 % observations and N variables. Computes the pairwise correlation of both 
 % levels and log-differences of the original series in DATA.
 % 
-% Note: If a series (ie, column) has a NaN, the whole series is treated as 
-% NaN. See PairCorrUnbalanced for pairwise correlations with NaNs
+% Note: If a series (ie, column) has a NaN, the whole series is treated 
+% as NaN. See PairCorrUnbalanced for pairwise correlations with NaNs
 % =======================================================================
 % [PC, TABLE] = PairCorr(DATA,labels)
 % -----------------------------------------------------------------------
@@ -14,18 +14,18 @@ function [PC, TABLE] = PairCorr(DATA,labels,absolute)
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
 %   - labels: names of each variable j. Default "Variable"
-%   - absolute: Default 0. If set to 1 computes the average of the absolute
-%       value of the pairwise correlation
+%   - absolute: Default 0. If set to 1 computes the average of the 
+%       absolute value of the pairwise correlation
 % -----------------------------------------------------------------------
-% TABLEPUT
+% OUTPUT
 %	- PC: matrix of pairwise correlation N (variables) x 2 (levels 
 %       and log-diff)
 %	- TABLE: formatted table of pairwise correlation with titles
-% =========================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   DATA = rand(50,4);
 %   [PC TABLE] = PairCorr(DATA)
-% =========================================================================
+% =======================================================================
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com

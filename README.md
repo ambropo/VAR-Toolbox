@@ -5,14 +5,15 @@ The VAR Toolbox is a collection of Matlab routines to perform VAR analysis. Esti
 
 The codes are grouped in six categories (and respective folders):
 
-- Auxiliary: codes that I borrowed from other public sources. Each m-file has a reference to the original source.
-
-- ExportFig: this is a toolbox available at Oliver Woodford's website for exporting high quality figures. To enable this option, the Toolbox requires Ghostscript installed on your computer (freely available at www.ghostscript.com).
-
-- Figure: codes for plotting high quality figures
+- VAR: the codes for VAR estimation, identification, computation of the impulse response functions, FEVD, HD.
 
 - Stats: codes for the calculation of summary statistics, moving correlations, pairwise correlations, etc.
 
 - Utils: codes that allow the smooth functioning if the Toolbox.
 
-- VAR: the codes for VAR estimation, identification, computation of the impulse response functions, FEVD, HD.
+- Auxiliary: codes that I borrowed from other public sources. Each m-file has a reference to the original source.
+
+- Figure: codes for plotting high quality figures
+
+- ExportFig: this is a toolbox developed by Yair Altman (https://github.com/altmany/export_fig) for exporting high quality figures. To enable this option, the Toolbox requires Ghostscript installed on your computer (freely available at www.ghostscript.com).
+

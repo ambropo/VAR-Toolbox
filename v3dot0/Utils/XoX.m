@@ -4,6 +4,7 @@ function OUT = XoX(DATA,frequency,type)
 % countries) at quarterly or annual frequency
 % =======================================================================
 % OUT = XoX(DATA,frequency,type)
+% NOT SUPPORTED ANYMORE
 % -----------------------------------------------------------------------
 % INPUT
 %	- DATA: matrix DATA(T,N)
@@ -17,11 +18,16 @@ function OUT = XoX(DATA,frequency,type)
 % OUTPUT
 %	- OUT: matrix DATA(T,N) of rates of change. The first # (=frequency) 
 %     observations are NaN
-% =========================================================================
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   x = [1 2; -3 4; 5 6; 7 8; 9 10];
+%   OUT = XoX(x,1,'diff')
+% =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, November 2020
-% ambrogio.cesabianchi@gmail.com
-% -------------------------------------------------------------------------
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 if ~exist('type','var')
     type = 'logdiff';
@@ -33,9 +39,7 @@ if frequency>nobs
     error('Frequency is larger than the number of observations')
 end
 
-if strcmp(type,'log')
-    OUT = log(DATA);
-elseif strcmp(type,'logdiff')
+if strcmp(type,'logdiff')
     OUT = log(DATA(1+frequency:end,:))-log(DATA(1:end-frequency,:));
     OUT = [nan(frequency,nvar); OUT];
 elseif strcmp(type,'rate')

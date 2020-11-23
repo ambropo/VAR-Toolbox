@@ -6,17 +6,15 @@ function OUT = GetCyclical(DATA,vtreat,lag,lam)
 % -----------------------------------------------------------------------
 % INPUT
 %	- DATA: matrix DATA(T,N)
-%   - vtreat: 0 Notreatment 
-%             1	Log
-%             2 First difference
-%             3	Log First Difference
-%             4	Deviation from constant & trend
-%             5	Log Deviation from constant & trend
-%             6	Deviation from constant & quadratic trend
-%             7	Log Deviation from constant & quadratic trend
-%             8	HP filter
-%             9	Log HP filter
-%             10 Percent change
+%   - vtreat: 1	First difference
+%             2	Log First Difference
+%             3	Deviation from constant & trend
+%             4	Log Deviation from constant & trend
+%             5	Deviation from constant & quadratic trend
+%             6	Log Deviation from constant & quadratic trend
+%             7	HP filter
+%             8	Log HP filter
+%             9	Percent change
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
 %   - lag: number of lags for first differences or percent changes

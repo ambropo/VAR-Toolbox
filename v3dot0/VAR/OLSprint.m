@@ -15,10 +15,13 @@ function [TABLE, beta] = OLSprint(OLS,vnames,ynames,approx)
 % OUPUT
 %   - TABLE: table of estimated coefficients, std errors, t-stats, and p 
 %       values in in cell array
-%   beta:  table of estimated coefficients only in cell array
+%   - beta: table of estimated coefficients only in cell array
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2017
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 %% Check inputs

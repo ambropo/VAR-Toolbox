@@ -10,27 +10,23 @@ function [INF,SUP,MED,BAR] = VARirband(VAR,VARopt)
 %   - VARopt: options of the VAR (result of VARmodel.m)
 % -----------------------------------------------------------------------
 % OUTPUT
-%   - INF(t,j,k): lower confidence band (t steps, j variable, k shock)
-%   - SUP(t,j,k): upper confidence band (t steps, j variable, k shock)
-%   - MED(t,j,k): median response (t steps, j variable, k shock)
-%   - BAR(t,j,k): mean response (t steps, j variable, k shock)
+%   - INF(:,:,:): lower confidence band (H horizons, N variables, N shocks)
+%   - SUP(:,:,:): upper confidence band (H horizons, N variables, N shocks)
+%   - MED(:,:,:): median response (H horizons, N variables, N shocks)
+%   - BAR(:,:,:): mean response (H horizons, N variables, N shocks)
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   - See VARToolbox_Code.m in "../Primer/"
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
-% ambrogio.cesabianchi@gmail.com
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
 % -----------------------------------------------------------------------
-% Notes:
-% -----
-% I thank Andrey Zubarev for finding a bug in STEP 2.1 and 2.2 for the 
-% case of nvar_ex~=0 and nlag_ex>0. 
-% -----
-% I thank Luca Rossi for finding a bug in STEP 3 for the case of nvar_ex~=0 
-% and nlag_ex>0. 
-% -----
 
 
 %% Check inputs
-%===============================================
+%------------------------------------------------------------------------
 if ~exist('VAR','var')
     error('You need to provide VAR structure, result of VARmodel');
 end
@@ -40,13 +36,13 @@ end
 
 
 %% Retrieve and initialize variables 
-%===============================================
+%------------------------------------------------------------------------
 nsteps = VARopt.nsteps;
 ndraws = VARopt.ndraws;
 pctg   = VARopt.pctg;
 method = VARopt.method;
 
-Ft      = VAR.Ft;  % rows are coefficients, columns are equations
+Ft      = VAR.Ft;  % this if \Phi' in the notes (rows are coeffs, columns are eqs)
 nvar    = VAR.nvar;
 nvar_ex = VAR.nvar_ex;
 nlag    = VAR.nlag;
@@ -64,12 +60,12 @@ MED = zeros(nsteps,nvar,nvar);
 BAR = zeros(nsteps,nvar,nvar);
 
 %% Create the matrices for the loop
-%===============================================
+%------------------------------------------------------------------------ 
 y_artificial = zeros(nobs+nlag,nvar);
 
 
 %% Loop over the number of draws
-%===============================================
+%------------------------------------------------------------------------ 
 tt = 1; % numbers of accepted draws
 ww = 1; % index for printing on screen
 while tt<=ndraws
@@ -175,7 +171,7 @@ disp('-- Done!');
 disp(' ');
 
 %% Compute the error bands
-%===============================================
+%------------------------------------------------------------------------ 
 pctg_inf = (100-pctg)/2; 
 pctg_sup = 100 - (100-pctg)/2;
 INF(:,:,:) = prctile(IR(:,:,:,:),pctg_inf,4);

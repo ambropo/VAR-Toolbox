@@ -8,7 +8,6 @@ function opt = PlotLineOption
 % March 2015. Updated November 2020
 % -----------------------------------------------------------------------
 
-
 opt.row          = 3;                       % rows for subplot
 opt.col          = 4;                       % columns for subplot
 opt.fo           = [];                      % first observation (1989Q2 => 1989.25)

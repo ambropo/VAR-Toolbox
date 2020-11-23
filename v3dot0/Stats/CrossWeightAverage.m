@@ -16,7 +16,7 @@ function [OUT, W] = CrossWeightAverage(DATA,WEIGHT)
 % OUTPUT 
 %	- average : weighted average vector (T x 1) [double]
 %	- weight  : matrix of weights (T x N) [double]
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE 1: foreign variables as in GVAR (example with fixed weights)
 %   x = [1 NaN  3 ; 
 %         2   3  4 ; 

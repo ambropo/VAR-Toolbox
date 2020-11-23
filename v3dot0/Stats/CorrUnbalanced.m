@@ -5,28 +5,31 @@ function [CORR, OUT] = CorrUnbalanced(DATA,labels)
 % column i or j. 
 % 
 % note: for each pair of columns, the correlation is computed using the
-% maximum amount of available observations. This is to deal with unbalanced
-% panels. Therefore, NaN are accepted.
+% maximum amount of available observations. This is to deal with 
+% unbalanced panels. Therefore, NaN are accepted.
 % =======================================================================
 % [CORR, OUT] = CorrUnbalanced(DATA,labels)
 % -----------------------------------------------------------------------
 % INPUT
 %	- DATA: matrix DATA T (observations) x N (variables)
-%------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OPTIONAL INPUT
 %   - labels: Default "Variable", names of each variable j
-%------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OUPUT
 %	- CORR: matrix of correlation N x N 
 %	- OUT.N: number of observations used for each pair
 %	- OUT.table: formatted table of correlation matrix with titles
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   DATA = rand(50,4);
 %   [CORR, OUT] = CorrUnbalanced(DATA)
 % =======================================================================
-% Ambrogio Cesa Bianchi, April 2017
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 

@@ -9,7 +9,7 @@ function H = PlotSwathe(bar,swathe,SwatheOpt)
 %   - swathe: if a vector, draws symmetric swathe around bar. Otherwise 
 %       draws asymmetric swathe, with first columnn being the upper limit 
 %       and second column being the lower limit
-%------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OPTIONAL INPUT
 %   - SwatheOpt.linecol: color of line, can be rgb number or string, e.g. 
 %       'blue'
@@ -20,14 +20,14 @@ function H = PlotSwathe(bar,swathe,SwatheOpt)
 %   - fo: first observation (convention: 1987.00 = 1987Q1)
 %   - SwatheOpt.frequency: quarterly ('q') or annual ('y') [dflt='q']
 %   - SwatheOpt.swatheonly: set to 1 to plot only the swathe (dflt=0)
-%------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OUPUT
 %   - H.bar: handle for the median
 %   - H.patch: handle for the patch
 %   - H.swathe: H.swathe(1) handle for upp , H.swathe(2) handle for low
 %   - H.ax: hande for the axis
 %   - H.nobs: number of observations
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 % x = 3*(1:50);
 % swathe = [1*(1:50);4*(1:50)];

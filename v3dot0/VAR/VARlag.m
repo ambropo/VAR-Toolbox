@@ -1,33 +1,36 @@
 function [AIC, SBC, logL] = VARlag(ENDO,maxlag,const,EXOG,lag_ex)
-%==========================================================================
+% =======================================================================
 % Determine VAR lag length with Akaike (AIC) and Schwarz Bayesian 
 % Criterion (SBC)criterion.
-%==========================================================================
+% =======================================================================
 % [AIC, SBC, logL] = VARlag(ENDO,maxlag,const,EXOG,lag_ex)
-%--------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % INPUT
 %   - ENDO: an (nobs x nvar) matrix of endogenous variables.
-%	- maxlag: the maximum lag length over which Akaike information criterion
-%       is computed
-%--------------------------------------------------------------------------
+%	- maxlag: the maximum lag length over which Akaike information 
+%       criterion is computed
+% -----------------------------------------------------------------------
 % OPTIONAL INPUT
-%   - const: 0 no const; 1 const ; 2 const&trend; 3 const&trend^2; (dflt = 1)
+%   - const: 0 no constanrt; 1 constant ; 2 constant and trend; 
+%           3 constant and trend^2; [dflt = 1]
 %	- EXOG: optional matrix of variables (nobs x nvar_ex)
 %   - nlag_ex: number of lags for exogeonus variables (dflt = 0)
-%--------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OUTPUT
 %	- AIC: preferred lag lenghth according to AIC
 %   - SBC: preferred lag lenghth according to SBC
 %   - logL: vector [maxlag x 1] of loglikelihood
-%==========================================================================
-% Ambrogio Cesa Bianchi, February 2016
-% ambrogio.cesabianchi@gmail.com
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   x = [1 2; 3 4; 5 6; 7 8; 9 10];
+%   OUT = VARmakelags(x,2)
+% =======================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
-% Note: 
-% The determinant of the residual covariance is computed adjusting
-% for the degrees of freedom. The log likelihood value is computed assuming 
-% a multivariate normal (Gaussian) distribution. See Eviews manuals for
-% definitions
 
 
 

@@ -8,11 +8,17 @@ function [sigma_draw, Ft_draw] = VARdrawpost(VAR)
 %   - VAR: structure, result of VARmodel function
 % -----------------------------------------------------------------------
 % OUPUT
-%   - sigma_draw: draw from the posterior of VCV matrix of residuals of VAR
+%   - sigma_draw: draw from the posterior of VCV matrix of VAR residuals 
 %   - Ft_draw: draw from the posterior of Ft of VAR
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   - See VARToolbox_Code.m in "../Primer/"
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2017
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 %% Get relevant parameters from VAR structure

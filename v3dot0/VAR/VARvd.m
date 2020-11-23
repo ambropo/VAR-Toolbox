@@ -1,30 +1,29 @@
-function [FEVD, VAR] = VARvd(VAR,VARopt)
+function [VD, VAR] = VARvd(VAR,VARopt)
 % =======================================================================
 % Compute forecast error variance decompositions (VDs) for a VAR model 
 % estimated with the VARmodel.m function. Three identification schemes can 
 % be specified: zero contemporaneous restrictions, zero long-run 
 % restrictions, and sign restrictions
 % =======================================================================
-% [FEVD, VAR] = VARfevd(VAR,VARopt)
+% [VD, VAR] = VARvd(VAR,VARopt)
 % -----------------------------------------------------------------------
 % INPUT
 %   - VAR: structure, result of VARmodel.m
 %   - VARopt: options of the VAR (result of VARmodel.m)
 % -----------------------------------------------------------------------
 % OUTPUT
-%	- FEVD(t,j,k): matrix with 't' steps, the FEVD due to 'j' shock for 
-%       'k' variable
+%	- VD(:,:,:): matrix with FEVDs (H horizons, N shocks, N variables)
 %   - VAR: structure including VAR estimation results
 %       * VAR.B: strcutral impact matrix
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   - See VARToolbox_Code.m in "../Primer/"
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
-% ambrogio.cesabianchi@gmail.com
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
 % -----------------------------------------------------------------------
-% Notes:
-% -----
-% I thank Dora Xia for pointing out a typo in the above description.
-% -----
 
 
 %% Check inputs
@@ -50,7 +49,7 @@ Fcomp  = VAR.Fcomp;
 nlag   = VAR.nlag;
 nvar   = VAR.nvar;
 sigma  = VAR.sigma;
-FEVD   = zeros(nsteps,nvar,nvar);
+VD     = zeros(nsteps,nvar,nvar);
 SE     = zeros(nsteps,nvar);
 MSE    = zeros(nvar,nvar,nsteps);
 MSE_shock = zeros(nvar,nvar,nsteps);
@@ -126,7 +125,7 @@ else
 end
 
 
-%% Calculate the contribution to the MSE for each shock (i.e, FEVD)
+%% Calculate the contribution to the MSE for each shock (i.e, VD)
 %==========================================================================
 for ii = 1:nvar % loop for the shocks
     
@@ -149,7 +148,7 @@ for ii = 1:nvar % loop for the shocks
     % Select only the variance terms
     for nn = 1:nsteps
         for kk = 1:nvar
-            FEVD(nn,ii,kk) = 100*FECD(kk,kk,nn);
+            VD(nn,ii,kk) = 100*FECD(kk,kk,nn);
             SE(nn,:) = sqrt(diag(MSE(1:nvar,1:nvar,nn))' );
         end
     end

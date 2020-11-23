@@ -7,7 +7,7 @@ function FigSize(xdim,ydim)
 % OPTIONAL INPUT
 %   - xdim: horizontal size (in cm)
 %   - ydim: vertical size (in cm)
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   FigSize(12,6)
 %   plot(1:10)

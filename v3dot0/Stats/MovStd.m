@@ -9,15 +9,15 @@ function OUT = MovStd(DATA,window)
 % INPUT
 %    - DATA : T observations x N variables
 %    - window: window of the moving average
-%------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OUPUT
 %    - OUT: T observations x N variables matrix (the first window-1 
 %       observations are NaN)
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   DATA = rand(50,4);
 %   OUT = MovStd(DATA,2)
-% =========================================================================
+% =======================================================================
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com

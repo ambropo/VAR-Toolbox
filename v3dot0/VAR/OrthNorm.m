@@ -10,8 +10,11 @@ function out = OrthNorm(n)
 % OUTPUT
 %   - out: [n x n] random orthonormal matrix
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 % [n x n]  matrix of N(0,1) random variables
 X = randn(n,n);

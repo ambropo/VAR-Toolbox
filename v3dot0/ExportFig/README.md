@@ -1,5 +1,5 @@
 export_fig
-========== 
+==========
 
 A toolbox for exporting figures from MATLAB to standard image and document formats nicely.
 
@@ -9,6 +9,8 @@ Exporting a figure from MATLAB the way you want it (hopefully the way it looks o
 The second goal is to make the output media suitable for publication, allowing you to publish your results in the full glory that you originally intended. This includes embedding fonts, setting image compression levels (including lossless), anti-aliasing, cropping, setting the colourspace, alpha-blending and getting the right resolution.
 
 Perhaps the best way to demonstrate what export_fig can do is with some examples.
+
+*Note: `export_fig` currently supports only figures created with the `figure` function, or GUIDE. Figures created using `uifigure` or AppDesigner are only partially supported. See issues [#287](https://github.com/altmany/export_fig/issues/287), [#261](https://github.com/altmany/export_fig/issues/261) for details.*
   
 ### Examples
 **Visual accuracy** - MATLAB's exporting functions, namely `saveas` and `print`, change many visual properties of a figure, such as size, axes limits and ticks, and background colour, in unexpected and unintended ways. Export_fig aims to faithfully reproduce the figure as it appears on screen. For example:  
@@ -168,7 +170,7 @@ When using the functional form like this, be sure to put string variables in quo
 export_fig(sprintf('plot%d', a), '-a1', '-pdf', '-png');
 ```
 
-**Specifying the figure/axes** - if you have mutiple figures open you can specify which figure to export using its handle:  
+**Specifying the figure/axes** - if you have multiple figures open you can specify which figure to export using its handle:  
 ```Matlab
 export_fig(figure_handle, filename);
 ```
@@ -211,9 +213,9 @@ After matching the two renderers, if the artifact appears in the on screen figur
 
 **Smoothed/interpolated images in output PDF** - if you produce a PDF using export_fig and images in the PDF look overly smoothed or interpolated, this is because the software you are using to view the PDF is smoothing or interpolating the image data. The image is not smoothed in the PDF file itself. If the software has an option to disable this feature, you should select it. Alternatively, use another PDF viewer that doesn't exhibit this problem.  
   
-**Locating Ghostscript/pdftops** - You may find a dialogue box appears when using export_fig, asking you to locate either [Ghostscript](http://www.ghostscript.com) or [pdftops](http://www.foolabs.com/xpdf). These are separate applications which export_fig requires to perform certain functions. If such a dialogue appears it is because export_fig can't find the application automatically. This is because you either haven't installed it, or it isn't in the normal place. Make sure you install the applications correctly first. They can be downloaded from the following places:  
+**Locating Ghostscript/pdftops** - You may find a dialogue box appears when using export_fig, asking you to locate either [Ghostscript](http://www.ghostscript.com) or [pdftops (part of the Xpdf package)](http://www.xpdfreader.com). These are separate applications which export_fig requires to perform certain functions. If such a dialogue appears it is because export_fig can't find the application automatically. This is because you either haven't installed it, or it isn't in the normal place. Make sure you install the applications correctly first. They can be downloaded from the following places:  
  1. Ghostscript:     [www.ghostscript.com](http://www.ghostscript.com)
- 2. pdftops (install the Xpdf package): [www.foolabs.com/xpdf](http://www.foolabs.com/xpdf)
+ 2. pdftops (install the Xpdf package): [www.xpdfreader.com](http://www.xpdfreader.com)
 
 If you choose to install them in a non-default location then point export_fig
 to this location using the dialogue box.

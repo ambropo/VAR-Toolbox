@@ -5,16 +5,20 @@ function SRirplot(IR,VARopt,INF,SUP)
 % SRirplot(IR,VARopt,INF,SUP)
 % -----------------------------------------------------------------------
 % INPUT
-%   - IR(:,:,:): matrix with periods, variable, shock
+%   - IR(:,:,:): IRF matrix (H horizons, N variables, N shocks)
 %   - VARopt: options of the VAR (from VARmodel and SR)
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
 %   - INF: lower error band
 %   - SUP: upper error band
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   - See VARToolbox_Code.m in "../Primer/"
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
-% ambrogio.cesabianchi@gmail.com
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
 % -----------------------------------------------------------------------
 
 

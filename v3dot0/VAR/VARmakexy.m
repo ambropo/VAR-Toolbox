@@ -1,8 +1,8 @@
 function [Y, X] = VARmakexy(DATA,lags,const)
-%==========================================================================
-% Builds the VAR process from the data-matrix DATA. It orders the data into
-% the Y and X matrix --> Example: [x y] = [x(-1) y(-1) x(-2) y(-2)]
-%==========================================================================
+%========================================================================
+% Builds VAR matrices from DATA, e.g. [x y] = [x(-1) y(-1) x(-2) y(-2)] 
+% in case of 2 lags and no constant
+%========================================================================
 % [Y, X] = VARmakexy(DATA, lags, const)
 %--------------------------------------------------------------------------
 % INPUT
@@ -14,11 +14,18 @@ function [Y, X] = VARmakexy(DATA,lags,const)
 %             3, constant, trend, trend^2
 %--------------------------------------------------------------------------
 % OUTPUT
-%   - Y: dependent variable
-%   - X: independent variable
-%==========================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+%   - Y: VAR dependent variable
+%   - X: VAR independent variable
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   x = [1 2; 3 4; 5 6; 7 8; 9 10];
+%   [Y,X]= VARmakexy(x,2,1)
+% =======================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 % Get dimesion of DATA

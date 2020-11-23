@@ -16,8 +16,11 @@ function [TABLE, beta, tstat] = ARDLprint(ARDL,vnames,approx,vnames_ex)
 %   tstat: table of t-stats in cell array
 %   TABLE: table of estimated coefficients and t-stats in cell array
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 %% Check inputs

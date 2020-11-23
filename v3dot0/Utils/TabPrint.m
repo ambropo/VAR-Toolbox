@@ -6,18 +6,27 @@ function OUT = TabPrint(DATA,hlabel,vlabel,approx)
 % OUT = TabPrint(DATA,hlabel,vlabel,approx)
 % -----------------------------------------------------------------------
 % INPUT
-%   - DATA   = a (n x m) matrix of numbers
+%   - DATA = a (TxN) matrix of numbers
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
-%	- hlabel = a (m x 1) vector of horizontal labels 
-%	- vlabel = a (1 x n) vector of vertical labels 
+%	- hlabel = a (Tx1) vector of horizontal labels 
+%	- vlabel = a (1xT) vector of vertical labels 
 %   - approx = number of decimal digits. Default = 2
-%--------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OUTPUT
-%   - OUT    = a cell array with the formatted table
+%   - OUT = a cell array with the formatted table
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   x = [1 2; 3 4; 5 6; 7 8; 9 10];
+%   hlab = {'a';'b';'c';'d';'e';}
+%   vlab = {'A','B'}
+%   OUT = TabPrint(x,hlab,vlab)
 % =======================================================================
-% Ambrogio Cesa Bianchi, March 2015
-% ambrogio.cesabianchi@gmail.com
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 [n, m] = size(DATA);
 

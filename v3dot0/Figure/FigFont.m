@@ -6,7 +6,7 @@ function FigFont(fsize)
 % -----------------------------------------------------------------------
 % INPUT
 %	- fsize : size of font (double)
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   plot(1:10); title('A line plot')
 %   FigFont(16)
@@ -20,14 +20,12 @@ function FigFont(fsize)
 
 
 %% CHECK INPUT
-%========================================================================
 if ~exist('fsize','var')
     error('Please enter a font size');
 end
 
 
 %% SET FONT STYLE 
-%========================================================================
 % AXES
 aux = findobj(gcf,'Type','axes');
 set(aux,'Fontsize',fsize,'FontWeight','Light','FontName','Helvetica');

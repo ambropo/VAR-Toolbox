@@ -1,29 +1,29 @@
 function [OUT, lags] = CrossCorrelation(X,Y,lag,do_plot,Yname)
-% =========================================================================
-% Computes the cross-correlation between the vector X (Tx1) and each column 
-% of the matrix Y (TxN). If specified, it plots it
-% =========================================================================
+% =======================================================================
+% Computes the cross-correlation between the vector X (Tx1) and each 
+% column of the matrix Y (TxN). If specified, it plots it
+% =======================================================================
 % [OUT lags] = CrossCorrelation(X,Y,lag,chart,row,col,)
-% -------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % INPUT
 %   - X   = vector (Tx1) of interest [double]
 %   - Y   = matrix (TxN) to correlate X with [double]
 %   - lag = length of lags to consider [double]
-% -------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OPTIONAL INPUT:
 %   - do_plot = 1 for plot           [dflt 0]
 %   - Yname = array (1xN) name of Y  [dflt Y#]
-% -------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OUTPUT
 %   - OUT  = matrix (2*lag+1,N) of cross-correlations, where every column
 %           is a variable [double]
 %   - lags = vector of lags used [double]
-% =========================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   X = rand(50,1);
 %   Y = rand(50,2);
 %   [OUT lags] = CrossCorrelation(X,Y,5,1,{'Consumption','Investment'})
-% =========================================================================
+% =======================================================================
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com

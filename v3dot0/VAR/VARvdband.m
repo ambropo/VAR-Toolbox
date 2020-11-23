@@ -10,24 +10,23 @@ function [INF,SUP,MED,BAR] = VARvdband(VAR,VARopt)
 %   - VARopt: options of the VAR (result of VARmodel.m)
 % -----------------------------------------------------------------------
 % OUTPUT
-%   - INF(t,j,k): lower confidence band (t steps, j variable, k shock)
-%   - SUP(t,j,k): upper confidence band (t steps, j variable, k shock)
-%   - MED(t,j,k): median response (t steps, j variable, k shock)
-%   - BAR(t,j,k): mean response (t steps, j variable, k shock)
+%   - INF(:,:,:): lower confidence band (H horizons, N shocks, N variables)
+%   - SUP(:,:,:): upper confidence band (H horizons, N shocks, N variables)
+%   - MED(:,:,:): median response (H horizons, N shocks, N variables)
+%   - BAR(:,:,:): mean response (H horizons, N shocks, N variables)
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   - See VARToolbox_Code.m in "../Primer/"
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
-% ambrogio.cesabianchi@gmail.com
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
 % -----------------------------------------------------------------------
-% Notes:
-% -----
-% I thank Fabien Tripier for finding a bug in STEP 2.2 for the case of
-% constant and trend (const==2).
-% -----
 
 
 %% Check inputs
-%==========================================================================
+%--------------------------------------------------------------------------
 if ~exist('VAR','var')
     error('You need to provide VAR structure, result of VARmodel');
 end
@@ -37,7 +36,7 @@ end
 
 
 %% Retrieve and initialize variables 
-%==========================================================================
+%--------------------------------------------------------------------------
 nsteps  = VARopt.nsteps;
 ndraws  = VARopt.ndraws;
 pctg    = VARopt.pctg;
@@ -59,11 +58,11 @@ MED = zeros(nsteps,nvar,nvar);
 BAR = zeros(nsteps,nvar,nvar);
 
 %% Create the matrices for the loop
-%==========================================================================
+%--------------------------------------------------------------------------
 y_artificial = zeros(nobs+nlag,nvar);
 
 %% Loop over the number of draws
-%==========================================================================
+%--------------------------------------------------------------------------
 
 tt = 1; % numbers of accepted draws
 ww = 1; % index for printing on screen
@@ -77,9 +76,7 @@ while tt<=ndraws
 
 %% STEP 1: choose the method and generate the residuals
     if strcmp(method,'bs')
-        % Use the residuals to bootstrap: generate a random number bounded 
-        % between 0 and # of residuals, then use the ceil function to select 
-        % that row of the residuals (this is equivalent to sampling with replacement)
+        % Sampling with replacement
         u = resid(ceil(size(resid,1)*rand(nobs,1)),:);
     elseif strcmp(method,'wild')
         % Wild bootstrap based on simple distribution (~Rademacher)
@@ -159,7 +156,7 @@ disp('-- Done!');
 disp(' ');
 
 %% Compute the error bands
-%==========================================================================
+%--------------------------------------------------------------------------
 pctg_inf = (100-pctg)/2; 
 pctg_sup = 100 - (100-pctg)/2;
 INF(:,:,:) = prctile(VD(:,:,:,:),pctg_inf,4);

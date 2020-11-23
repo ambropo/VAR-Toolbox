@@ -1,13 +1,15 @@
 function VARopt = VARoption
-%==========================================================================
+%========================================================================
 % Optional inputs for VAR analysis. This function is run automatically in
 % the VARmodel function.
-%==========================================================================
+%========================================================================
 % VARopt = VARoption
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, November 2020
-% ambrogio.cesabianchi@gmail.com
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 VARopt.vnames    = [];      % endogenous variables names
 VARopt.vnames_ex = [];      % exogenous variables names

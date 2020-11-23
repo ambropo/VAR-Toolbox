@@ -11,11 +11,11 @@ function [CORR, TABLE] = CorrTableUnbalanced(x,vnames)
 % OUTPUT
 %   - CORR: correlation matrix [double]
 %   - TABLE: table of correlation matrix with titles [cell]
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   x = rand(50,2);
 %   [CORR, TABLE] = CorrTableUnbalanced(x,{'Consumption','Investment'})
-% =========================================================================
+% =======================================================================
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com

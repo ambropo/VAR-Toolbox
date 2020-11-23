@@ -2,7 +2,7 @@
 %-------------------------------------------------------------------------- 
 clear all; clear session; close all; clc
 warning off all
-addpath(genpath('/Users/jambro/Google Drive/VAR-Toolbox/'))
+addpath(genpath('/Users/jambro/Google Drive/VAR-Toolbox/v3dot0'))
 
 %% 1. LOAD DATA
 %************************************************************************** 
@@ -39,7 +39,8 @@ end
 % Select the list of variables to plot...
 Xvnames = {'gdp','cpi','unemp','vix','i1yr','ebp'};
 % ... and corresponding labels to be used for plots
-Xvnames_long = {'Real GDP','CPI','Unemployment','Vix Index','1-year Int. Rate','EBP'};
+Xvnames_long = {'Real GDP','CPI','Unemployment','Vix Index','1-year Int. Rate',...
+        'EBP'};
 Xnvar        = length(Xvnames);
 % Create matrices of variables to be used in the VAR
 X = nan(nobs,Xnvar);
@@ -70,7 +71,7 @@ clf('reset')
 % structure DATA, where all data is stored) and their corresponding labels 
 % that will be used for plots
 Xvnames      = {'dgdp','i1yr'};
-Xvnames_long = {'Real GDP (log change)','1-year Tbill (percent)'};
+Xvnames_long = {'Real GDP','1-year Tbill'};
 Xnvar        = length(Xvnames);
 % Plot selected data
 FigSize(26,6)
@@ -153,7 +154,7 @@ clf('reset')
 %-------------------------------------------------------------------------- 
 % Select endo
 Xvnames      = {'infl','unemp','ff'};
-Xvnames_long = {'Inflation (Percent)','Unemployment (Percent)','Fed Funds (Percent)'};
+Xvnames_long = {'Inflation','Unemployment','Fed Funds'};
 Xnvar        = length(Xvnames);
 % Create matrices of variables for the VAR
 X = nan(nobs,Xnvar);
@@ -243,7 +244,7 @@ clf('reset')
 %-------------------------------------------------------------------------- 
 % Select endo
 Xvnames      = {'y','u'};
-Xvnames_long = {'GDP growth (Percent)','Unemployment (Percent)'};
+Xvnames_long = {'GDP growth','Unemployment'};
 Xnvar        = length(Xvnames);
 % Create matrices of variables for the VAR
 X = nan(nobs,Xnvar);
@@ -391,7 +392,8 @@ SRout = SR(VAR,SIGN,VARopt);
 FigSize(26,12)
 for ii=1:Xnvar
     subplot(2,3,ii)
-    PlotSwathe(SRout.IRmed(:,ii,1),[SRout.IRinf(:,ii,1) SRout.IRsup(:,ii,1)]); hold on
+    PlotSwathe(SRout.IRmed(:,ii,1),[SRout.IRinf(:,ii,1) SRout.IRsup(:,ii,1)]); 
+    hold on
     plot(zeros(VARopt.nsteps),'--k');
     title(vnames_long{ii})
     axis tight
@@ -482,7 +484,8 @@ clf('reset')
 % 7.3 Set up and estimate VAR
 %-------------------------------------------------------------------------- 
 % Select endo
-Xvnames_long = {'1yr T-Bill';'Consumer Price Index';'Industrial Production';'Excess Bond Premium';};
+Xvnames_long = {'1yr T-Bill';'Consumer Price Index';'Industrial Production';...
+        'Excess Bond Premium';};
 Xvnames      = {'gs1';'logcpi';'logip';'ebp';};
 Xnvar        = length(Xvnames);
 % Create matrices of variables for the VAR
@@ -513,8 +516,8 @@ VARopt.figname= 'graphics/GK_';
 
 % 7.4 Identification
 %-------------------------------------------------------------------------- 
-% Identification is achieved with the external instrument IV, which needs
-% to be added to the VARopt structure
+% Identification is achieved with the external instrument, which needs
+% to be added to the VAR structure
 VAR.IV = IV;
 % Update the options in VARopt to be used in IR calculations and plots
 VARopt.ident = 'iv';
@@ -527,52 +530,119 @@ VARopt.method = 'wild';
 VARirplot(IRbar,VARopt,IRinf,IRsup);
 
 
-% %% 8. IDENTIFICATION WITH A MIX OF EXTERNAL INSTRUMENTS AND SIGN RESTRICTIONS
-% %************************************************************************** 
-% % Identification with external instruments is achieved in three steps: (1) 
-% % set the identification scheme mnemonic in the structure VARopt to the 
-% % desired one, in this case "iv"; (2) update the VARopt structure with the 
-% % external instrument to be used for identification; (3) run the VARir 
-% % function. For the external instruments example, we consider the same VAR 
-% % as in the sign restrictions example. 
-% %-------------------------------------------------------------------------- 
-% 
-% % First update the VARopt structure with additional details to be used for
-% % the IR calculations and plots
-% VARopt.figname= 'graphics/IVSR_';
-% 
-% % Define the shock names
-% VARopt.snames = {'Monetary policy Shock','Demand Shock','Supply Shock','Unidentified'};
-% 
-% % But now we assume that the first shock is identified with the external 
-% % instrument. In other words, the first column of the B matrix is given by:
-% disp(VAR.b)
-% 
-% % So, we define the sign restrictions only for the aggregate demand, the 
-% % aggregate supply, and the un-identified shock
-% SIGN = [-1,       0,      0;        ... policy rate
-%         -1,      -1,      0;        ... ip        
-%         -1,       1,      0;        ... cpi
-%          1,       1,      0];       ... ebp
-%        % D        S       U   
-% 
-% % Define the number of steps the restrictions are imposed for:
-% VARopt.sr_hor = 6;
-% 
-% % Set options the credible intervals
-% VARopt.pctg = 95;
-% 
-% % The functin SR performs the sign restrictions identification and computes
-% % IRs, VDs, and HDs. All the results are stored in SRout
-% SRout = SR(VAR,SIGN,VARopt);
-% 
-% % Plot impulse responses
-% VARopt.FigSize = [26,24];
-% SRirplot(SRout.IRmed,VARopt,SRout.IRinf,SRout.IRsup);
+%% 8. IDENTIFICATION WITH A MIX OF EXTERNAL INSTRUMENTS AND SIGN RESTRICTIONS
+%************************************************************************** 
+% Identification with external instruments is achieved in three steps: (1) 
+% set the identification scheme mnemonic in the structure VARopt to the 
+% desired one, in this case "iv"; (2) update the VARopt structure with the 
+% external instrument to be used for identification; (3) run the VARir 
+% function. For the external instruments example, we consider the same VAR 
+% as in the sign restrictions example. 
+%-------------------------------------------------------------------------- 
+
+% 8.1 Load data from Cesa-Bianchi and Sokol
+%-------------------------------------------------------------------------- 
+[xlsdata, xlstext] = xlsread('CS2020_Data.xlsx','Sheet1');
+dates = xlstext(3:end,1);
+vnames_long = xlstext(1,2:end);
+vnames = xlstext(2,2:end);
+nvar = length(vnames);
+data   = Num2NaN(xlsdata);
+for ii=1:length(vnames)
+    DATA.(vnames{ii}) = data(:,ii);
+end
+year = str2double(xlstext{3,1}(1:4));
+month = str2double(xlstext{3,1}(6));
+nobs = size(data,1);
+
+% 8.2 Plot series
+%-------------------------------------------------------------------------- 
+% Plot all series in DATA
+FigSize(26,18)
+for ii=1:nvar
+    subplot(3,2,ii)
+    H(ii) = plot(DATA.(vnames{ii}),'LineWidth',3,'Color',cmap(1));
+    title(vnames_long(ii)); 
+    DatesPlot(year+(month-1)/12,nobs,6,'m') % Set the x-axis label 
+    grid on; 
+end
+SaveFigure('graphics/CS_DATA',1)
+clf('reset')
+
+% 8.3 Set up and estimate VAR
+%-------------------------------------------------------------------------- 
+% Select endo
+Xvnames_long = {'1yr T-Bill';'Consumer Price Index';'Industrial Production'...
+        ;'Excess Bond Premium';'Bond yield'};
+Xvnames      = {'gs1';'logcpi';'logip';'ebp';'bond'};
+Xnvar        = length(Xvnames);
+% Create matrices of variables for the VAR
+X = nan(nobs,Xnvar);
+for ii=1:Xnvar
+    X(:,ii) = DATA.(Xvnames{ii});
+end
+% With the usual notation, select the instrument from the DATA structure:
+IVvnames      = {'jk'};
+IVvnames_long = {'JK instrument'};
+IVnvar        = length(IVvnames);
+% Create vector of instruments to be used in the VAR
+IV = nan(nobs,IVnvar);
+for ii=1:IVnvar
+    IV(:,ii) = DATA.(IVvnames{ii});
+end
+% Estimate VAR
+det = 1;
+nlags = 12;
+[VAR, VARopt] = VARmodel(X,nlags,det);
+VARopt.vnames = Xvnames_long;
+VARopt.nsteps = 60;
+VARopt.quality = 1;
+VARopt.FigSize = [26,12];
+VARopt.firstdate = year+(month-1)/12;
+VARopt.frequency = 'm';
+VARopt.figname= 'graphics/CS_';
+
+% 8.4 Identification
+%-------------------------------------------------------------------------- 
+% Identification is achieved in two steps. First, employ the external 
+% instrument as in the previous example
+VAR.IV = IV;
+% Update the options in VARopt to be used in IR calculations and plots
+VARopt.ident = 'iv';
+VARopt.method = 'wild';
+% Compute IR
+[IR, VAR] = VARir(VAR,VARopt);
+% Note that the VAR structure has been updated to include the first column 
+% of the B matrix that we identified with the instrument
+disp(VAR.b)
+% Then set up the sign restrictions. We define the sign restrictions only 
+% for the aggregate demand, supply, financial, and the un-identified shock
+% (as the monetary policy shock is already identified with IV)
+SIGN = [-1,       0,      -1     0;        ... policy rate
+        -1,      -1,      -1     0;        ... ip        
+        -1,       1,      -1     0;        ... cpi
+         1,       1,      +1     0;        ... ebp
+        -1,       0,      +1     0];       ... bond
+       % D        S       U   
+
+% Start with the shock names
+VARopt.snames = {'Monetary policy Shock','Demand Shock','Supply Shock',...
+        'Financial Shock','Unidentified'};
+% Define the number of steps the restrictions are imposed for:
+VARopt.sr_hor = 6;
+% Set options the credible intervals
+VARopt.pctg = 95;
+% Set number of rotations
+VARopt.ndraws = 250;
+% The function SR performs the sign restrictions identification,
+% conditional on the VAR.b matrix idetified in the previous step
+SRout = SR(VAR,SIGN,VARopt);
+% Plot impulse responses
+SRirplot(SRout.IRmed,VARopt,SRout.IRinf,SRout.IRsup);
 
 
 %%
 m2tex('VARToolbox_Code.m')
-rmpath(genpath('C:/AMPER/VARToolbox'))
+rmpath(genpath('/Users/jambro/Google Drive/VAR-Toolbox/v3dot0'))
 
 

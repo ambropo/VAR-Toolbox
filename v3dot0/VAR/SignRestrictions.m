@@ -1,26 +1,26 @@
 function B = SignRestrictions(SIGN,VAR,VARopt)
-%==========================================================================
-% Draws orthonormal rotations of the VAR covariance matrix until satisfies
-% the signs specified in SIGN.
-%==========================================================================
-% SignRestrictions(sigma,SIGN,VAR,VARopt,b)
-% -------------------------------------------------------------------------
+% =======================================================================
+% Draws orthonormal rotations of the VAR covariance matrix until 
+% satisfies the signs specified in SIGN.
+% =======================================================================
+% SignRestrictions(SIGN,VAR,VARopt)
+% -----------------------------------------------------------------------
 % INPUT
-%	- sigma: covariance matrix of the VAR
-%	- SIGN: sign restrictions
+%	- SIGN: matrix with sign restrictions
 %   - VAR: structure, result of VARmodel.m
 %   - VARopt: options of the VAR (result of VARmodel.m)
-% -------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OUTPUT
 %   - B: impact matrix consistent with SIGN 
-% =========================================================================
+% =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, July 2020
-% ambrogio.cesabianchi@gmail.com
-% -------------------------------------------------------------------------
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 %% Check inputs
-%==========================================================================
+% -----------------------------------------------------------------------
 dy = size(SIGN,1);
 ds = size(SIGN,2);
 
@@ -42,7 +42,7 @@ nanMat = NaN*ones(dy,1);
 orderIndices = 1:dy;
 
 %% Search for rotations that satisfy SIGN and b
-%==========================================================================
+% -----------------------------------------------------------------------
 counter = 1;
 while 1
     % Create starting matrix to be rotated.
@@ -122,6 +122,7 @@ B=termaa(:,orderIndices);
 end
 
 % QR decomposition
+% -----------------------------------------------------------------------
 function out=getqr(a)
 [q,r]=qr(a);
 for i=1:size(q,1)

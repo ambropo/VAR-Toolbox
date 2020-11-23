@@ -13,13 +13,13 @@ function DatesPlot(fo,nobs,nticks,frequency)
 % OPTIONAL INPUT
 %   - frequency : monthly ('m'), quarterly ('q') or annual ('y') frequency
 %           [char] [dflt='q']
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   X = rand(20,1);
 %   [dates, datesnum] = DatesCreate(2000,20,'q',1);
 %   plot(X)
 %   DatesPlot(datesnum(1),20,5,'q')
-% =========================================================================
+% =======================================================================
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com

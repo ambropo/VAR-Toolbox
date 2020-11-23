@@ -4,18 +4,27 @@ function [OUT, fo, lo] = CommonSample(DATA,dim)
 % column of DATA contains a NaN, the column is removed.
 % =======================================================================
 % [OUT, lo, fo] = CommonSample(DATA)
-%	- OUT: common sample matrix
-%	- lo : number of NaNs at the beginning
-%	- fo : number of NaNs at the end
 % -----------------------------------------------------------------------
 % INPUT
 %	- DATA: matrix DATA(i,j)
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
 %   - dim: default 1, change to 2 to CommonSample by column
-% =========================================================================
-% Ambrogio Cesa Bianchi, March 2015
-%-------------------------------------------------------------------------
+% -----------------------------------------------------------------------
+% OUTPUT
+%	- OUT: common sample matrix
+%	- lo : number of NaNs at the beginning
+%	- fo : number of NaNs at the end
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   x = [1 2; NaN 4; 5 6];
+%   OUT = CommonSample(x)
+% =======================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 % If no dimension is specified, set it to 1
 if ~exist('dim','var')

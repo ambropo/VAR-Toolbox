@@ -14,10 +14,10 @@ function [STATS, TABLE] = SummStats(DATA,p,vnames)
 %         p >  1, for higher order polynomial
 % -----------------------------------------------------------------------
 % OUTPUT
-%   - stats: [Obs, mean, median, max, min, StDev, AutoCorr, Skew, Kurt,...
+%   - stats: [Obs, mean, median, max, min, StDev, AutoCorr, Skew, Kurt,
 %       ADF(4), ADF(4) Conf, ADF(8), ADF(8) Conf]
 %   - TABLE: cell, matrix with the names of the stats & the stats
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE:
 %   DATA = rand(50,4);
 %   [STATS, TABLE] = SummStats(DATA,2,{'Y','G','I','C'})

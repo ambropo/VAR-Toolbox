@@ -12,33 +12,17 @@ function [IR, VAR] = VARir(VAR,VARopt)
 %   - VARopt: options of the VAR (result of VARmodel.m)
 % -------------------------------------------------------------------------
 % OUTPUT
-%   - IRF(t,j,k): matrix with 't' steps, containing the IRF of 'j' variable 
-%       to 'k' shock
-%   - VAR: structure including VAR estimation results. Not here that the 
-%       struicture VAR is an output of VARmodel. This fucntion adds to VAR
-%       some additional results, e.g. VAR.B is the strcutral impact matrix
-% =========================================================================
+%   - IR(:,:,:) : matrix with IRF (H horizons, N variables, N shocks)
+%   - VAR: structure including VAR estimation results. Note here that the 
+%       structure VAR is an output of VARmodel tpp. This fucntion adds to 
+%       VAR some additional results, e.g. VAR.B is the structural impact 
+%       matrix
+% =======================================================================
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
-% March 2015. Updated November 2020
+% March 2012. Updated November 2020
 % -----------------------------------------------------------------------
-% Notes:
-% -----
-% This code follows the notation as in the lecture notes available at
-% https://sites.google.com/site/ambropo
-% -----
-% Specifically if Y, u, and e are [NxT] matrices, the following is true:
-% -----
-% Reduced form VAR    -->  Y = F*Y(-1) + u    (F => Ft' from VARmodel function) 
-% Structural form VAR -->  Y = F*Y(-1) + Be     
-% Where:
-% 	u = B*e  -->  e = inv(B)*u  -->  e = IRF.B\transpose(VAR.residuals);
-% -----
-% Impulse responses:
-%   IRF(1) = B*e          where "e" is impulse in the code
-%   IRF(j) = H(j)*IRF(1)  where H(j)=H^j and for j=2,...,nsteps
-% -----
 
 
 %% Check inputs

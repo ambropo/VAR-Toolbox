@@ -9,7 +9,7 @@ function LegSubplot(text,opt)
 % -----------------------------------------------------------------------
 % OPTIONAL INPUTS
 %   opt  : options for the legend, output of LegOption function
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   subplot(1,2,1); plot(rand(10,2)); subplot(1,2,2); plot(rand(10,2)); 
 %   opt = LegOption;
@@ -22,7 +22,6 @@ function LegSubplot(text,opt)
 % -----------------------------------------------------------------------
 
 %% Preliminaries
-% =======================================================================
 if ~exist('opt','var')
     opt = LegOption;
 end
@@ -46,7 +45,6 @@ end
 
 
 %% Legend
-% =========================================================================
 % Retrieve the position of the figure: [a b c d] = get(gcf,'Position')
 % a and b are the (x,y) location of the upper left corner; c and d are the width and height of the window
 figpos = get(gcf,'Position');

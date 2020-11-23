@@ -11,13 +11,15 @@ function OUT = L(X,nlag)
 % OUTPUT
 %	- OUT: lagged matrix (nobs X nvars), the first obs are NaN
 % -----------------------------------------------------------------------
-% NOTES
-%	- If nlag = 0, the original series is returned
-% =========================================================================
-% Ambrogio Cesa Bianchi, March 2015
+% EXAMPLE
+%	x = 1:10';
+%   L1x = L(x,-1);
+% =======================================================================
+% VAR Toolbox 3.0
+% Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
-
-% Notes: this script is based on lag.m script by James P. LeSage
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 init = NaN;
 switch(nargin)

@@ -1,43 +1,35 @@
 function [VAR, VARopt] = VARmodel(ENDO,nlag,const,EXOG,nlag_ex)
-%==========================================================================
+%========================================================================
 % Perform vector autogressive (VAR) estimation with OLS 
-%==========================================================================
+%========================================================================
 % [VAR, VARopt] = VARmodel(ENDO,nlag,const,EXOG,nlag_ex)
-% -------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % INPUT
 %	- ENDO: an (nobs x nvar) matrix of y-vectors
 %	- nlag: lag length
-% -------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OPTIONAL INPUT
-%	- const: 0 no constant; 1 constant; 2 constant and trend; 3 constant, 
-%       trend, and trend^2 [dflt = 0]
+%	- const: 0 no constant; 1 constant; 2 constant and trend; 3 constant 
+%       and trend^2 [dflt = 0]
 %	- EXOG: optional matrix of variables (nobs x nvar_ex)
 %	- nlag_ex: number of lags for exogeonus variables [dflt = 0]
-% -------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OUTPUT
 %   - VAR: structure including VAR estimation results
 %   - VARopt: structure including VAR options (see VARoption)
-% =========================================================================
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   - See VARToolbox_Code.m in "../Primer/"
+% =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
-% ambrogio.cesabianchi@gmail.com
-% -------------------------------------------------------------------------
-% Notes:
-% -----
-% This code is a modified version of of the vare.m function of James 
-% P. LeSage
-% -----
-% Representation -->  Y = Y(-1)*F' + u
-% -----
-% Compared to Eviews, there is a difference in the estimation of the 
-% constant when lag is > 2. This is because Eviews initialize the trend
-% with the number of lags (i.e., when lag=2, the trend is [2 3 ...T]), 
-% while VARmakexy.m initialize the trend always with 1.
-% -----
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
+% -----------------------------------------------------------------------
 
 
 %% Check inputs
-%==========================================================================
+% -----------------------------------------------------------------------
 [nobs, nvar] = size(ENDO);
 
 % Create VARopt and update it
@@ -72,7 +64,7 @@ end
 
 
 %% Save some parameters and create data matrices
-%==========================================================================
+% -----------------------------------------------------------------------
     nobse         = nobs - max(nlag,nlag_ex);
     VAR.nobs      = nobse;
     VAR.nvar      = nvar;
@@ -107,8 +99,7 @@ end
 
 
 %% OLS estimation equation by equation
-%==========================================================================
-
+% -----------------------------------------------------------------------
 for j=1:nvar
     Yvec = Y(:,j);
     OLSout = OLSmodel(Yvec,X,0);
@@ -132,7 +123,7 @@ end
 
 
 %% Compute the matrix of coefficients & VCV
-%==========================================================================
+% -----------------------------------------------------------------------
 Ft = (X'*X)\(X'*Y);
 VAR.Ft = Ft;
 F = Ft';
@@ -148,14 +139,14 @@ end
 
 
 %% Companion matrix of F and max eigenvalue
-%==========================================================================
+% -----------------------------------------------------------------------
 Fcomp = [F(:,1+const:nvar*nlag+const); eye(nvar*(nlag-1)) zeros(nvar*(nlag-1),nvar)];
 VAR.Fcomp = Fcomp;
 VAR.maxEig = max(abs(eig(Fcomp)));
 
 
 %% Initialize other results
-%==========================================================================
+% -----------------------------------------------------------------------
 VAR.B   = [];   % structural impact matrix (need identification: see VARir/VARfevd)
 VAR.b   = [];   % first columns of structural impact matrix (need identification: see VARir/VARfevd)
 VAR.PSI = [];   % Wold multipliers (computed only with VARir/VARfevd)

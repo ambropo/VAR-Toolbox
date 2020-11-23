@@ -5,17 +5,20 @@ function SRvdplot(VD,VARopt)
 % SRfevdplot(VD,VARopt)
 % -----------------------------------------------------------------------
 % INPUT
-%   - VD(:,:,:): matrix with 't' steps, the VD due to 'j' shock for 
-%       'k' variable
+%   - VD(:,:,:): matrix with FEVDs (H horizons, N shocks, N variables)
 %   - VARopt: options of the VAR (from VARmodel and SR)
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
-%   - INF: lower error band
-%   - SUP: upper error band
+%   - INF: lower error band (H horizons, N shocks, N variables)
+%   - SUP: upper error band (H horizons, N shocks, N variables)
+% -----------------------------------------------------------------------
+% EXAMPLE
+%   - See VARToolbox_Code.m in "../Primer/"
 % =======================================================================
 % VAR Toolbox 3.0
-% Ambrogio Cesa Bianchi, March 2020
-% ambrogio.cesabianchi@gmail.com
+% Ambrogio Cesa-Bianchi
+% ambrogiocesabianchi@gmail.com
+% March 2012. Updated November 2020
 % -----------------------------------------------------------------------
 
 

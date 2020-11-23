@@ -15,7 +15,7 @@ function OUT = MovCorr(X,window,i)
 % OUTPUT
 %   - OUT: matrix with moving correlation T observations x N-1 
 %       variables. The first window-1 rows are NaN. [double]
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   X = rand(100,5);
 %   OUT = MovCorr(X,20,1)

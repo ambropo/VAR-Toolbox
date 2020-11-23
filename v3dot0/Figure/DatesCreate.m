@@ -16,7 +16,7 @@ function [dates, datesnum] = DatesCreate(year,nobs,frequency,first)
 % OUTPUT
 %	- dates: vector of dates (1997Q2)
 %	- datesnum: vector of dates (convention 1997Q2 = 1997.25)
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE 
 % 	dates = DatesCreate(1996,40,'q',3)
 %

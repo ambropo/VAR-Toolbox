@@ -8,15 +8,15 @@ function OUT = MovSum(DATA,window)
 % INPUT
 %   DATA: T observations x N variables
 %   window: window of the moving sum 
-%------------------------------------------------------------------------
+% -----------------------------------------------------------------------
 % OUPUT
 %   OUT: T observations x N variables matrix (the first windows-1 
 %       obseravations are NaN)
-% =======================================================================
+% -----------------------------------------------------------------------
 % EXAMPLE
 %   DATA = rand(50,4);
 %   OUT = OUT = MovSum(DATA,2)
-% =========================================================================
+% =======================================================================
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com

@@ -5,8 +5,8 @@ function [PC, TABLE] = PairCorrUnbalanced(DATA,labels,absolute)
 % levels and log-differences of the original series in DATA.
 % 
 % Note: for each pair of columns, the correlation is computed using the
-% maximum amount of available observations. This is to deal with unbalanced
-% panels. Therefore, NaN are accepted.
+% maximum amount of available observations. This is to deal with 
+% unbalanced panels. Therefore, NaN are accepted.
 % =======================================================================
 % [PC, TABLE] = PairCorrUnbalanced(DATA,labels)
 % -----------------------------------------------------------------------
@@ -15,8 +15,8 @@ function [PC, TABLE] = PairCorrUnbalanced(DATA,labels,absolute)
 %------------------------------------------------------------------------
 % OPTIONAL INPUT
 %   - labels: Default "Variable", names of each variable j
-%   - absolute: Default 0. If set to 1 computes the average of the absolute
-%       value of the pairwise correlation
+%   - absolute: Default 0. If set to 1 computes the average of the 
+%       absolute value of the pairwise correlation
 %------------------------------------------------------------------------
 % OUPUT
 %	- PC: matrix of pairwise correlation N (variables) x 2 (levels 

@@ -8,5 +8,7 @@
 *.vrb
 *.aux
 *.log
+*.bbl
+*.blg
 /aux/*
 /v3dot0/[temp]

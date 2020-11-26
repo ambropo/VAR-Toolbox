@@ -658,17 +658,14 @@ VARopt.pctg = 95;
 VARopt.ndraws = 250;
 % As VAR.b is not empty, the function SR now performs the sign restrictions 
 % identification prcedure conditional on the VAR.b matrix identified in 
-% the previous step
+%the previous step
 SRout = SR(VAR,SIGN,VARopt);
 % Plot impulse responses
 SRirplot(SRout.IRmed,VARopt,SRout.IRinf,SRout.IRsup);
 
 
-%% 9. CLEAN UP
-%************************************************************************** 
-% Export tex file
+%%
 m2tex('VARToolbox_Primer.m')
-% Remove VAR Toolbox from Matlab path
 rmpath(genpath('/Users/jambro/Google Drive/VAR-Toolbox/v3dot0'))
 
 

@@ -1,7 +1,9 @@
 # VAR-Toolbox
 Ambrogio Cesa-Bianchi's VAR Toolbox
 
-The VAR Toolbox is a collection of Matlab routines to perform VAR analysis. Estimation is performed with OLS. The VAR Toolbox allows for identification of structural shocks with zero short-run restrictions; zero long-run restrictions; sign restrictions; external instruments (proxy SVAR); and a combination of external instruments and sign restrictions. Impulse Response Functions (IR), Forecast Error Variance Decomposition (VD), and Historical Decompositions (HD) are computed according to the chosen identification. Error bands are obtained with bootstrapping. 
+The VAR Toolbox is a collection of Matlab routines to perform VAR analysis. The latest version is available in the v3dot0 folder.
+
+Estimation is performed with OLS. The VAR Toolbox allows for identification of structural shocks with zero short-run restrictions; zero long-run restrictions; sign restrictions; external instruments (proxy SVAR); and a combination of external instruments and sign restrictions. Impulse Response Functions (IR), Forecast Error Variance Decomposition (VD), and Historical Decompositions (HD) are computed according to the chosen identification. Error bands are obtained with bootstrapping. 
 
 The codes are grouped in six categories (and respective folders):
 

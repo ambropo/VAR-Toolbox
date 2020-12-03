@@ -1,4 +1,4 @@
-function [sigma_draw, Ft_draw, F_draw, Fcomp_draw] = VARdrawpost(VAR)
+function [sigma_draw, Ft_draw] = VARdrawpost(VAR)
 % =======================================================================
 % Draw from the posterior distribution of a VAR model
 % =======================================================================
@@ -25,10 +25,8 @@ function [sigma_draw, Ft_draw, F_draw, Fcomp_draw] = VARdrawpost(VAR)
 %===============================================
 nobs = VAR.nobs;
 k    = [];
-X    = VAR.X;
-const= VAR.const;
 nvar = VAR.nvar;
-nlag = VAR.nlag;
+X    = VAR.X;
 
 
 %% OLS estimates
@@ -48,10 +46,7 @@ sigma_draw     = inv(inv_sigma_draw);
 % Compute VCV of coefficient matrix
 aux1 = (X'*X)\eye(size(X,2));
 aux2 = kron(sigma_draw, aux1); 
-aux2 = (aux2 + aux2')/2; % Force symmetry (might fail bc of numerical error)
+aux2 = (aux2 + aux2')/2; % Force symmetry (due to numerical error)
 Fthat_vec = Ft_hat(:);
 Ftdraw = mvnrnd(Fthat_vec,aux2);
 Ft_draw = reshape(Ftdraw,k,nvar);
-F_draw = Ft_draw';
-Fcomp_draw = [F_draw(:,1+const:nvar*nlag+const); eye(nvar*(nlag-1)) zeros(nvar*(nlag-1),nvar)];
-

@@ -78,30 +78,32 @@ jj = 0; % accepted draws
 ww = 1; % index for printing on screen
 while jj < ndraws
 
-    % Set up VAR_draw.(label{1}) for rotations: Only identification uncertainty
+    % Set up VAR_draw.(draw{j}) for rotations: Only identification uncertainty
     label  = {['draw' num2str(jj)]};
     VAR_draw.(label{1}) = VAR;
     VARopt.ident = 'sign';
-    % If selected, set up VAR_draw.(label{1}) to consider identification + model uncertainty
+    % If selected, set up VAR_draw.(draw{j}) to consider identification + model uncertainty
     if VARopt.sr_mod==1 
         % Draw F and sigma from the posterior and 
-        [sigma_draw, Ft_draw] = VARdrawpost(VAR);
+        [sigma_draw, Ft_draw, F_draw, Fcomp_draw] = VARdrawpost(VAR);
         VAR_draw.(label{1}).Ft = Ft_draw;
+        VAR_draw.(label{1}).F = F_draw;
+        VAR_draw.(label{1}).Fcomp = Fcomp_draw;
         VAR_draw.(label{1}).sigma = sigma_draw;
     end
     
     % Compute rotated B matrix
     B = SignRestrictions(SIGN,VAR_draw.(label{1}),VARopt); 
     
-    % Note: e = (inv(B)*VAR_draw.(label{1}).resid')';
+    % Note: e = (inv(B)*VAR_draw.(draw{j}).resid')';
     % Check orthogonality:
-    % round(corr((inv(B)*VAR_draw.(label{1}).resid')'))
+    % round(corr((inv(B)*VAR_draw.(draw{j}).resid')'))
     
     % Store B
     jj = jj+1;
     Ball(:,:,jj) = B;
     
-    % Update VAR_draw.(label{1}) with the rotated B matrix for IR, VD, and HD
+    % Update VAR_draw.(draw{j}) with the rotated B matrix for IR, VD, and HD
     VAR_draw.(label{1}).B = B; 
 
     % Compute and store IR, VD, HD

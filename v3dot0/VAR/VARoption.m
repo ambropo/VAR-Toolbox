@@ -17,7 +17,7 @@ VARopt.snames    = [];      % shocks names (for sign restriction only)
 VARopt.nsteps    = 40;      % number of steps for computation of IRFs and FEVDs
 VARopt.impact    = 0;       % size of the shock for IRFs: 0=1stdev, 1=unit shock
 VARopt.shut      = 0;       % forces the IRF of one variable to zero
-VARopt.ident     = 'ch';    % identification method for IRFs ('ch' zero short-run restr, 'bq' zero long-run restr, 'sr' sign restr, 'iv' external instrument)
+VARopt.ident     = 'short'; % identification method for IRFs ('short' zero short-run restr, 'long' zero long-run restr, 'sign' sign restr, 'iv' external instrument)
 VARopt.recurs    = 'wold';  % method for computation of recursive stuff ('wold' form MA representation, 'comp' for companion form)
 VARopt.ndraws    = 100;     % number of draws for bootstrap or sign restrictions
 VARopt.mult      = 10;      % multiple of draws to be printed at screen.

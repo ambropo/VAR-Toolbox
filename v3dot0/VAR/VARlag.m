@@ -11,7 +11,7 @@ function [AIC, SBC, logL] = VARlag(ENDO,maxlag,const,EXOG,lag_ex)
 %       criterion is computed
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
-%   - const: 0 no constanrt; 1 constant ; 2 constant and trend; 
+%   - const: 0 no constant; 1 constant ; 2 constant and trend; 
 %           3 constant and trend^2; [dflt = 1]
 %	- EXOG: optional matrix of variables (nobs x nvar_ex)
 %   - nlag_ex: number of lags for exogeonus variables (dflt = 0)
@@ -30,8 +30,6 @@ function [AIC, SBC, logL] = VARlag(ENDO,maxlag,const,EXOG,lag_ex)
 % ambrogiocesabianchi@gmail.com
 % March 2012. Updated November 2020
 % -----------------------------------------------------------------------
-
-
 
 
 %% Check inputs
@@ -79,7 +77,7 @@ for i=1:maxlag
     NOBS = aux.nobs + i;  
     NVAR = aux.nvar;
     NTOTCOEFF = aux.ntotcoeff;
-    RES = aux.residuals;
+    RES = aux.resid;
     % VCV of the residuals (use dof adjusted denominator)
     SIGMA = (1/(NOBSadj)).*(RES)'*(RES);
     % Log-likelihood

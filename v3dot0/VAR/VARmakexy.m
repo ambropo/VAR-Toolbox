@@ -56,7 +56,7 @@ elseif const==2 % time trend and constant
         trend=1:size(X,1);
         X = [ones(nobs-lags,1) trend' X];
      
-elseif const==3 % squared time trend, linear time trend, and constant
+elseif const==3 % linear time trend, squared time trend, and constant
         X = [];
         for jj=0:lags-1
             X = [DATA(jj+1:nobs-lags+jj,:), X];

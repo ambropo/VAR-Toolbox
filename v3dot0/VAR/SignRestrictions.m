@@ -119,6 +119,7 @@ while 1
     end
 end
 B=termaa(:,orderIndices);
+counter;
 end
 
 % QR decomposition

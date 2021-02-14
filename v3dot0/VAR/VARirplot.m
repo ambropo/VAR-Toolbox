@@ -71,6 +71,7 @@ SwatheOpt.marker = '*';
 SwatheOpt.trans = 1;
 FigSize(VARopt.FigSize(1),VARopt.FigSize(2))
 for jj=pick:nshocks                
+    figure
     for ii=1:nvars
         subplot(row,col,ii);
         plot(steps,IR(:,ii,jj),'LineStyle','-','Color','k','LineWidth',2,'Marker',SwatheOpt.marker); hold on
@@ -96,4 +97,5 @@ for jj=pick:nshocks
     end
     clf('reset');
 end
+
 close all

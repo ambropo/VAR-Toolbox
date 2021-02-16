@@ -28,7 +28,7 @@ function [AIC, SBC, logL] = VARlag(ENDO,maxlag,const,EXOG,lag_ex)
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
-% March 2012. Updated November 2020
+% March 2012. Updated November 2020 
 % -----------------------------------------------------------------------
 
 

@@ -75,9 +75,19 @@ Ball = nan(nvar,nvar,ndraws);
 %% Sign restriction routine
 %==========================================================================
 jj = 0; % accepted draws
+tt = 0; % total draws
 ww = 1; % index for printing on screen
 while jj < ndraws
 
+    % Check total number of draws
+    if tt>VARopt.sr_draw
+        disp('------------------------------------------------------------')
+        disp( 'Total number of draws for finding sign restrictions exceeed')
+        disp( 'Change the restrictions or increase VARopt.sr_draw');
+        disp('------------------------------------------------------------')
+        error('See details above')
+    end
+    
     % Set up VAR_draw.(draw{j}) for rotations: Only identification uncertainty
     label  = {['draw' num2str(jj)]};
     VAR_draw.(label{1}) = VAR;
@@ -99,33 +109,36 @@ while jj < ndraws
     % Check orthogonality:
     % round(corr((inv(B)*VAR_draw.(draw{j}).resid')'))
     
-    % Store B
-    jj = jj+1;
-    Ball(:,:,jj) = B;
+    if ~isempty(B)
+        % Store B
+        jj = jj+1; tt = tt+1;
+        Ball(:,:,jj) = B;
     
-    % Update VAR_draw.(draw{j}) with the rotated B matrix for IR, VD, and HD
-    VAR_draw.(label{1}).B = B; 
+        % Update VAR_draw.(draw{j}) with the rotated B matrix for IR, VD, and HD
+        VAR_draw.(label{1}).B = B; 
 
-    % Compute and store IR, VD, HD
-    [aux_irf, VAR_draw.(label{1})] = VARir(VAR_draw.(label{1}),VARopt); 
-    IRall(:,:,:,jj)  = aux_irf;
-    aux_fevd = VARvd(VAR_draw.(label{1}),VARopt);
-    VDall(:,:,:,jj)  = aux_fevd;
-    aux_hd = VARhd(VAR_draw.(label{1}),VARopt);
-    HDall.shock(:,:,:,jj) = aux_hd.shock;
-    HDall.init(:,:,jj)    = aux_hd.init;
-    HDall.const(:,:,jj)   = aux_hd.const;
-    HDall.trend(:,:,jj)   = aux_hd.trend;
-    HDall.trend2(:,:,jj)  = aux_hd.trend2;
-    HDall.endo(:,:,jj)    = aux_hd.endo;
-    if nvar_ex>0; HDall.exo(:,:,:,jj) = aux_hd.exo; end
+        % Compute and store IR, VD, HD
+        [aux_irf, VAR_draw.(label{1})] = VARir(VAR_draw.(label{1}),VARopt); 
+        IRall(:,:,:,jj)  = aux_irf;
+        aux_fevd = VARvd(VAR_draw.(label{1}),VARopt);
+        VDall(:,:,:,jj)  = aux_fevd;
+        aux_hd = VARhd(VAR_draw.(label{1}),VARopt);
+        HDall.shock(:,:,:,jj) = aux_hd.shock;
+        HDall.init(:,:,jj)    = aux_hd.init;
+        HDall.const(:,:,jj)   = aux_hd.const;
+        HDall.trend(:,:,jj)   = aux_hd.trend;
+        HDall.trend2(:,:,jj)  = aux_hd.trend2;
+        HDall.endo(:,:,jj)    = aux_hd.endo;
+        if nvar_ex>0; HDall.exo(:,:,:,jj) = aux_hd.exo; end
 
-    % Display number of loops
-    if jj==VARopt.mult*ww
-        disp(['Rotation: ' num2str(jj) ' / ' num2str(ndraws)]);
-        ww=ww+1;
+        % Display number of loops
+        if jj==VARopt.mult*ww
+            disp(['Rotation: ' num2str(jj) ' / ' num2str(ndraws)]);
+            ww=ww+1;
+        end
+    else
+        tt=tt+1;
     end
-
 end
 disp('-- Done!');
 disp(' ');

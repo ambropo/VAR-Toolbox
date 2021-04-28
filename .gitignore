@@ -12,4 +12,4 @@
 *.bbl
 *.blg
 /aux/*
-/v3dot0/[temp]
+/v3dot0/_temp

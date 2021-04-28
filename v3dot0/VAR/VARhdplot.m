@@ -14,7 +14,7 @@ function VARhdplot(HD,VARopt)
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
-% March 2012. Updated November 2020
+% March 2012. Updated April 2021
 % -----------------------------------------------------------------------
 
 
@@ -28,7 +28,12 @@ vnames = VARopt.vnames;
 if isempty(vnames)
     error('You need to add label for endogenous variables in VARopt');
 end
-
+% Define shock names
+if isempty(VARopt.snames)
+    snames = VARopt.vnames;
+else
+    snames = VARopt.snames;
+end
 
 %% Check inputs and define some parameters
 %==========================================================================
@@ -70,11 +75,11 @@ for ii=pick:nvars
             SupTitle([Alphabet(jj) ') HD of '  vnames{ii}])
         end
         opt = LegOption; opt.handle = [H(1,:) h];
-        LegSubplot([vnames {'Data'}],opt);
+        LegSubplot([snames {'Data'}],opt);
         set(gcf, 'Color', 'w');
         export_fig(FigName,'-pdf','-painters')
     else
-        legend([H(1,:) h],[vnames {'Data'}])
+        legend([H(1,:) h],[vsnames {'Data'}])
         print('-dpdf','-r100',FigName);
     end
     clf('reset');

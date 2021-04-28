@@ -107,8 +107,8 @@ elseif strcmp(ident,'sign')
 % B matrix is recovered with external instrument IV
 elseif strcmp(ident,'iv')
     disp('---------------------------------------------')
-    disp('Forecast error variance decomposition not available with')
-    disp('external instruments identification (iv)');
+    disp('Forecast error variance decomposition not available yet ')
+    disp('with external instruments identification (iv)');
     disp('---------------------------------------------')
     error('ERROR. See details above');
 % If none of the above, you've done somerthing wrong :)    
@@ -119,7 +119,7 @@ else
     disp('- short: zero contemporaneous restrictions');
     disp('- long:  zero long-run restrictions');
     disp('- sign:  sign restrictions');
-    disp('- iv:  external instrument');
+    disp('- iv:    external instrument');
     disp('---------------------------------------------')
     error('ERROR. See details above');
 end

@@ -19,7 +19,7 @@ function VARvdplot(VD,VARopt)
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
-% March 2012. Updated November 2020
+% March 2012. Updated April 2021
 % -----------------------------------------------------------------------
 
 
@@ -32,6 +32,12 @@ end
 vnames = VARopt.vnames;
 if isempty(vnames)
     error('You need to add label for endogenous variables in VARopt');
+end
+% Define shock names
+if isempty(VARopt.snames)
+    snames = VARopt.vnames;
+else
+    snames = VARopt.snames;
 end
 
 
@@ -85,11 +91,11 @@ if quality
         SupTitle([Alphabet(ii) ') VD of '  vnames{ii}])
     end
     opt = LegOption; opt.handle = H(1,:);
-    LegSubplot(vnames,opt);
+    LegSubplot(snames,opt);
     set(gcf, 'Color', 'w');
     export_fig(FigName,'-pdf','-painters')
 else
-    legend(H(1,:),vnames)
+    legend(H(1,:),snames)
     print('-dpdf','-r100',FigName);
 end
 

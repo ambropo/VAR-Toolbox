@@ -18,7 +18,7 @@ function VARirplot(IR,VARopt,INF,SUP)
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
-% March 2012. Updated November 2020
+% March 2012. Updated April 2021
 % -----------------------------------------------------------------------
 
 
@@ -32,6 +32,12 @@ vnames = VARopt.vnames;
 % Check they are not empty
 if isempty(vnames)
     error('You need to add label for endogenous variables in VARopt');
+end
+% Define shock names
+if isempty(VARopt.snames)
+    snames = VARopt.vnames;
+else
+    snames = VARopt.snames;
 end
 
 %% Retrieve and initialize variables 
@@ -79,7 +85,7 @@ for jj=pick:nshocks
         end
         plot(x_axis,'--k','LineWidth',0.5); hold on
         xlim([1 nsteps]);
-        title([vnames{ii} ' to ' vnames{jj}], 'FontWeight','bold','FontSize',10); 
+        title([vnames{ii} ' to ' snames{jj}], 'FontWeight','bold','FontSize',10); 
         set(gca, 'Layer', 'top');
     end
     % Save

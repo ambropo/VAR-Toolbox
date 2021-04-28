@@ -16,7 +16,7 @@ function B = SignRestrictions(SIGN,VAR,VARopt)
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
-% March 2012. Updated November 2020
+% August 2018. Updated February 2021
 % -----------------------------------------------------------------------
 
 %% Check inputs
@@ -26,11 +26,21 @@ ds = size(SIGN,2);
 
 % Check whether columns of B (and corresponding sigma) are already provided
 if isempty(VAR.b)
-    b = [];
-    sigma = VAR.sigma;
+    if size(SIGN,1)==size(SIGN,2)
+        sigma = VAR.sigma;
+        b = [];
+    % If SIGN is missing a column, assume corresponding Cholesky
+    elseif size(SIGN,1)>size(SIGN,2)
+        sigma = VAR.sigma;
+        aux = chol(sigma)';
+        b = aux(:,size(SIGN,1)-size(SIGN,2));
+    else
+        error('Matrix SIGN has the wrong dimension');
+    end
+
 else
-    b = VAR.b;
     sigma = VAR.sigma_b;
+    b = VAR.b;
 end
 
 % Defines which columns of sigma have to be rotated
@@ -43,7 +53,7 @@ orderIndices = 1:dy;
 
 %% Search for rotations that satisfy SIGN and b
 % -----------------------------------------------------------------------
-counter = 1;
+counter = 1; flag = 0;
 while 1
     % Create starting matrix to be rotated.
     % If one column of B has already been provided:
@@ -67,12 +77,14 @@ while 1
     end
     counter = counter + 1;
     if counter>VARopt.sr_rot
-        disp('---------------------------------------------')
-        disp( 'The routine could not find any rotation that satisfies the restrictions in SIGN.')
-        disp(['The max number of rotations (' num2str(VARopt.sr_rot) ') has been reached.']);
-        disp( 'Change the restrictions or increase VARopt.sr_rot');
-        disp('---------------------------------------------')
-        error('ERROR. See details above');
+        %disp('---------------------------------------------')
+        %disp( 'The routine could not find any rotation that satisfies the restrictions in SIGN.')
+        %disp(['The max number of rotations (' num2str(VARopt.sr_rot) ') has been reached.']);
+        %disp( 'Change the restrictions or increase VARopt.sr_rot');
+        %disp('---------------------------------------------')
+        flag = 1;
+        break
+        %error('ERROR. See details above');
     end
     termaa = [startingMat];
     TermA = 0;
@@ -83,7 +95,7 @@ while 1
     termaa = terma;
     % Update VAR_draw with the rotated B matrix 
     VAR.B = termaa; 
-    % If >1, compute IRF for horizon to be checked
+    % If sr_hor>1, compute IRF for horizon to be checked
     if VARopt.sr_hor>1
         VARopt.nsteps=VARopt.sr_hor;
         [aux_irf, VAR] = VARir(VAR,VARopt);
@@ -109,7 +121,6 @@ while 1
                     termaa(:,jj) = -termaa(:,jj);
                     orderIndices(ii+whereToStart-1) = jj;
                     break
-
                 end
             end
         end
@@ -118,7 +129,7 @@ while 1
         break
     end
 end
-B=termaa(:,orderIndices);
+if flag==0; B=termaa(:,orderIndices); else; B=[]; end
 counter;
 end
 

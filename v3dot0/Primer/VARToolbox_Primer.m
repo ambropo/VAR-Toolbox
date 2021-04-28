@@ -177,6 +177,7 @@ VARopt.figname= 'graphics/SW_';
 %-------------------------------------------------------------------------- 
 % To get zero contemporaneous restrictions set
 VARopt.ident = 'short';
+VARopt.snames = {'\epsilon^{1}','\epsilon^{2}','\epsilon^{MonPol}'};
 % Compute IR
 [IR, VAR] = VARir(VAR,VARopt);
 % Compute IR error bands
@@ -266,6 +267,7 @@ VARopt.figname= 'graphics/BQ_';
 %-------------------------------------------------------------------------- 
 % To get zero long-run restrictions set
 VARopt.ident = 'long';
+VARopt.snames = {'\epsilon^{Supply}','\epsilon^{Demand}'};
 % Compute IR
 [IR, VAR] = VARir(VAR,VARopt);
 % Compute IR error bands
@@ -522,6 +524,7 @@ VARopt.figname= 'graphics/GK_';
 VAR.IV = IV;
 % Update the options in VARopt to be used in IR calculations and plots
 VARopt.ident = 'iv';
+VARopt.snames = {'\epsilon^{MonPol}','','',''};
 VARopt.method = 'wild';
 % Compute IR
 [IR, VAR] = VARir(VAR,VARopt);
@@ -541,7 +544,7 @@ for ii=1:Xnvar
     plot(1,IRbar(1,ii),'LineStyle','-','Color',cmap(1),'LineWidth',2,...
         'Marker','*','MarkerSize',15); hold on
     xlim([1 VARopt.nsteps]);
-    title([Xvnames_long{ii} ' to ' Xvnames_long{1}],'FontWeight','bold','FontSize',10); 
+    title([Xvnames_long{ii} ' to ' VARopt.snames{1}],'FontWeight','bold','FontSize',10); 
     set(gca, 'Layer', 'top');
 end
 SaveFigure('graphics/GK_alt_IR_1',1)

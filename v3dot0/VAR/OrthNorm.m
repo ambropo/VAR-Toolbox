@@ -13,19 +13,15 @@ function out = OrthNorm(n)
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
-% March 2012. Updated November 2020
+% March 2012. Updated Febraury 2021
 % -----------------------------------------------------------------------
 
-% [n x n]  matrix of N(0,1) random variables
-X = randn(n,n);
-
-% QR decomposition of X
-[Q, ~] = qr(X);
-
-% Check precision
-if sum(sum(Q*Q'))> n + 1.0e-5
-    error('Q*transpose(Q) is not equal to identity')
+a = randn(n);
+[q,r]=qr(a);
+for i=1:size(q,1)
+    if r(i,i)<0
+        q(:,i)=-q(:,i);
+    end
 end
-
-% Random orthonormal matrix such that Q*Q'=I
-out = Q; 
+out=q;
+end

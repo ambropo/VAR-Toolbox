@@ -13,3 +13,4 @@
 *.blg
 /aux/*
 /v3dot0/_temp/*
+*.sty

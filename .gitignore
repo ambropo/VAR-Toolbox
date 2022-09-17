@@ -1,5 +1,6 @@
 .DS_Store
 *.tex
+*.sty
 *.nav
 *.bib
 *.out
@@ -13,4 +14,3 @@
 *.blg
 /aux/*
 /v3dot0/_temp/*
-*.sty

@@ -42,9 +42,16 @@ if strcmp(frequency,'y')
     lo = fo+nobs-1;
     % Create vector of dates from "fo" to "lo"
     labyear = [fo:lo]';
+    nobslabyear = length(labyear);
     % Compute the ticks
     tick = round(nobs/nticks);
     tick_max = floor(nticks)*tick;
+    % Compute new last observation
+    lo_new = lo;
+    for ii=1:tick_max-nobslabyear
+        lo_new = lo_new + 1;
+    end 
+    labyear = [fo:lo_new]';
     % Set the labels
     set(gca,'xTick',tick:tick:tick_max,'xTickLabel',labyear(tick:tick:tick_max),'xLim',[0 nobs+1],'Layer','top');
    

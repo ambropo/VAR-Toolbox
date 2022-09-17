@@ -25,33 +25,33 @@ dy = size(SIGN,1);
 ds = size(SIGN,2);
 
 % Check whether columns of B (and corresponding sigma) are already provided
-if isempty(VAR.b)
+if isempty(VAR.Biv)
     if size(SIGN,1)==size(SIGN,2)
         sigma = VAR.sigma;
-        b = [];
+        Biv = [];
     % If SIGN is missing a column, assume corresponding Cholesky
     elseif size(SIGN,1)>size(SIGN,2)
         sigma = VAR.sigma;
         aux = chol(sigma)';
-        b = aux(:,size(SIGN,1)-size(SIGN,2));
+        Biv = aux(:,size(SIGN,1)-size(SIGN,2));
     else
         error('Matrix SIGN has the wrong dimension');
     end
 
 else
     sigma = VAR.sigma_b;
-    b = VAR.b;
+    Biv = VAR.Biv;
 end
 
 % Defines which columns of sigma have to be rotated
 whereToStart = 1+dy-ds;
-if ~(size(b,2)==whereToStart-1)
-    error('b and SIGN must have coherent sizes')
+if ~(size(Biv,2)==whereToStart-1)
+    error('Biv and SIGN must have coherent sizes')
 end
 nanMat = NaN*ones(dy,1);
 orderIndices = 1:dy;
 
-%% Search for rotations that satisfy SIGN and b
+%% Search for rotations that satisfy SIGN and Biv
 % -----------------------------------------------------------------------
 counter = 1; flag = 0;
 while 1
@@ -59,7 +59,7 @@ while 1
     % If one column of B has already been provided:
     if whereToStart>1
         C = chol(sigma,'lower');
-        q = C\b; 
+        q = C\Biv; 
         for ii = whereToStart:dy
             r = randn(dy,1);
             q = [q (eye(dy)-q*q')*r/norm((eye(dy)-q*q')*r)];
@@ -69,8 +69,8 @@ while 1
         startingMat = C*q;
         % Check that startingMat*startingMat'=SigmaHat:
         % startingMat*startingMat'
-        % Check that first column of startingMat = b
-        % [startingMat(:,1) b]
+        % Check that first column of startingMat = Biv
+        % [startingMat(:,1) Biv]
     % Otherwise start from a lower Cholesky
     else
         startingMat = chol(sigma,'lower');
@@ -131,16 +131,4 @@ while 1
 end
 if flag==0; B=termaa(:,orderIndices); else; B=[]; end
 counter;
-end
-
-% QR decomposition
-% -----------------------------------------------------------------------
-function out=getqr(a)
-[q,r]=qr(a);
-for i=1:size(q,1)
-    if r(i,i)<0
-        q(:,i)=-q(:,i);
-    end
-end
-out=q;
 end

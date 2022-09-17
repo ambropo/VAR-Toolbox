@@ -84,7 +84,7 @@ elseif strcmp(VARopt.ident,'iv')
     disp('external instruments identification (iv)');
     disp('---------------------------------------------')
     error('ERROR. See details above');
-% If none of the above, you've done somerthing wrong :)    
+% If none of the above, you've done something wrong :)    
 else
     disp('---------------------------------------------')
     disp('Identification incorrectly specified.')
@@ -92,7 +92,7 @@ else
     disp('- short: zero contemporaneous restrictions');
     disp('- long:  zero long-run restrictions');
     disp('- sign:  sign restrictions');
-    disp('- iv:  external instrument');
+    disp('- iv:    external instrument');
     disp('---------------------------------------------')
     error('ERROR. See details above');
 end

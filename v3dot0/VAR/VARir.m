@@ -14,7 +14,7 @@ function [IR, VAR] = VARir(VAR,VARopt)
 % OUTPUT
 %   - IR(:,:,:) : matrix with IRF (H horizons, N variables, N shocks)
 %   - VAR: structure including VAR estimation results. Note here that the 
-%       structure VAR is an output of VARmodel tpp. This fucntion adds to 
+%       structure VAR is an output of VARmodel, too. This fucntion adds to 
 %       VAR some additional results, e.g. VAR.B is the structural impact 
 %       matrix
 % =======================================================================
@@ -90,9 +90,9 @@ if strcmp(VARopt.ident,'short')
     B = out';
 % B matrix is recovered with Cholesky on cumulative IR to infinity
 elseif strcmp(VARopt.ident,'long')
-    Finf_big = inv(eye(length(Fcomp))-Fcomp); % from the companion
+    Finf_big = inv(eye(length(Fcomp))-Fcomp);
     Finf = Finf_big(1:nvar,1:nvar);
-    D  = chol(Finf*sigma*Finf')'; % identification: u2 has no effect on y1 in the long run
+    D  = chol(Finf*sigma*Finf')';
     B = Finf\D;
 % B matrix is recovered with SR.m
 elseif strcmp(VARopt.ident,'sign')
@@ -118,11 +118,11 @@ elseif strcmp(VARopt.ident,'iv')
     p_hat = FirstStage.yhat;
 
     % Recover first column of B matrix with second stage regressions
-    b(1,1) = 1;  % Start with impact IR normalized to 1
+    Biv(1,1) = 1;  % Start with impact IR normalized to 1
     sqsp = zeros(size(q,2),1);
     for ii=2:nvar
         SecondStage = OLSmodel(q(:,ii-1),p_hat);
-        b(ii,1) = SecondStage.beta(2);
+        Biv(ii,1) = SecondStage.beta(2);
         sqsp(ii-1) = SecondStage.beta(2);
     end
     % Update size of the shock (ftn 4 of Gertler and Karadi (2015))
@@ -135,10 +135,10 @@ elseif strcmp(VARopt.ident,'iv')
     S22 = sigma_b(2:end,2:end);
     Q = s21s11*S11*s21s11'-(S21*s21s11'+s21s11*S21')+S22;
     sp = sqrt(S11-(S21-s21s11*S11)'*(Q\(S21-s21s11*S11)));
-    % Rescale b vector
-    b = b*sp;
+    % Rescale Biv vector
+    Biv = Biv*sp;
     B = zeros(nvar,nvar);
-    B(:,1) = b;
+    B(:,1) = Biv;
 % If none of the above, you've done somerthing wrong :)    
 else
     disp('---------------------------------------------')
@@ -196,6 +196,6 @@ VAR.B = B;
 if strcmp(VARopt.ident,'iv')
     VAR.FirstStage = FirstStage;
     VAR.sigma_b = sigma_b;
-    VAR.b = b;
+    VAR.Biv = Biv;
 end
 

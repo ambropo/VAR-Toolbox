@@ -100,9 +100,6 @@ VARopt.method = 'wild';
 [INFiv,SUPiv,MEDiv,BARiv] = VARirband(VAR,VARopt);
 
 % Plot
-% Note that the routine VARivir normalizes the size of the shock to 1.
-% Therefore, to replicate Figure 1, I premultiply the impulse responses by
-% the size of the shock in teh original paper, namely ~0.2
 idx = 2;
 for ii=1:VARnvar
     subplot(4,2,idx)

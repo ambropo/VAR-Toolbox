@@ -197,6 +197,7 @@ TABLE = [TAB_v TABLE];
 
 %% Print the table on screen (only beta)
 %===============================================
+format short g 
 info.cnames = char(htext);
 info.rnames = char(vtext);
 disp(' ')
@@ -206,7 +207,12 @@ disp('Reduced form VAR estimation:')
 disp(' ')
 mprint(VAR.Ft,info)
 %disp('---------------------------------------------------------------------')
-
+disp(' ')
+disp('VAR eigenvalues:')
+disp(eig(VAR.Fcomp))
+disp(' ')
+disp('Reduced-form covariance matrix:')
+disp(VAR.sigma)
 
 
 

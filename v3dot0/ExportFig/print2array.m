@@ -59,17 +59,27 @@ function [A, bcol, alpha] = print2array(fig, res, renderer, gs_options)
 % 24/05/20: Significant performance speedup; added alpha values (where possible)
 % 07/07/20: Fixed issue #308: bug in R2019a and earlier
 % 07/10/20: Use JavaFrame_I where possible, to avoid evoking a JavaFrame warning
+% 07/03/21: Fixed edge-case in case a non-figure handle was provided as input arg
+% 10/03/21: Forced a repaint at top of function to ensure accurate image snapshot (issue #211)
+% 26/08/21: Added a short pause to avoid unintended image cropping (issue #318)
+% 25/10/21: Avoid duplicate error message when retrying print2array with different resolution; display internal print error message
+% 19/12/21: Speedups; fixed exporting non-current figure (hopefully fixes issue #318)
 %}
 
     % Generate default input arguments, if needed
     if nargin < 1,  fig = gcf;  end
     if nargin < 2,  res = 1;    end
 
+    % Force a repaint to ensure we get an accurate snapshot image (issue #211)
+    drawnow
+
     % Get the figure size in pixels
     old_mode = get(fig, 'Units');
     set(fig, 'Units', 'pixels');
     px = get(fig, 'Position');
     set(fig, 'Units', old_mode);
+
+    pause(0.02);  % add a short pause to avoid unintended cropping (issue #318)
 
     % Retrieve the background colour
     bcol = get(fig, 'Color');
@@ -107,8 +117,12 @@ function [A, bcol, alpha] = print2array(fig, res, renderer, gs_options)
             isTempDirOk = false;
         end
         % Enable users to specify optional ghostscript options (issue #36)
+        isRetry = false;
         if nargin > 3 && ~isempty(gs_options)
-            if iscell(gs_options)
+            if isequal(gs_options,'retry')
+                isRetry = true;
+                gs_options = '';
+            elseif iscell(gs_options)
                 gs_options = sprintf(' %s',gs_options{:});
             elseif ~ischar(gs_options)
                 error('gs_options input argument must be a string or cell-array of strings');
@@ -169,7 +183,9 @@ function [A, bcol, alpha] = print2array(fig, res, renderer, gs_options)
             % Throw any error that occurred
             if err
                 % Display suggested workarounds to internal print() error (issue #16)
-                fprintf(2, 'An error occured with Matlab''s builtin print function.\nTry setting the figure Renderer to ''painters'' or use opengl(''software'').\n\n');
+                if ~isRetry
+                    fprintf(2, 'An error occurred in Matlab''s builtin print function:\n%s\nTry setting the figure Renderer to ''painters'' or use opengl(''software'').\n\n', ex.message);
+                end
                 rethrow(ex);
             end
         end
@@ -288,7 +304,7 @@ function [imgData, alpha] = getJavaImage(hFig)
     alpha   =     transpose(reshape(pixelsData(4, :, :), w, h));
 
     % Ensure that the results are the expected size, otherwise raise an error
-    figSize = getpixelposition(gcf);
+    figSize = getpixelposition(hFig);
     expectedSize = [figSize(4), figSize(3), 3];
     if ~isequal(expectedSize, size(imgData))
         error('bad Java screen-capture size!')
@@ -302,6 +318,7 @@ function [imgData, alpha, err, ex] = getPrintImage(fig, res_str, renderer, tmp_n
     ex      = [];
     alpha   = [];
     % Temporarily set the paper size
+    fig = ancestor(fig, 'figure');  % just in case it's not a figure...
     old_pos_mode    = get(fig, 'PaperPositionMode');
     old_orientation = get(fig, 'PaperOrientation');
     set(fig, 'PaperPositionMode','auto', 'PaperOrientation','portrait');
@@ -327,7 +344,9 @@ function [imgData, alpha, err, ex] = getPrintImage(fig, res_str, renderer, tmp_n
     catch ex
         err = true;
     end
-    set(fp, 'LineWidth',0.75);  % restore original figure appearance
+    if ~isempty(fp)  % this check is not really needed, but makes the code cleaner
+        set(fp, 'LineWidth',0.75);  % restore original figure appearance
+    end
     % Reset the paper size
     set(fig, 'PaperPositionMode',old_pos_mode, 'PaperOrientation',old_orientation);
 end

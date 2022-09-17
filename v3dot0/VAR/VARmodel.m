@@ -147,9 +147,9 @@ VAR.maxEig = max(abs(eig(Fcomp)));
 
 %% Initialize other results
 % -----------------------------------------------------------------------
-VAR.B   = [];   % structural impact matrix (need identification: see VARir/VARfevd)
-VAR.b   = [];   % first columns of structural impact matrix (need identification: see VARir/VARfevd)
-VAR.PSI = [];   % Wold multipliers (computed only with VARir/VARfevd)
+VAR.B   = [];   % structural impact matrix (need identification: see VARir/VARvd/VARhd)
+VAR.Biv = [];   % first columns of structural impact matrix (need "iv" identification: see VARir/VARvd/VARhd)
+VAR.PSI = [];   % Wold multipliers (computed only with VARir/VARvd/VARhd)
 VAR.Fp  = [];   % Recursive F by lag (useful to compute MA representation)
 VAR.IV  = [];   % External instruments for identification
 

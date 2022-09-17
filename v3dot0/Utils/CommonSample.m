@@ -3,7 +3,7 @@ function [OUT, fo, lo] = CommonSample(DATA,dim)
 % If a row of DATA contains a NaN, the row is removed. If dim=2, if a 
 % column of DATA contains a NaN, the column is removed.
 % =======================================================================
-% [OUT, lo, fo] = CommonSample(DATA)
+% [OUT, fo, lo] = CommonSample(DATA)
 % -----------------------------------------------------------------------
 % INPUT
 %	- DATA: matrix DATA(i,j)
@@ -13,8 +13,8 @@ function [OUT, fo, lo] = CommonSample(DATA,dim)
 % -----------------------------------------------------------------------
 % OUTPUT
 %	- OUT: common sample matrix
-%	- lo : number of NaNs at the beginning
-%	- fo : number of NaNs at the end
+%	- fo : number of NaNs at the beginning
+%	- lo : number of NaNs at the end
 % -----------------------------------------------------------------------
 % EXAMPLE
 %   x = [1 2; NaN 4; 5 6];

@@ -14,4 +14,4 @@
 *.blg
 /aux/*
 /v3dot0/_temp/*
-beamerthemejambrostyle.sty
+beamer*

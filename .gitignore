@@ -1,6 +1,6 @@
 .DS_Store
+*.sty
 *.tex
-beamerthemejambrostyle.sty
 *.nav
 *.bib
 *.out
@@ -14,3 +14,4 @@ beamerthemejambrostyle.sty
 *.blg
 /aux/*
 /v3dot0/_temp/*
+beamerthemejambrostyle.sty

@@ -1,6 +1,6 @@
 .DS_Store
 *.tex
-*.sty
+beamerthemejambrostyle.sty
 *.nav
 *.bib
 *.out

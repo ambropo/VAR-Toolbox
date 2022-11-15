@@ -35,3 +35,5 @@ To save figures in high quality format, you need to download an install Ghostscr
 ## Manual
 A manual will be available soon. In the meanwhile, you can information on how to use the VAR Toolbox in the [VAR Primer](https://github.com/ambropo/VAR-Toolbox/blob/main/VAR_Primer_Slides.pdf "VAR Primer"), a slide deck describing the basics of VARs and how to estimate them using the VARToolbox.
 
+## License
+The theme is licensed under a GNU General Public License v3.0

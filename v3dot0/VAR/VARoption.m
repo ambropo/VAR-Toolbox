@@ -37,6 +37,8 @@ VARopt.firstdate = [];      % initial date of the sample in format 1999.75 => 19
 VARopt.frequency = 'q';     % frequency of the data: 'm' monthly, 'q' quarterly, 'y' yearly
 VARopt.figname   = [];      % string for name of exported figure
 VARopt.FigSize   = [26,24]; % size of window for plots
+VARopt.export    = 1;       % 1=save figures (default), 0=do not save figures
+VARopt.close_fig = 1;       % 1=close figures after creating them (default), 0=do not close figures
 
 % In progress
 %VARopt.maxvd_N   = 1;       % position of variable to maximize variance decomposition

@@ -1,8 +1,8 @@
 function [IR, VAR] = VARir(VAR,VARopt)
 % =========================================================================
-% Compute impulse responses (IRs) for a VAR model estimated with the 
-% VARmodel.m function. Four identification schemes can be specified: 
-% zero contemporaneous restrictions, zero long-run restrictions, sign 
+% Compute impulse responses (IRs) for a VAR model estimated with the
+% VARmodel.m function. Four identification schemes can be specified:
+% zero contemporaneous restrictions, zero long-run restrictions, sign
 % restrictions, and external instrumenmts.
 % =========================================================================
 % [IRF, VAR] = VARir(VAR,VARopt)
@@ -13,9 +13,9 @@ function [IR, VAR] = VARir(VAR,VARopt)
 % -------------------------------------------------------------------------
 % OUTPUT
 %   - IR(:,:,:) : matrix with IRF (H horizons, N variables, N shocks)
-%   - VAR: structure including VAR estimation results. Note here that the 
-%       structure VAR is an output of VARmodel, too. This fucntion adds to 
-%       VAR some additional results, e.g. VAR.B is the structural impact 
+%   - VAR: structure including VAR estimation results. Note here that the
+%       structure VAR is an output of VARmodel, too. This fucntion adds to
+%       VAR some additional results, e.g. VAR.B is the structural impact
 %       matrix
 % =======================================================================
 % VAR Toolbox 3.0
@@ -38,7 +38,7 @@ if strcmp(VARopt.ident,'iv')
 end
 
 
-%% Retrieve and initialize variables 
+%% Retrieve and initialize variables
 %==========================================================================
 nsteps = VARopt.nsteps;
 impact = VARopt.impact;
@@ -105,7 +105,7 @@ elseif strcmp(VARopt.ident,'sign')
 elseif strcmp(VARopt.ident,'iv')
     % Recover residuals (first variable is the one to be instrumented - order matters!)
     up = VAR.resid(:,1);     % residuals to be instrumented
-    uq = VAR.resid(:,2:end); % residulas for second stage 
+    uq = VAR.resid(:,2:end); % residulas for second stage
 
     % Make sample of IV comparable with up and uq
     [aux, fo, lo] = CommonSample([up IV(VAR.nlag+1:end,:)]);
@@ -129,7 +129,7 @@ elseif strcmp(VARopt.ident,'iv')
     sigma_b = (1/(length(pq)-VAR.ntotcoeff))*...
         (pq-repmat(mean(pq),size(pq,1),1))'*...
         (pq-repmat(mean(pq),size(pq,1),1));
-    s21s11 = sqsp; 
+    s21s11 = sqsp;
     S11 = sigma_b(1,1);
     S21 = sigma_b(2:end,1);
     S22 = sigma_b(2:end,2:end);
@@ -139,7 +139,7 @@ elseif strcmp(VARopt.ident,'iv')
     Biv = Biv*sp;
     B = zeros(nvar,nvar);
     B(:,1) = Biv;
-% If none of the above, you've done somerthing wrong :)    
+% If none of the above, you've done somerthing wrong :)
 else
     disp('---------------------------------------------')
     disp('Identification incorrectly specified.')
@@ -163,14 +163,28 @@ for mm=1:nvar
     % Initialize the impulse response vector
     response = zeros(nvar, nsteps);
     % Create the impulse vector
-    impulse = zeros(nvar,1); 
+    impulse = zeros(nvar,1);
     % Set the size of the shock
-    if impact==0
+    if isstruct(impact)
+        % Allow arbitrary normalization of impact by
+        % requiring two fields:
+        % impact.variable = index of variable which is to be normalized
+        % impact.target   = target normalization for variable
+        if ~isfield(impact, 'variable')
+            error('Impact does not have required field `variable`');
+        end
+        if ~isfield(impact, 'target')
+            error('Impact does not have required field `target`');
+        end
+        impulse(mm, impact.variable) = impact.target / B(mm, mm);
+    elseif impact==0
         impulse(mm,1) = 1; % one stdev shock
     elseif impact==1
         impulse(mm,1) = 1/B(mm,mm); % unitary shock
     else
-        error('Impact must be either 0 or 1');
+        error(['Impact must be 0, 1, or a structure with fields `variable` specifying the', ...
+               ' index of the variable to normalize and `target` specifying the desired', ...
+               ' level upon impact']);
     end
     % First period impulse response (=impulse vector)
     response(:,1) = B*impulse;
@@ -192,10 +206,9 @@ for mm=1:nvar
     IR(:,:,mm) = response';
 end
 % Update VAR with structural impact matrix
-VAR.B = B;   
+VAR.B = B;
 if strcmp(VARopt.ident,'iv')
     VAR.FirstStage = FirstStage;
     VAR.sigma_b = sigma_b;
     VAR.Biv = Biv;
 end
-

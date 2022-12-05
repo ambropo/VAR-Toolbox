@@ -15,7 +15,7 @@ VARopt.vnames    = [];      % endogenous variables names
 VARopt.vnames_ex = [];      % exogenous variables names
 VARopt.snames    = [];      % shocks names
 VARopt.nsteps    = 40;      % number of steps for computation of IRFs and FEVDs
-VARopt.impact    = 0;       % size of the shock for IRFs: 0=1stdev, 1=unit shock
+VARopt.impact    = 0;       % size of the shock for IRFs: 0=1stdev, 1=unit shock, struct=arbitrary normalization using fields `variable` and `target` (index of variable to normalize and target normalization, resp.)
 VARopt.shut      = 0;       % forces the IRF of one variable to zero
 VARopt.ident     = 'short'; % identification method for IRFs ('short' zero short-run restr, 'long' zero long-run restr, 'sign' sign restr, 'iv' external instrument)
 VARopt.recurs    = 'wold';  % method for computation of recursive stuff ('wold' form MA representation, 'comp' for companion form)
@@ -37,6 +37,8 @@ VARopt.firstdate = [];      % initial date of the sample in format 1999.75 => 19
 VARopt.frequency = 'q';     % frequency of the data: 'm' monthly, 'q' quarterly, 'y' yearly
 VARopt.figname   = [];      % string for name of exported figure
 VARopt.FigSize   = [26,24]; % size of window for plots
+VARopt.export    = 1;       % 1=save figures (default), 0=do not save figures
+VARopt.close_fig = 1;       % 1=close figures after creating them (default), 0=do not close figures
 
 % In progress
 %VARopt.maxvd_N   = 1;       % position of variable to maximize variance decomposition

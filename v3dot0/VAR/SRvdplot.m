@@ -44,6 +44,8 @@ filename = [VARopt.figname 'VD'];
 quality = VARopt.quality;
 suptitle = VARopt.suptitle;
 pick = VARopt.pick;
+export = VARopt.export;
+close_fig = VARopt.close_fig;
 
 % Initialize VD matrix
 nshocks = length(snames); [nsteps, nvars, ~] = size(VD);
@@ -77,22 +79,28 @@ for ii=1:nvars
     subplot(row,col,ii);
     H = AreaPlot(VD(:,:,ii));
     xlim([1 nsteps]); ylim([0 100]);
-    title(vnames{ii}, 'FontWeight','bold','FontSize',10); 
+    title(vnames{ii}, 'FontWeight','bold','FontSize',10);
     set(gca, 'Layer', 'top');
 end
 % Save
 FigName = [filename];
-if quality 
+if quality
     if suptitle==1
         SupTitle('Variance Decomposition')
     end
     opt = LegOption; opt.handle = [H(1,:)];
     LegSubplot(snames,opt);
     set(gcf, 'Color', 'w');
-    export_fig(FigName,'-pdf','-painters')
+    if export
+        export_fig(FigName,'-pdf','-painters')
+    end
 else
     legend(H(1,:),snames)
-    print('-dpdf','-r100',FigName);
+    if export
+        print('-dpdf','-r100',FigName);
+    end
 end
 
-close all
+if close_fig
+    close all
+end

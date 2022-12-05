@@ -40,12 +40,14 @@ else
     snames = VARopt.snames;
 end
 
-%% Retrieve and initialize variables 
+%% Retrieve and initialize variables
 %================================================
 filename = [VARopt.figname 'IR_'];
 quality = VARopt.quality;
 suptitle = VARopt.suptitle;
 pick = VARopt.pick;
+export = VARopt.export;
+close_fig = VARopt.close_fig;
 
 % Initialize IR matrix
 [nsteps, nvars, nshocks] = size(IR);
@@ -76,7 +78,10 @@ SwatheOpt = PlotSwatheOption;
 SwatheOpt.marker = '*';
 SwatheOpt.trans = 1;
 FigSize(VARopt.FigSize(1),VARopt.FigSize(2))
-for jj=pick:nshocks                
+for jj=pick:nshocks
+    if ~close_fig
+        figure(jj);
+    end
     for ii=1:nvars
         subplot(row,col,ii);
         plot(steps,IR(:,ii,jj),'LineStyle','-','Color','k','LineWidth',2,'Marker',SwatheOpt.marker); hold on
@@ -85,22 +90,31 @@ for jj=pick:nshocks
         end
         plot(x_axis,'--k','LineWidth',0.5); hold on
         xlim([1 nsteps]);
-        title([vnames{ii} ' to ' snames{jj}], 'FontWeight','bold','FontSize',10); 
+        title([vnames{ii} ' to ' snames{jj}], 'FontWeight','bold','FontSize',10);
         set(gca, 'Layer', 'top');
     end
+
     % Save
     FigName = [filename num2str(jj)];
-    if quality 
+    if quality
         if suptitle==1
             Alphabet = char('a'+(1:nshocks)-1);
             SupTitle([Alphabet(jj) ') IR to a shock to '  vnames{jj}])
         end
         set(gcf, 'Color', 'w');
-        export_fig(FigName,'-pdf','-painters')
+        if export
+            export_fig(FigName,'-pdf','-painters')
+        end
     else
-        print('-dpdf','-r100',FigName);
+        if export
+            print('-dpdf','-r100',FigName);
+        end
     end
-    clf('reset');
+    if close_fig
+        clf('reset');
+    end
 end
 
-close all
+if close_fig
+    close all
+end

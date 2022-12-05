@@ -40,6 +40,8 @@ filename = [VARopt.figname 'HD_'];
 quality = VARopt.quality;
 suptitle = VARopt.suptitle;
 pick = VARopt.pick;
+export = VARopt.export;
+close_fig = VARopt.close_fig;
 
 % Initialize HD matrix
 [nsteps, nvars, nshocks] = size(HD.shock);
@@ -60,15 +62,15 @@ end
 %================================================
 FigSize(VARopt.FigSize(1),VARopt.FigSize(2))
 for ii=pick:nvars
-    H = AreaPlot(squeeze(HD.shock(:,:,ii))); hold on; 
+    H = AreaPlot(squeeze(HD.shock(:,:,ii))); hold on;
     h = plot(sum(squeeze(HD.shock(:,:,ii)),2),'-k','LineWidth',2);
     if ~isempty(VARopt.firstdate); DatesPlot(VARopt.firstdate,nsteps,8,VARopt.frequency); end
     xlim([1 nsteps]);
 	set(gca,'Layer','top');
-    title([vnames{ii}], 'FontWeight','bold','FontSize',10); 
+    title([vnames{ii}], 'FontWeight','bold','FontSize',10);
     % Save
     FigName = [filename num2str(ii)];
-    if quality 
+    if quality
         if suptitle==1
             Alphabet = char('a'+(1:nvars)-1);
             SupTitle([Alphabet(jj) ') HD of '  vnames{ii}])
@@ -76,13 +78,20 @@ for ii=pick:nvars
         opt = LegOption; opt.handle = [H(1,:) h];
         LegSubplot([snames {'Data'}],opt);
         set(gcf, 'Color', 'w');
-        export_fig(FigName,'-pdf','-painters')
+        if export
+            export_fig(FigName,'-pdf','-painters')
+        end
     else
         legend([H(1,:) h],[vnames {'Data'}])
-        print('-dpdf','-r100',FigName);
+        if export
+            print('-dpdf','-r100',FigName);
+        end
     end
-    clf('reset');
-
+    if close_fig
+        clf('reset');
+    end
 end
 
-close all
+if close_fig
+    close all
+end

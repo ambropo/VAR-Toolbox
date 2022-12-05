@@ -176,7 +176,7 @@ for mm=1:nvar
         if ~isfield(impact, 'target')
             error('Impact does not have required field `target`');
         end
-        impulse(mm, impact.variable) = impact.target / B(mm, mm);
+        impulse(mm,1) = impact.target / B(impact.variable, mm);
     elseif impact==0
         impulse(mm,1) = 1; % one stdev shock
     elseif impact==1

@@ -8,7 +8,7 @@ function SaveFigure(path,quality,type)
 %   - path: path wehere to save the file [char]
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
-%   - quality: 0 standard, 1 high quality [dflt=0] [double]
+%   - quality: 0 standard, 1 Ghostscript, 2 exportgraphics [dflt=0] [double]
 %   - type: pdf, png, eps [dflt=pdf] [char]
 % =======================================================================
 % VAR Toolbox 3.0
@@ -26,10 +26,12 @@ if ~exist('type','var')
 end
 
 % file type
-if quality 
+if quality==1
     set(gcf, 'Color', 'w');
     export_fig(path,['-' type],'-painters')
-else
+elseif quality==2
+    exportgraphics(gcf,[path '.pdf'])
+elseif quality==0
     print(['-d' type],'-r100',path)
     print(['-d' type],'-r100',path)
     print(['-d' type],'-r100',path)

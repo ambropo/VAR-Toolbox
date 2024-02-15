@@ -14,7 +14,7 @@ function SaveFigure(path,quality,type)
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
-% March 2015. Updated November 2020
+% March 2015. Updated Feb 2024
 % -----------------------------------------------------------------------
 
 % Check inputs
@@ -25,14 +25,14 @@ if ~exist('type','var')
     type='pdf';
 end
 
-% file type
-if quality==1
+% File type
+if quality==0
+    print(['-d' type],'-r100',path)
+    print(['-d' type],'-r100',path)
+    print(['-d' type],'-r100',path)
+elseif quality==1 % option for Ghostscript
     set(gcf, 'Color', 'w');
     export_fig(path,['-' type],'-painters')
-elseif quality==2
+elseif quality==2 % option for new matlab function exportgraphics
     exportgraphics(gcf,[path '.pdf'])
-elseif quality==0
-    print(['-d' type],'-r100',path)
-    print(['-d' type],'-r100',path)
-    print(['-d' type],'-r100',path)
 end

@@ -17,6 +17,7 @@ SwatheOpt.linecol    = [13, 54, 84]./255;    % color(1,:);
 SwatheOpt.do_dates   = 0;
 SwatheOpt.frequency  = 'q';
 SwatheOpt.swatheonly = 0;
+SwatheOpt.linewidth  = 2;
 SwatheOpt.marker     = 'none';
 SwatheOpt.transp     = 0;   % Allow for transparency when plotting multiple swathes
 SwatheOpt.alpha      = 1;   % Sets alpha for transparent swathes. Default is 1

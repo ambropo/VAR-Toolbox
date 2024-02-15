@@ -17,12 +17,12 @@ function [IR, VAR] = VARir(VAR,VARopt)
 %       structure VAR is an output of VARmodel, too. This fucntion adds to 
 %       VAR some additional results, e.g. VAR.B is the structural impact 
 %       matrix
-% =======================================================================
+% =========================================================================
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
 % March 2012. Updated November 2020
-% -----------------------------------------------------------------------
+% -------------------------------------------------------------------------
 
 
 %% Check inputs

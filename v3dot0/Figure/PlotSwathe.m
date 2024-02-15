@@ -111,7 +111,7 @@ end
 
 % Plot the 'bar' line
 if SwatheOpt.swatheonly==0
-    H.bar = plot(xaxis,bar,'LineWidth',2,'Color',linecol,'Marker',SwatheOpt.marker);
+    H.bar = plot(xaxis,bar,'LineWidth',SwatheOpt.linewidth,'Color',linecol,'Marker',SwatheOpt.marker);
 end
 
 % Add the error-bar plot elements
@@ -134,7 +134,7 @@ if SwatheOpt.swatheonly==0
     delete(H.bar)
 end
 if SwatheOpt.swatheonly==0
-    H.bar=plot(xaxis,bar,'LineWidth',2,'Color',linecol,'Marker',SwatheOpt.marker);
+    H.bar=plot(xaxis,bar,'LineWidth',SwatheOpt.linewidth,'Color',linecol,'Marker',SwatheOpt.marker);
 end
 if ~holdStatus, hold off, end
 

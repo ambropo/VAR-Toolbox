@@ -1,0 +1,26 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: normal
+  TERM: linux
+  MATLAB_VERSION: R2022b
+  OLD_MATLAB_VERSION: R2014a
+  OCTAVE_VERSION: 7.3.0
+
+before_script:
+  - git clone https://git.dynare.org/Dynare/m-unit-tests
+
+test_matlab:
+  stage: test
+  script:
+    - make check-matlab MATLAB=/usr/local/MATLAB/$MATLAB_VERSION/bin/matlab
+
+test_old_matlab:
+  stage: test
+  script:
+    - make check-matlab MATLAB=/usr/local/MATLAB/$OLD_MATLAB_VERSION/bin/matlab
+
+test_octave:
+  stage: test
+  variables:
+    OPENBLAS_NUM_THREADS: 1
+  script:
+    - make check-octave OCTAVE=/usr/local/octave/$OCTAVE_VERSION/bin/octave

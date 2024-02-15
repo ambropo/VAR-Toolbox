@@ -65,18 +65,18 @@ end
 
 %% Save some parameters and create data matrices
 % -----------------------------------------------------------------------
-    nobse         = nobs - max(nlag,nlag_ex);
-    VAR.nobs      = nobse;
-    VAR.nvar      = nvar;
-    VAR.nvar_ex   = nvar_ex;    
-    VAR.nlag      = nlag;
-    VAR.nlag_ex   = nlag_ex;
-    ncoeff        = nvar*nlag; 
-    VAR.ncoeff    = ncoeff;
-    ncoeff_ex     = nvar_ex*(nlag_ex+1);
-    ntotcoeff     = ncoeff + ncoeff_ex + const;
-    VAR.ntotcoeff = ntotcoeff;
-    VAR.const     = const;
+nobse         = nobs - max(nlag,nlag_ex);
+VAR.nobs      = nobse;
+VAR.nvar      = nvar;
+VAR.nvar_ex   = nvar_ex;    
+VAR.nlag      = nlag;
+VAR.nlag_ex   = nlag_ex;
+ncoeff        = nvar*nlag; 
+VAR.ncoeff    = ncoeff;
+ncoeff_ex     = nvar_ex*(nlag_ex+1);
+ntotcoeff     = ncoeff + ncoeff_ex + const;
+VAR.ntotcoeff = ntotcoeff;
+VAR.const     = const;
 
 % Create independent vector and lagged dependent matrix
 [Y, X] = VARmakexy(ENDO,nlag,const);

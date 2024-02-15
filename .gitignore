@@ -13,5 +13,7 @@
 *.bbl
 *.blg
 /aux/*
-/v3dot0/_temp/*
+/v3dot0/_bin/*
+/v3dot0/fromDynare/*
 beamer*
+Manual*

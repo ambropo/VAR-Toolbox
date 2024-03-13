@@ -13,6 +13,7 @@
 *.bbl
 *.blg
 wink.png
+*temp.pdf
 beamer*
 aux/*
 v3dot0/_bin/*

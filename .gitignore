@@ -12,6 +12,7 @@
 *.log
 *.bbl
 *.blg
+wink.png
 beamer*
 aux/*
 v3dot0/_bin/*

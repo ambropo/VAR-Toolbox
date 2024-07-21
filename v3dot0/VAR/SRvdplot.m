@@ -82,7 +82,7 @@ for ii=1:nvars
 end
 % Save
 FigName = [filename];
-if quality 
+if quality==1
     if suptitle==1
         SupTitle('Variance Decomposition')
     end
@@ -90,6 +90,13 @@ if quality
     LegSubplot(snames,opt);
     set(gcf, 'Color', 'w');
     export_fig(FigName,'-pdf','-painters')
+elseif quality==2
+    if suptitle==1
+        SupTitle('Variance Decomposition')
+    end
+    opt = LegOption; opt.handle = [H(1,:)];
+    LegSubplot(snames,opt);
+    SaveFigure(FigName,quality);
 else
     legend(H(1,:),snames)
     print('-dpdf','-r100',FigName);

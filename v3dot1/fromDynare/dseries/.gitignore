@@ -1,0 +1,8 @@
+*~
+.DS_Store
+
+externals/*
+m-unit-tests/*
+
+src/git.info
+src/git.last-commit-hash

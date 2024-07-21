@@ -28,7 +28,7 @@ VARopt.sr_rot    = 500;     % max number of rotations for finding sign restricti
 VARopt.sr_draw   = 100000;  % max number of total draws for finding sign restrictions
 VARopt.sr_mod    = 1;       % model uncertainty for sign restrictions (1=yes, 0=no)
 VARopt.pick      = 0;       % selects one variable for IRFs and FEVDs plots (0 => plot all)
-VARopt.quality   = 1;       % quality of exported figures: 1=high (ghostscript required), 0=low
+VARopt.quality   = 2;       % quality of exported figures: 2=high (exportgraphics), 1=high (ghostscript), 0=low
 VARopt.suptitle  = 0;       % title on top of figures
 VARopt.datesnum  = [];      % numeric vector of dates in the VAR
 VARopt.datestxt  = [];      % cell vector of dates in the VAR

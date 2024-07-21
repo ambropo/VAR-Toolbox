@@ -1,0 +1,12 @@
+*~
+\#*\#
+*.pdf
+*.aux
+*.log
+*.out
+*.tex
+*.csv
+*.toc
+*synctex.gz
+.DS_Store
+test/tmpRepDir

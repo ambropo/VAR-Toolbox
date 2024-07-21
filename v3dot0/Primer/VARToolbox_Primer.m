@@ -108,7 +108,7 @@ VARopt.firstdate = datesnum(1);          % first date in plots
 VARopt.frequency = 'q';                  % frequency of the data
 VARopt.snames = {'\epsilon^{Demand}',... % shock names
     '\epsilon^{MonPol}'};
-% Compute impulse response
+% Compute impulse responses with chosen identification
 [IR, VAR] = VARir(VAR,VARopt);
 % Print at screen 
 format short
@@ -199,6 +199,7 @@ VARirplot(SRout.IRmed,VARopt,SRout.IRinf,SRout.IRsup)
 % Compute structural shocks (Tx2)
 eps_sign = (SRout.B\VAR.resid')';
 
+
 %% 7. IDENTIFICATION WITH EXTERNAL INSTRUMENTS
 %************************************************************************** 
 % Identification with external instruments is achieved in three steps: (1) 
@@ -262,8 +263,435 @@ SRIVout = SR(VAR,SIGN,VARopt);
 % Plot impulse responses
 VARirplot(SRIVout.IRmed,VARopt,SRIVout.IRinf,SRIVout.IRsup);
 
-m2tex('VARToolbox_Primer_v1.m')
 
+%% 9. STOCK AND WATSON (2001)
+%************************************************************************** 
+% Zero contemporaneous restrictions identification example based on the 
+% replication of Stock and Watson (2001, JEP) paper
+%-------------------------------------------------------------------------- 
+
+% 9.1 Load data from Stock and Watson
+%-------------------------------------------------------------------------- 
+[xlsdata, xlstext] = xlsread('data/SW2001_Data.xlsx','Sheet1');
+dates = xlstext(3:end,1);
+datesnum = Date2Num(dates);
+vnames_long = xlstext(1,2:end);
+vnames = xlstext(2,2:end);
+nvar = length(vnames);
+data   = Num2NaN(xlsdata);
+for ii=1:length(vnames)
+    DATA.(vnames{ii}) = data(:,ii);
+end
+nobs = size(data,1);
+
+% 9.2 Plot series
+%-------------------------------------------------------------------------- 
+% Plot all variables in DATA
+FigSize(26,6)
+for ii=1:nvar
+    subplot(1,3,ii)
+    H(ii) = plot(DATA.(vnames{ii}),'LineWidth',3,'Color',cmap(1));
+    title(vnames_long(ii)); 
+    DatesPlot(datesnum(1),nobs,6,'q') % Set the x-axis label dates
+    grid on; 
+end
+SaveFigure('graphics/SW_DATA',2)
+clf('reset')
+
+% 9.3 Set up and estimate VAR
+%-------------------------------------------------------------------------- 
+% Select endogenous variables
+Xvnames      = {'infl','unemp','ff'};
+Xvnames_long = {'Inflation','Unemployment','Fed Funds'};
+Xnvar        = length(Xvnames);
+% Create matrices of variables to be used in the VAR
+X = nan(nobs,Xnvar);
+for ii=1:Xnvar
+    X(:,ii) = DATA.(Xvnames{ii});
+end
+% Estimate VAR
+det = 1;
+nlags = 4;
+[VAR, VARopt] = VARmodel(X,nlags,det);
+% Update the VARopt structure with additional details to be used in IR 
+% calculations and plots
+VARopt.vnames = Xvnames_long;
+VARopt.nsteps = 24;
+VARopt.quality = 2;
+VARopt.FigSize = [26,12];
+VARopt.firstdate = datesnum(1);
+VARopt.frequency = 'q';
+VARopt.figname= 'graphics/SW_';
+
+% 9.4 IMPULSE RESPONSES
+%-------------------------------------------------------------------------- 
+% To get zero contemporaneous restrictions set
+VARopt.ident = 'short';
+VARopt.snames = {'\epsilon^{1}','\epsilon^{2}','\epsilon^{MonPol}'};
+% Compute IR
+[IR, VAR] = VARir(VAR,VARopt);
+% Compute IR error bands
+[IRinf,IRsup,IRmed,IRbar] = VARirband(VAR,VARopt);
+% Plot IR
+VARirplot(IRbar,VARopt,IRinf,IRsup);
+
+% 9.5 FORECAST ERROR VARIANCE DECOMPOSITION
+%-------------------------------------------------------------------------- 
+% Compute VD
+[VD, VAR] = VARvd(VAR,VARopt);
+% Compute VD error bands
+[VDinf,VDsup,VDmed,VDbar] = VARvdband(VAR,VARopt);
+% Plot VD
+VARvdplot(VDbar,VARopt);
+
+% 9.6 HISTORICAL DECOMPOSITION
+%-------------------------------------------------------------------------- 
+% Compute HD
+[HD, VAR] = VARhd(VAR,VARopt);
+% Plot HD
+VARhdplot(HD,VARopt);
+
+
+%% 10. BLANCHARD AND QUAH (1989)
+%************************************************************************** 
+% Zero long-run restrictions identification example based on the 
+% replication of Blanchard and Quah (1989, AER) paper
+%-------------------------------------------------------------------------- 
+
+% 10.1 Load data from Blanchard and Quah
+%-------------------------------------------------------------------------- 
+[xlsdata, xlstext] = xlsread('data/BQ1989_Data.xlsx','Sheet1');
+dates = xlstext(3:end,1);
+datesnum = Date2Num(dates);
+vnames_long = xlstext(1,2:end);
+vnames = xlstext(2,2:end);
+nvar = length(vnames);
+data   = Num2NaN(xlsdata);
+for ii=1:length(vnames)
+    DATA.(vnames{ii}) = data(:,ii);
+end
+year = str2double(xlstext{3,1}(1:4));
+quarter = str2double(xlstext{3,1}(6));
+nobs = size(data,1);
+
+% 10.2 Plot series
+%-------------------------------------------------------------------------- 
+FigSize(26,6)
+for ii=1:nvar
+    subplot(1,2,ii)
+    H(ii) = plot(DATA.(vnames{ii}),'LineWidth',3,'Color',cmap(1));
+    title(vnames_long(ii)); 
+    DatesPlot(datesnum(1),nobs,6,'q') % Set the x-axis label 
+    grid on; 
+end
+SaveFigure('graphics/BQ_DATA',2)
+clf('reset')
+
+% 10.3 Set up and estimate VAR
+%-------------------------------------------------------------------------- 
+% Select endogenous variables
+Xvnames      = {'y','u'};
+Xvnames_long = {'GDP growth','Unemployment'};
+Xnvar        = length(Xvnames);
+% Create matrices of variables in the VAR
+X = nan(nobs,Xnvar);
+for ii=1:Xnvar
+    X(:,ii) = DATA.(Xvnames{ii});
+end
+% Estimate VAR
+det = 1;
+nlags = 8;
+[VAR, VARopt] = VARmodel(X,nlags,det);
+VARopt.vnames = Xvnames_long;
+VARopt.nsteps = 40;
+VARopt.quality = 2;
+VARopt.FigSize = [26,8];
+VARopt.firstdate = datesnum(1);
+VARopt.frequency = 'q';
+VARopt.figname= 'graphics/BQ_';
+
+% 10.4 IMPULSE RESPONSES
+%-------------------------------------------------------------------------- 
+% To get zero long-run restrictions set
+VARopt.ident = 'long';
+VARopt.snames = {'\epsilon^{Supply}','\epsilon^{Demand}'};
+% Compute IR
+[IR, VAR] = VARir(VAR,VARopt);
+% Compute IR error bands
+[IRinf,IRsup,IRmed,IRbar] = VARirband(VAR,VARopt);
+% Plot IR
+VARirplot(IRbar,VARopt,IRinf,IRsup);
+
+% 10.5 REPLICATE FIGURE 1 OF BLANCHARD & QUAH
+%-------------------------------------------------------------------------- 
+FigSize(26,8)
+% Plot supply shock
+subplot(1,2,1)
+plot(cumsum(IR(:,1,1)),'LineWidth',2.5,'Color',cmap(1))
+hold on
+plot(IR(:,2,1),'LineWidth',2.5,'Color',cmap(2))
+hold on
+plot(zeros(VARopt.nsteps),'--k')
+title('Supply shock')
+legend({'GDP Level';'Unemployment'})
+% Plot demand shock
+subplot(1,2,2)
+plot(cumsum(-IR(:,1,2)),'LineWidth',2.5,'Color',cmap(1))
+hold on
+plot(-IR(:,2,2),'LineWidth',2.5,'Color',cmap(2))
+hold on
+plot(zeros(VARopt.nsteps),'-k')
+title('Demand shock')
+legend({'GDP Level';'Unemployment'})
+% Save
+SaveFigure('graphics/BQ_Replication',2);
+clf('reset')
+
+
+%% 11. UHLIG (2005)
+%************************************************************************** 
+% Sign restriction identification example based on the replication of 
+% Uhlig (2005, JME) paper
+%-------------------------------------------------------------------------- 
+
+% 11.1 Load data from Uhlig
+%-------------------------------------------------------------------------- 
+[xlsdata, xlstext] = xlsread('data/Uhlig2005_Data.xlsx','Sheet1');
+dates = xlstext(3:end,1);
+datesnum = Date2Num(dates,'m');
+vnames_long = xlstext(1,2:end);
+vnames = xlstext(2,2:end);
+nvar = length(vnames);
+data   = Num2NaN(xlsdata);
+for ii=1:length(vnames)
+    DATA.(vnames{ii}) = data(:,ii);
+end
+year = str2double(xlstext{3,1}(1:4));
+month = str2double(xlstext{3,1}(6));
+nobs = size(data,1);
+% Transform selected variables
+tempnames = {'y','pi','comm','nbres','res'};
+tempscale = [100,100,100,100,100];
+for ii=1:length(tempnames)
+    DATA.(tempnames{ii}) = tempscale(ii)*DATA.(tempnames{ii});
+end
+
+% 11.2 Plot series
+%-------------------------------------------------------------------------- 
+% Plot all variables in DATA
+FigSize(26,18)
+for ii=1:nvar
+    subplot(3,2,ii)
+    H(ii) = plot(DATA.(vnames{ii}),'LineWidth',3,'Color',cmap(1));
+    title(vnames_long(ii)); 
+    DatesPlot(datesnum(1),nobs,6,'m') % Set the x-axis label 
+    grid on; 
+end
+SaveFigure('graphics/Uhlig_DATA',2)
+clf('reset')
+
+% 11.3 Set up and estimate VAR
+%-------------------------------------------------------------------------- 
+% Select endogenous variables
+Xvnames      = vnames;
+Xvnames_long = vnames_long;
+Xnvar        = length(Xvnames);
+% Create matrices of variables in the VAR
+X = nan(nobs,Xnvar);
+for ii=1:Xnvar
+    X(:,ii) = DATA.(Xvnames{ii});
+end
+% Estimate VAR 
+det = 1;
+nlags = 12;
+[VAR, VARopt] = VARmodel(X,nlags,det);
+VARopt.vnames = Xvnames_long;
+VARopt.nsteps = 60;
+VARopt.ndraws = 1000;
+VARopt.quality = 2;
+VARopt.FigSize = [26,8];
+VARopt.firstdate = datesnum(1);
+VARopt.frequency = 'm';
+VARopt.figname= 'graphics/Uhlig_';
+
+% 11.4 IDENTIFICATION
+%-------------------------------------------------------------------------- 
+% Define the shock names
+VARopt.snames = {'Mon. Policy Shock'};
+% Define sign restrictions : positive 1, negative -1, unrestricted 0
+SIGN = [ 0,0,0,0,0,0;  % Real GDP
+        -1,0,0,0,0,0;  % Deflator
+        -1,0,0,0,0,0;  % Commodity Price
+         0,0,0,0,0,0;  % Total Reserves
+        -1,0,0,0,0,0;  % NonBorr. Reserves
+         1,0,0,0,0,0]; % Fed Fund
+% Define the number of horizons to impose the restrictions on
+VARopt.sr_hor = 6;
+% Set options the credible intervals
+VARopt.pctg = 68;
+% The function SR performs the sign restrictions identification and 
+% computes IRs, VDs, and HDs. All the results are stored in SRout
+SRout = SR(VAR,SIGN,VARopt);
+
+% 11.5 Replicate Uhlig's Figure 6
+%-------------------------------------------------------------------------- 
+FigSize(26,12)
+for ii=1:Xnvar
+    subplot(2,3,ii)
+    PlotSwathe(SRout.IRmed(:,ii,1),[SRout.IRinf(:,ii,1) SRout.IRsup(:,ii,1)]); 
+    hold on
+    plot(zeros(VARopt.nsteps),'--k');
+    title(vnames_long{ii})
+    axis tight
+end
+SaveFigure('graphics/Uhlig_Replication',2)
+clf('reset')
+
+% 11.6 Show what happens in the background
+%-------------------------------------------------------------------------- 
+% Plot all rotations
+FigSize(26,12)
+for ii=1:Xnvar
+    subplot(2,3,ii)
+    plot(squeeze(SRout.IRall(:,ii,1,1:100))); hold on
+    plot(zeros(VARopt.nsteps),'--k'); hold on
+    title(vnames_long{ii})
+    axis tight
+	store(ii,:) = ylim;
+end
+SaveFigure('graphics/Uhlig_Replication_500rot',2)
+clf('reset')
+% Plot first rotation
+FigSize(26,12)
+for ii=1:Xnvar
+    subplot(2,3,ii)
+    plot(SRout.IRall(:,ii,1,1)); hold on
+    plot(zeros(VARopt.nsteps),'--k');
+    title(vnames_long{ii})
+    axis tight
+    ylim(store(ii,:))
+end
+SaveFigure('graphics/Uhlig_Replication_1rot',2)
+clf('reset')
+% Plot first two rotations
+FigSize(26,12)
+for ii=1:Xnvar
+    subplot(2,3,ii)
+    plot(SRout.IRall(:,ii,1,1)); hold on
+    plot(SRout.IRall(:,ii,1,3)); hold on
+    plot(zeros(VARopt.nsteps),'--k');
+    title(vnames_long{ii})
+    axis tight
+    ylim(store(ii,:))
+end
+SaveFigure('graphics/Uhlig_Replication_2rot',2)
+clf('reset')
+
+%% 12. GERTLER AND KARADI (2015)
+%************************************************************************** 
+% IExternal instruments identification example based on the replication of 
+% Gertler and Karadi (2015, AEJ:M) paper
+%-------------------------------------------------------------------------- 
+
+% 12.1 Load data from Gertler and Karadi
+%-------------------------------------------------------------------------- 
+[xlsdata, xlstext] = xlsread('data/GK2015_Data.xlsx','Sheet1');
+dates = xlstext(3:end,1);
+datesnum = Date2Num(dates,'m');
+vnames_long = xlstext(1,2:end);
+vnames = xlstext(2,2:end);
+nvar = length(vnames);
+data   = Num2NaN(xlsdata);
+for ii=1:length(vnames)
+    DATA.(vnames{ii}) = data(:,ii);
+end
+year = str2double(xlstext{3,1}(1:4));
+month = str2double(xlstext{3,1}(6));
+nobs = size(data,1);
+
+% 12.2 Plot series
+%-------------------------------------------------------------------------- 
+% Plot all series in DATA
+FigSize(26,18)
+for ii=1:nvar
+    subplot(3,2,ii)
+    H(ii) = plot(DATA.(vnames{ii}),'LineWidth',3,'Color',cmap(1));
+    title(vnames_long(ii)); 
+    DatesPlot(datesnum(1),nobs,6,'m') % Set the x-axis label 
+    grid on; 
+end
+SaveFigure('graphics/GK_DATA',2)
+clf('reset')
+
+% 12.3 Set up and estimate VAR
+%-------------------------------------------------------------------------- 
+% Select endo
+Xvnames_long = {'1yr T-Bill';'Consumer Price Index';'Industrial Production';...
+        'Excess Bond Premium';};
+Xvnames      = {'gs1';'logcpi';'logip';'ebp';};
+Xnvar        = length(Xvnames);
+% Create matrices of variables to be used in the VAR
+X = nan(nobs,Xnvar);
+for ii=1:Xnvar
+    X(:,ii) = DATA.(Xvnames{ii});
+end
+% With the usual notation, select the instrument from the DATA structure:
+IVvnames      = {'ff4_tc'};
+IVvnames_long = {'FF4 futures'};
+IVnvar        = length(IVvnames);
+% Create vector of instruments to be used in the VAR
+IV = nan(nobs,IVnvar);
+for ii=1:IVnvar
+    IV(:,ii) = DATA.(IVvnames{ii});
+end
+% Estimate VAR
+det = 1;
+nlags = 12;
+[VAR, VARopt] = VARmodel(X,nlags,det);
+VARopt.vnames = Xvnames_long;
+VARopt.nsteps = 60;
+VARopt.quality = 2;
+VARopt.FigSize = [26,12];
+VARopt.firstdate = datesnum(1);
+VARopt.frequency = 'm';
+VARopt.figname= 'graphics/GK_';
+
+% 12.4 Identification
+%-------------------------------------------------------------------------- 
+% Identification is achieved with the external instrument (IV), which needs
+% to be added to the VAR structure
+VAR.IV = IV;
+% Update the options in VARopt to be used in IR calculations and plots
+VARopt.ident = 'iv';
+VARopt.snames = {'\epsilon^{MonPol}','','',''};
+VARopt.method = 'wild';
+% Compute IR
+[IR, VAR] = VARir(VAR,VARopt);
+% Compute error bands
+[IRinf,IRsup,IRmed,IRbar] = VARirband(VAR,VARopt);
+% Can now plot the impulse responses with the usual code
+VARirplot(IRbar,VARopt,IRinf,IRsup);
+% Plot impulse responses on impact only
+FigSize(26,12)
+SwatheOpt = PlotSwatheOption;
+SwatheOpt.swathecol = [0.97 0.97 0.97];
+SwatheOpt.linecol = [0.97 0.97 0.97 ];
+for ii=1:Xnvar
+    subplot(2,2,ii);
+	PlotSwathe(IRbar(:,ii),[IRinf(:,ii) IRsup(:,ii)],SwatheOpt); hold on;
+    plot(zeros(1,VARopt.nsteps),'--k','LineWidth',0.5); hold on
+    plot(1,IRbar(1,ii),'LineStyle','-','Color',cmap(1),'LineWidth',2,...
+        'Marker','*','MarkerSize',15); hold on
+    xlim([1 VARopt.nsteps]);
+    title([Xvnames_long{ii} ' to ' VARopt.snames{1}],'FontWeight','bold','FontSize',10); 
+    set(gca, 'Layer', 'top');
+end
+SaveFigure('graphics/GK_alt_IR_1',2)
+clf('reset');
+
+%% 13. CLEAN UP
+%************************************************************************** 
+m2tex('VARToolbox_Primer_v1.m');
 close all
 
 

@@ -23,7 +23,7 @@ function [OUT, fo, lo] = CommonSample(DATA,dim)
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
-% March 2012. Updated November 2020
+% March 2012. Updated September 2024
 % -----------------------------------------------------------------------
 
 % If no dimension is specified, set it to 1
@@ -31,9 +31,11 @@ if ~exist('dim','var')
     dim = 1;
 end
 
+% Initialize firsst and last observations
 fo = 0;
 lo = 0;
 
+% Common sample
 if dim==1
     temp = sum(DATA,2);
     ii = 1;
@@ -69,4 +71,5 @@ else
     DATA(:,any(isnan(DATA),1)) = [];
 end
 
+% Save
 OUT = DATA;

@@ -10,7 +10,7 @@ function [VAR, VARopt] = VARmodel(ENDO,nlag,const,EXOG,nlag_ex)
 % -----------------------------------------------------------------------
 % OPTIONAL INPUT
 %	- const: 0 no constant; 1 constant; 2 constant and trend; 3 constant 
-%       and trend^2 [dflt = 0]
+%       and trend^2 [dflt = 1]
 %	- EXOG: optional matrix of variables (nobs x nvar_ex)
 %	- nlag_ex: number of lags for exogeonus variables [dflt = 0]
 % -----------------------------------------------------------------------
@@ -115,6 +115,7 @@ for j=1:nvar
     eval( ['VAR.' aux '.resid = OLSout.resid;'] );% resids 
     eval( ['VAR.' aux '.yhat  = OLSout.yhat;'] ); % yhats
     eval( ['VAR.' aux '.y     = Yvec;'] );        % actual y
+    eval( ['VAR.' aux '.x     = X;'] );           % actual x
     eval( ['VAR.' aux '.rsqr  = OLSout.rsqr;'] ); % r-squared
     eval( ['VAR.' aux '.rbar  = OLSout.rbar;'] ); % r-adjusted
     eval( ['VAR.' aux '.sige  = OLSout.sige;'] ); % standard error

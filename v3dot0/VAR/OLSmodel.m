@@ -18,7 +18,7 @@ function OLS = OLSmodel(y,x,const)
 % VAR Toolbox 3.0
 % Ambrogio Cesa-Bianchi
 % ambrogiocesabianchi@gmail.com
-% March 2012. Updated November 2020
+% March 2012. Updated September 2024
 % -----------------------------------------------------------------------
 
 
@@ -64,7 +64,7 @@ if nobs < 10000
   xpxi = (r'*r)\eye(nvar);
 else
   xpxi = (x'*x)\eye(nvar);
-end;
+end
 
 % OLS estimator
 OLS.beta = xpxi*(x'*y);
@@ -80,7 +80,7 @@ OLS.sige = sigu/(nobs-nvar);
 % Covariance matrix of beta
 OLS.sigbeta = OLS.sige*xpxi;
 
-% Std errors of beta, t-stats, intervals, and p-values
+% Std errors, t-stats, intervals, and p-values
 tmp = (OLS.sige)*(diag(xpxi));
 sigb = sqrt(tmp);
 OLS.bstd = sigb;
@@ -88,6 +88,54 @@ tcrit=-tdis_inv(.025,nobs);
 OLS.bint=[OLS.beta-tcrit.*sigb, OLS.beta+tcrit.*sigb];
 OLS.tstat = OLS.beta./(sqrt(tmp));
 OLS.tprob = tdis_prb(OLS.tstat,nobs);
+
+% Huber-White std errors
+nlag = 0;
+emat = [];
+for i=1:nvar
+    emat = [emat; OLS.resid'];
+end
+hhat=emat.*x';
+G=zeros(nvar,nvar); w=zeros(2*nlag+1,1);
+a=0;
+while a~=nlag+1
+ga=zeros(nvar,nvar);
+w(nlag+1+a,1)=(nlag+1-a)/(nlag+1);
+za=hhat(:,(a+1):nobs)*hhat(:,1:nobs-a)';
+  if a==0
+   ga=ga+za;
+  else
+   ga=ga+za+za';
+  end
+G=G+w(nlag+1+a,1)*ga;
+a=a+1;
+end
+V=xpxi*G*xpxi;
+OLS.bstd_HW= sqrt(diag(V));
+
+% Newey–West std errors
+nlag = floor(4*((nobs/100)^(2/9)));
+emat = [];
+for i=1:nvar
+    emat = [emat; OLS.resid'];
+end
+hhat=emat.*x';
+G=zeros(nvar,nvar); w=zeros(2*nlag+1,1);
+a=0;
+while a~=nlag+1
+ga=zeros(nvar,nvar);
+w(nlag+1+a,1)=(nlag+1-a)/(nlag+1);
+za=hhat(:,(a+1):nobs)*hhat(:,1:nobs-a)';
+  if a==0
+   ga=ga+za;
+  else
+   ga=ga+za+za';
+  end
+G=G+w(nlag+1+a,1)*ga;
+a=a+1;
+end
+V=xpxi*G*xpxi;
+OLS.bstd_NW= sqrt(diag(V));
 
 % R2
 ym = y - mean(y);

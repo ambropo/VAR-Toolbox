@@ -1,3 +1,0 @@
-[submodule "src/modules/matlab-fame-io"]
-	path = src/modules/matlab-fame-io
-	url = ../../Dynare/matlab-fame-io.git

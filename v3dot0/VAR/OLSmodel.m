@@ -64,7 +64,7 @@ if nobs < 10000
   xpxi = (r'*r)\eye(nvar);
 else
   xpxi = (x'*x)\eye(nvar);
-end;
+end
 
 % OLS estimator
 OLS.beta = xpxi*(x'*y);

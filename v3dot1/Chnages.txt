@@ -1,0 +1,2 @@
+Newey West and huber-White standard errors in function OLSmodel function  
+LPmakex: function to create lagged matrices of independent variables for local projections

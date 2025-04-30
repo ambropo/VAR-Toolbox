@@ -139,6 +139,10 @@ elseif strcmp(VARopt.ident,'iv')
     Biv = Biv*sp;
     B = zeros(nvar,nvar);
     B(:,1) = Biv;
+% B matrix is from EXOG variable
+elseif strcmp(VARopt.ident,'exog')
+    B = zeros(nvar,nvar);
+    B(:,1) = VAR.F(:,VAR.const+VAR.ncoeff+1); % First exo variable
 % If none of the above, you've done somerthing wrong :)    
 else
     disp('---------------------------------------------')

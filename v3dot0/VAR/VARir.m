@@ -110,7 +110,7 @@ elseif strcmp(VARopt.ident,'iv')
     % Make sample of IV comparable with up and uq
     [aux, fo, lo] = CommonSample([up IV(VAR.nlag+1:end,:)]);
     p = aux(:,1);
-    q = uq(end-length(p)+1:end,:); pq = [p q];
+    q = uq((fo+1):(end-lo),:); pq = [p q];
     Z = aux(:,2:end);
 
     % Run first stage regression and fitted

@@ -12,6 +12,8 @@
 *.log
 *.bbl
 *.blg
+*.fls
+*latexmk
 wink.png
 *temp.pdf
 beamer*
@@ -20,5 +22,6 @@ v3dot0/_bin/*
 v3dot0/fromDynare/*
 v3dot2/*
 v3dot3/*
+
 
 

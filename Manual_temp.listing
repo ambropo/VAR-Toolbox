@@ -1,0 +1,3 @@
+% Implement sign restrictions identification with SR routine
+% conditional on VAR.Biv being already identified
+SRIVout = SR(VAR,SIGN,VARopt);

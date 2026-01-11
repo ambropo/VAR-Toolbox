@@ -31,5 +31,8 @@ if quality==0
     print(['-d' type],'-r100',path)
     print(['-d' type],'-r100',path)
 elseif quality==1 % option for Ghostscript
+    set(gcf, 'Color', 'w');
+    export_fig(path,['-' type],'-painters')
+elseif quality==2 % option for new matlab function exportgraphics
     exportgraphics(gcf,[path '.pdf'])
 end

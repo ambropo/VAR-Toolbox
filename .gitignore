@@ -13,6 +13,8 @@
 *.bbl
 *.blg
 *.fls
+*.listing
+*.backup
 *latexmk
 wink.png
 *temp.pdf
@@ -23,6 +25,6 @@ v3dot0/fromDynare/*
 v3dot2/*
 v3dot3/*
 AGENTS.md
-
+.Rhistory
 
 

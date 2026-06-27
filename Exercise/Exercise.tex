@@ -1,0 +1,61 @@
+\documentclass[10pt,itemsep]{beamer}
+\usetheme{jambro}
+\graphicspath{{./graphics/}}
+\renewcommand{\memouser}{ACB}
+
+% Authors/institutes/date/etc
+%--------------------------------
+\title[]{VAR Identification: A Practical Session}
+\author[]{Ambrogio Cesa-Bianchi}
+\date{\today}
+
+\begin{document}
+
+%=============================================================
+\begin{frame}[plain]
+    \titlepage{
+        \begin{center}
+            \begin{minipage}{0.8\textwidth}
+            \end{minipage}
+    \end{center}}
+\end{frame}
+%.......................................................
+\shownotesblockzero{}
+
+%=============================================================
+\begin{frame}{Exercise}
+    \small
+    File \texttt{Exercise.m} loads the data and estimates a baseline VAR($12$) with four variables: CPI, IP, 1-year rate, and Excess Bond Premium (EBP) as in Gertler \& Karadi (2015) 
+    
+    \medskip
+
+    \textbf{Objective}: Identify a monetary policy shock using three approaches and, for each,
+    plot the impulse responses of all four variables:
+    
+    \medskip
+    
+    \begin{enumerate}
+        \item \textbf{Cholesky} --- recursive identification 
+        \item \textbf{Sign restrictions} 
+        \item \textbf{External instruments} 
+    \end{enumerate}
+    
+    \medskip
+    
+    \textbf{Compare} the three sets of impulse responses and discuss: which assumptions are needed for each approach? Which is most credible, and why? How do the results differ across approaches, and why?
+
+\end{frame}
+%.......................................................
+\shownotesblock{
+    Key points for discussion:
+    (1) Cholesky identification hinges on the ordering; flipping Rate and EBP can
+        change the results substantially --- illustrate the fragility.
+    (2) Sign restrictions are set-identified: error bands tend to be wider.
+    (3) IV avoids ordering and sign assumptions; its credibility rests on the
+        instrument validity. Potential threat: ``information effects'' (Nakamura
+        \& Steinsson 2018) --- the FF4 may capture Fed information, not just surprises.
+    (4) GK prefer IV precisely because it is more agnostic about the structural shock
+        configuration and is well-suited to trace the credit channel.
+}
+
+\end{document}

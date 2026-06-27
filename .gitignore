@@ -1,28 +1,30 @@
-.DS_Store
-*.sty
-*.tex
-*.nav
-*.bib
-*.out
-*.snm
-*.gz
-*.toc
-*.vrb
-*.aux
-*.log
-*.bbl
-*.blg
-*.fls
-*latexmk
-wink.png
-*temp.pdf
-beamer*
-aux/*
-v3dot0/_bin/*
-v3dot0/fromDynare/*
-v3dot2/*
-v3dot3/*
-AGENTS.md
+# Ignore everything
+*
 
+# Allow all directories
+!*/
 
+# Re-ignore hidden directories (.claude, .vscode, .review, etc.)
+.*
 
+# Allow .gitignore itself
+!/.gitignore
+
+# Tracked file types
+!*.m
+!*.tex
+!*.pdf
+!*.xlsx
+!*.bib
+!*.sty
+
+# ...except these PDFs: third-party published papers and unused figures.
+# Kept on local disk, not tracked / not on GitHub.
+*_Paper.pdf
+Primer/graphics/sign_HD_ShocksOnly.pdf
+Replic/ADRR2018/ADRR_Fig6_slides.pdf
+
+# Tracked root files
+!ChangeLog.md
+!LICENSE
+!README.md

@@ -2849,11 +2849,13 @@ VAR_exog = VARmodel(X, nlags, detc, VARopt_exog);
 {Bootstrap for point-identified models}
 \begin{itemize}
 \item Activate with \mc{VARopt.inference = 1}\bigskip\pause
-\item Two variants, selected via \mc{VARopt.method} \smallskip
+\item Three variants, selected via \mc{VARopt.method} \smallskip
 \begin{itemize}
 \item \mc{'bs'} (residual bootstrap): resample residuals with replacement; preserves autocorrelation structure but assumes homoskedastic residuals \smallskip
-\item \mc{'wild'}: multiply each residual by an independent $\pm 1$ Rademacher draw; robust to conditional heteroskedasticity; default for proxy SVARs \medskip
+\item \mc{'mbb'} (moving block): resample blocks of consecutive residuals; preserves serial dependence \smallskip
+\item \mc{'wild'}: multiply each residual by an independent $\pm 1$ Rademacher draw; robust to conditional heteroskedasticity \medskip
 \end{itemize}\pause
+\item With \mc{ident='iv'}, \mc{'bs'} is rejected: it breaks the $z_t$--$u_t$ pairing that identifies the model. Use \mc{'mbb'} or \mc{'wild'} \medskip
 \begin{matlabcode}
 VARopt.inference = 1;       % activate bootstrap
 VARopt.method    = 'bs';    % 'bs' = residual bootstrap (default)

@@ -82,11 +82,24 @@ for mm = 1:nvar
         response(shut,1) = 0;
     end
 
-    if strcmp(recurs,'wold')
+    % The shut-down counterfactual is defined by the modified companion
+    % matrix (the row of Fcomp for variable shut was zeroed above), so the
+    % response must be propagated through Fcomp whenever shut is active,
+    % irrespective of VARopt.recurs. PSI was built by compute_wold from the
+    % unmodified lag polynomial: under 'wold' the shut variable was zeroed
+    % on impact only and responded again from horizon 2 onwards, so the two
+    % recursion options implemented different counterfactuals.
+    if shut ~= 0
+        recurs_h = 'comp';
+    else
+        recurs_h = recurs;
+    end
+
+    if strcmp(recurs_h,'wold')
         for kk = 2:nsteps
             response(:,kk) = PSI(:,:,kk) * B * impulse;
         end
-    elseif strcmp(recurs,'comp')
+    elseif strcmp(recurs_h,'comp')
         for kk = 2:nsteps
             FcompN         = Fcomp^(kk-1);
             response(:,kk) = FcompN(1:nvar,1:nvar) * B * impulse;

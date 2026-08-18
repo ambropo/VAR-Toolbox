@@ -166,6 +166,14 @@ while jj < ndraws
         VAR_draw.(label{1}).F     = F_draw;
         VAR_draw.(label{1}).Fcomp = Fcomp_draw;
         VAR_draw.(label{1}).sigma = sigma_draw;
+        % Residuals must be recomputed at the drawn coefficients. Narrative
+        % restrictions below read VAR_draw.resid to back out structural shocks
+        % (e = B\resid'), and compute_HD reads it again for the decomposition.
+        % Leaving the OLS point-estimate residuals in place (as before) pairs
+        % the innovations of one parameter vector with the dynamics and
+        % covariance of another, which can flip narrative accept/reject
+        % decisions and breaks the HD reconstruction for the drawn model.
+        VAR_draw.(label{1}).resid = VAR.Y - VAR.X*Ft_draw;
     end
 
     % Draw a rotation satisfying the sign restrictions

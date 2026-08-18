@@ -19,6 +19,7 @@ function VARhdplot(HD, VARopt, INF, SUP)
 %         .const  (nobs+nlag x nvar)        — constant term
 %         .trend  (nobs+nlag x nvar)        — linear trend
 %         .exo    (nobs+nlag x nvar x nvar_ex) — exogenous variables
+%         .exoshock (nobs+nlag x nvar)     — observed exogenous shock block
 %       First nlag rows of all fields are NaN (lag-period padding).
 %   - VARopt: options structure from VARoption [struct]
 %       Key fields for VARhdplot:
@@ -224,10 +225,11 @@ else
         has_trend  = isfield(HD,'trend')  && any(any(isfinite(HD.trend)  & HD.trend  ~= 0));
         has_init   = isfield(HD,'init')   && any(any(isfinite(HD.init)   & HD.init   ~= 0));
         has_exo    = isfield(HD,'exo')    && size(HD.exo,3) > 0;
+        has_exosh  = isfield(HD,'exoshock') && any(any(isfinite(HD.exoshock) & HD.exoshock ~= 0));
     end
 
     % Build legend name list.
-    % Stack order (bottom to top): const → trend → init → exo → shocks.
+    % Stack order (bottom to top): const → trend → init → exo → exoshock → shocks.
     % Const and init converge toward fixed levels and are naturally at the base.
     if hd_detc
         comp_names = {};
@@ -242,6 +244,7 @@ else
                 comp_names = [comp_names, arrayfun(@(k)['Exo ' num2str(k)], 1:n_exo, 'UniformOutput',false)];
             end
         end
+        if has_exosh; comp_names{end+1} = 'Exo. shock'; end
         comp_names = [comp_names, snames(:)'];
     else
         comp_names = snames(:)';
@@ -250,7 +253,7 @@ else
     % Pre-allocate DATA_stack with known column count (fixed for all variables).
     % Same order: const → trend → init → exo → shocks (bottom to top).
     if hd_detc
-        ncols = has_const + has_trend + has_init;
+        ncols = has_const + has_trend + has_init + has_exosh;
         if has_exo; ncols = ncols + size(HD.exo,3); end
         ncols = ncols + nshocks;
     else
@@ -282,6 +285,7 @@ else
                 n_exo = size(HD.exo,3);
                 DATA_stack(:,c:c+n_exo-1) = squeeze(HD.exo(:,ii,:)); c = c+n_exo;
             end
+            if has_exosh; DATA_stack(:,c) = HD.exoshock(:,ii); c = c+1; end
             DATA_stack(:,c:end) = squeeze(HD.shock(:,:,ii));
         else
             DATA_stack(:,:) = squeeze(HD.shock(:,:,ii));

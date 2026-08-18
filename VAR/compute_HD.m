@@ -17,6 +17,9 @@ function HD = compute_HD(VAR, B)
 %       .const  [(nobs+nlag) x nvar]        contribution of constant
 %       .trend  [(nobs+nlag) x nvar]        contribution of linear trend
 %       .exo    [(nobs+nlag) x nvar x nvar_ex] contribution of exogenous vars
+%       .exoshock [(nobs+nlag) x nvar]      contribution of the observed
+%                                           exogenous shock regressor block
+%                                           (ident='exog'); zero otherwise
 %       .endo   [(nobs+nlag) x nvar]        total (sum of all components)
 % -----------------------------------------------------------------------
 % EXAMPLE
@@ -122,19 +125,61 @@ end
 %% 6. EXOGENOUS VARIABLE CONTRIBUTIONS
 % -----------------------------------------------------------------------
 % Loop over exogenous variables; for each one, feed its realisation through
-% the companion recursion using the corresponding coefficient column of F.
+% the companion recursion. VARmakelags orders X_EX as
+% [EXOG(t), EXOG(t-1), ..., EXOG(t-nlag_ex)], each block nvar_ex columns
+% wide, so variable ii at lag kk occupies column kk*nvar_ex+ii of X_EX and
+% its coefficient sits in column base_ex+kk*nvar_ex+ii of F. Every included
+% lag contributes to the forcing term: summing over kk is required for the
+% components to reconstruct the data whenever nlag_ex>0. (Using only the
+% contemporaneous column, as before, dropped all lagged EXOG contributions.)
+nlag_ex   = VAR.nlag_ex;
+base_ex   = const + nvarXeq + VAR.ncoeff_es;   % past deterministics, endo lags, exoshock block
 HDexo_big = zeros(nlag*nvar, nobs+1);
 HDexo     = zeros(nvar, nobs+1, nvar_ex);
-EXO       = zeros(nlag*nvar, nvar_ex*(VAR.nlag_ex+1));
 if nvar_ex > 0
     for ii = 1:nvar_ex
-        HDexo_big(:)   = 0;                                       % reset state for each exogenous variable
-        VARexo         = VAR.X_EX(:,ii);
-        EXO(1:nvar,ii) = F(:, nvar*nlag+const+VAR.ncoeff_es+ii); % offset past exoshock block
+        HDexo_big(:) = 0;                      % reset state for each exogenous variable
+
+        % Total forcing contributed by variable ii at each date: contemporaneous
+        % value plus every included lag, each weighted by its own coefficient
+        force = zeros(nvar, nobs);
+        for kk = 0:nlag_ex
+            col   = kk*nvar_ex + ii;
+            force = force + F(:, base_ex+col) * VAR.X_EX(:,col)';
+        end
+
         for i = 2:nobs+1
-            HDexo_big(:,i) = EXO(:,ii)*VARexo(i-1,:)' + Fcomp*HDexo_big(:,i-1);
+            fvec           = zeros(nlag*nvar, 1);
+            fvec(1:nvar)   = force(:,i-1);
+            HDexo_big(:,i) = fvec + Fcomp*HDexo_big(:,i-1);
             HDexo(:,i,ii)  = Icomp * HDexo_big(:,i);
         end
+    end
+end
+
+
+%% 7. IDENTIFIED EXOGENOUS SHOCK CONTRIBUTION
+% -----------------------------------------------------------------------
+% Under ident='exog' the observed shock enters the VAR as its own regressor
+% block X_ES = [es(t), es(t-1), ..., es(t-nlag_es)], with coefficients in
+% columns base_es+1 ... base_es+ncoeff_es of F. This forcing term is a
+% component in its own right, distinct from the structural-shock block in
+% section 2: HD.shock accounts for the reduced-form innovations, while X_ES
+% is an observed regressor. Omitting it (as before) left the components
+% short of the data by exactly this term whenever ident='exog'.
+base_es        = const + nvarXeq;
+HDexoshock_big = zeros(nlag*nvar, nobs+1);
+HDexoshock     = zeros(nvar, nobs+1);
+if VAR.ncoeff_es > 0
+    force_es = zeros(nvar, nobs);
+    for kk = 1:VAR.ncoeff_es
+        force_es = force_es + F(:, base_es+kk) * VAR.X_ES(:,kk)';
+    end
+    for i = 2:nobs+1
+        fvec                = zeros(nlag*nvar, 1);
+        fvec(1:nvar)        = force_es(:,i-1);
+        HDexoshock_big(:,i) = fvec + Fcomp*HDexoshock_big(:,i-1);
+        HDexoshock(:,i)     = Icomp * HDexoshock_big(:,i);
     end
 end
 
@@ -142,7 +187,7 @@ end
 %% 8. TOTAL AND RESHAPE OUTPUT
 % -----------------------------------------------------------------------
 % All components must sum to the original data.
-HDendo = HDinit + HDconst + HDtrend + sum(HDexo,3) + sum(HDshock,3);
+HDendo = HDinit + HDconst + HDtrend + HDexoshock + sum(HDexo,3) + sum(HDshock,3);
 
 % Reshape to (nobs+nlag x nvar x nshock) with NaN padding over lag periods
 HD.shock = zeros(nobs+nlag, nvar, nvar);
@@ -161,4 +206,5 @@ HD.exo    = zeros(nobs+nlag, nvar, nvar_ex);
 for i = 1:nvar_ex
     HD.exo(:,:,i) = [nan(nlag,nvar); HDexo(:,2:end,i)'];
 end
+HD.exoshock = [nan(nlag,nvar); HDexoshock(:,2:end)'];
 HD.endo   = [nan(nlag,nvar); HDendo(:,2:end)'];

@@ -61,7 +61,10 @@ results.sige = sigu/(nobs-nvar);
 tmp = (results.sige)*(diag(xpxi));
 sigb=sqrt(tmp);
 results.bstd = sigb;
-tcrit=-tdis_inv(.025,nobs);
+% Residual degrees of freedom are nobs-nvar (as used for results.sige above),
+% not nobs; the latter understated the interval width. VAR/OLSmodel.m uses
+% nobs-nvar for the same quantity, so the two routines now agree.
+tcrit=-tdis_inv(.025,nobs-nvar);
 results.bint=[results.beta-tcrit.*sigb, results.beta+tcrit.*sigb];
 results.tstat = results.beta./(sqrt(tmp));
 ym = y - mean(y);

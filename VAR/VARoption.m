@@ -53,7 +53,10 @@ VARopt.inference = 1;       % 1 = propagate parameter uncertainty (default); 0 =
 VARopt.ndraws    = 1000;    % number of bootstrap draws
 VARopt.mult      = 10;      % print progress every mult draws
 VARopt.pctg      = 95;      % outer confidence level for error bands (percent)
-VARopt.method    = 'bs';    % bootstrap method: 'bs' standard, 'wild' wild
+VARopt.method    = 'bs';    % bootstrap method: 'bs' standard (i.i.d. residual),
+                            % 'mbb' moving block (Jentsch-Lunsford), 'wild' wild.
+                            % 'bs' is rejected under ident='iv': see VARmodel.
+VARopt.mbb_blocksize = [];  % block length for method='mbb'; [] = floor(5.03*nobs^0.25)
 
 % Sign restrictions
 VARopt.R         = [];      % sign restriction matrix or struct (required for ident='sign' or 'sign+iv')

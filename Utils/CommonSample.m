@@ -40,6 +40,13 @@ end
 fo = 0;
 lo = 0;
 
+% Empty input: return it unchanged with zero counters. Without this guard the
+% branches below index temp(1) on a 0-element vector and raise.
+if isempty(DATA)
+    OUT = DATA;
+    return
+end
+
 if dim==1
     % Sum across columns: any NaN in a row makes the row sum NaN
     temp = sum(DATA,2);

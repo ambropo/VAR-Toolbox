@@ -75,8 +75,20 @@ orderIndices = 1:dy;
 % Repeatedly draw a random Householder-QR rotation matrix and apply it to
 % the lower Cholesky of sigma. Accept the rotated B when all sign
 % restrictions in SIGN are satisfied simultaneously.
-counter = 1; flag = 0;
+counter = 0; flag = 0;
 while 1
+    % Abort the search if the rotation budget is exhausted; flag triggers
+    % an empty B return after the loop. The test precedes the counter
+    % increment and the construction of startingMat so that exactly
+    % VARopt.sr_rot complete rotations are attempted (previously the
+    % increment came first, giving sr_rot-1 rotations and, for sr_rot=1,
+    % none at all).
+    if counter >= VARopt.sr_rot
+        flag = 1;
+        break
+    end
+    counter = counter + 1;
+
     % Create starting matrix to be rotated.
     % If one column of B has already been provided:
     if whereToStart>1
@@ -99,14 +111,6 @@ while 1
     % Otherwise start from a lower Cholesky
     else
         startingMat = chol(sigma,'lower');
-    end
-    counter = counter + 1;
-
-    % Abort the search if the rotation budget is exhausted; flag triggers
-    % an empty B return after the loop
-    if counter>VARopt.sr_rot
-        flag = 1;
-        break
     end
     termaa = startingMat;
     TermA = 0;
@@ -168,5 +172,5 @@ while 1
     end
 end
 if flag==0; B=termaa(:,orderIndices); else; B=[]; end
-n_tried = counter - 1;
+n_tried = counter;   % rotations actually attempted
 end

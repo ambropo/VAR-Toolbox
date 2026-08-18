@@ -38,8 +38,8 @@ function [AIC, BIC, logL] = VARlag(ENDO,maxlag,const,EXOG,lag_ex)
 if ~exist('const','var')
     const = 1;
 end
-if const > 2
-    error('VARlag: const must be 0, 1, or 2 (got %d)', const);
+if ~isscalar(const) || ~ismember(const, [0 1 2])
+    error('VARlag: const must be 0, 1, or 2 (got %s)', mat2str(const));
 end
 
 % Parse exogenous variables and verify conformability with ENDO
@@ -69,24 +69,37 @@ nvar_ex = num_ex*(lag_ex+1);
 logL = zeros(maxlag,1);
 AIC  = zeros(maxlag,1);
 BIC  = zeros(maxlag,1);
+% The estimation sample must be identical across candidates for the criteria
+% to be comparable. VARmodel trims max(i, lag_ex) initial rows, so the input
+% is trimmed by maxlag - max(i, lag_ex) rows to make every candidate start at
+% observation maxlag+1. (Trimming by maxlag-i alone leaves the sample varying
+% with i whenever lag_ex > i.)
+if lag_ex > maxlag
+    error('VARlag: lag_ex (%d) cannot exceed maxlag (%d).', lag_ex, maxlag);
+end
 for i=1:maxlag
     % Estimate VAR with lag length i on a sample aligned to the longest lag
-    X = ENDO(maxlag+1-i:end,:);
+    trim = maxlag + 1 - max(i, lag_ex);
+    X = ENDO(trim:end,:);
     aux = VARmodel(X,i,const);
     if nvar_ex>0
-        Y = EXOG(maxlag+1-i:end,:);
+        Y = EXOG(trim:end,:);
         aux = VARmodel(X,i,const,[],Y,lag_ex);
     end
 
-    % Extract key quantities from the VAR output
-    NOBSadj   = aux.nobs;     % observations used in estimation (after lag trimming)
-    NOBS      = aux.nobs + i; % restore total observations by adding back the i initial lags
+    % Extract key quantities from the VAR output. NOBS is the number of
+    % observations actually used in estimation and is common to every
+    % candidate by construction; it enters the likelihood and both penalty
+    % terms. (It was previously set to aux.nobs + i, which reintroduced a
+    % candidate-specific sample size after estimating on a common sample and
+    % could change the selected lag.)
+    NOBS      = aux.nobs;
     NVAR      = aux.nvar;
     NTOTCOEFF = aux.ntotcoeff;
     RES       = aux.resid;
 
     % VCV of the residuals (plain MLE denominator for likelihood comparison)
-    SIGMA = (1/NOBSadj) * (RES)' * (RES);
+    SIGMA = (1/NOBS) * (RES)' * (RES);
 
     % Log-likelihood under normality
     logL(i) = -(NOBS/2) * (NVAR*(1+log(2*pi)) + log(det(SIGMA)));
@@ -98,6 +111,12 @@ for i=1:maxlag
     BIC(i) = -2*(logL(i)/NOBS) + (NVAR*NTOTCOEFF)*log(NOBS)/NOBS;
 end
 
-% Return the lag length that minimises each criterion
-AIC = find(AIC==min(AIC));
-BIC = find(BIC==min(BIC));
+% Return the lag length that minimises each criterion. min returns the first
+% minimiser as a scalar, matching the documented contract; find(x==min(x))
+% returned every tied minimiser (a vector) and an empty result when all
+% criterion values were non-finite.
+if ~any(isfinite(AIC)) || ~any(isfinite(BIC))
+    error('VARlag: information criteria are not finite for any candidate lag.');
+end
+[~, AIC] = min(AIC);
+[~, BIC] = min(BIC);

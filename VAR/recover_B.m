@@ -58,12 +58,18 @@ elseif strcmp(ident,'iv')
     up = VAR.resid(:,1);
     uq = VAR.resid(:,2:end);
 
-    % Align instrument sample with the residual sample
-    [aux, ~, ~] = CommonSample([up IV(VAR.nlag+1:end,:)]);
-    p    = aux(:,1);
-    q    = uq(end-length(p)+1:end,:);
-    pq   = [p q];
-    Z_iv = aux(:,2:end);
+    % Align instrument sample with the residual sample. The retained rows are
+    % identified by a logical mask over dates, not by a row count: the
+    % instrument may be missing at the start, at the end, or in the interior,
+    % and p, q and Z_iv must all be selected on the same dates. (Selecting q
+    % as the last length(p) rows of uq is correct only when the missing
+    % observations are all leading.)
+    IVtrim = IV(VAR.nlag+1:end,:);
+    keep   = ~any(isnan([up IVtrim]), 2);
+    p      = up(keep);
+    q      = uq(keep,:);
+    Z_iv   = IVtrim(keep,:);
+    pq     = [p q];
 
     % First stage: project instrumented residual onto IV
     FirstStage = OLSmodel(p, Z_iv);

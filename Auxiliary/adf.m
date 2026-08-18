@@ -61,7 +61,13 @@ ch = trimr(ch,1,0);
 % Erasmus University Rotterdam.
 % The Netherlands.
 k = 0 ;
-z = [];
+% Initialise z as a 0-column matrix with the correct number of rows rather
+% than []. With l = 0 the loop below does not execute and z stays empty:
+% trimr([],0,0) raised 'Attempting to trim too much in trimr', so zero
+% augmentation (the plain Dickey-Fuller specification) was unreachable, and
+% rows(z) would have been 0 in the ptrend call below. Identical to the
+% previous behaviour for l >= 1.
+z = zeros(rows(ch),0);
 while (k < l);
     k = k+1;
     z = [z lag(ch,k)];

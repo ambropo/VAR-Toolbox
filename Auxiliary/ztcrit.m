@@ -113,10 +113,16 @@ function crit = ztcrit(nobs,p)
       i = 10;
   end;
      
-  if (p > 5)
-   crit = zeros(6,1);
+  % The table holds 10 sample-size groups of 7 rows indexed by p = -1,...,5.
+  % Any p outside that range reads into the next group's block or past the
+  % end of the table. The previous guard assigned crit = zeros(6,1) but did
+  % not return, so the assignment below overwrote it on every path and
+  % out-of-domain p silently returned critical values for a different trend
+  % order (or raised an opaque index error).
+  if (p < -1) || (p > 5)
+   error('ztcrit: p = %d is not tabulated; p must be an integer in [-1,5].', p);
   end;
-  
+
   i = (i-1)*7 + p + 2;
   
   crit = zt(i,:)';

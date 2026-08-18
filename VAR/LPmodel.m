@@ -278,8 +278,11 @@ if do_iv
 end
 
 % Deterministic component: const=0 (none), 1 (constant), 2 (constant+trend)
-if const > 2
-    error('LPmodel: const must be 0, 1, or 2 (got %d)', const);
+% Validate from both sides: the chain below ends in an unguarded else, so a
+% negative or non-integer const previously fell through to constant+trend
+% silently. VARmodel and OLSmodel apply the same check.
+if ~isscalar(const) || ~ismember(const, [0 1 2])
+    error('LPmodel: const must be 0, 1, or 2 (got %s)', mat2str(const));
 end
 nT_trim = length(endo);
 if const == 0

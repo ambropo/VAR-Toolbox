@@ -47,6 +47,8 @@ function VAR = VARmodel(ENDO, nlag, const, VARopt, EXOG, nlag_ex)
 %                           .const  (nobs+nlag x nvar) — constant term
 %                           .trend  (nobs+nlag x nvar) — linear trend
 %                           .exo    (nobs+nlag x nvar x nvar_ex) — exog.
+%                           .exoshock (nobs+nlag x nvar) — observed exog.
+%                             shock regressor block (ident='exog'; else 0)
 %                           .endo   (nobs+nlag x nvar) — observed data
 %                             (sum of all components; equals ENDO after lags)
 %                         First nlag rows NaN (lag-period padding).
@@ -61,6 +63,7 @@ function VAR = VARmodel(ENDO, nlag, const, VARopt, EXOG, nlag_ex)
 %                           .const  (nobs+nlag x nvar x ndraws)
 %                           .trend  (nobs+nlag x nvar x ndraws)
 %                           .exo    (nobs+nlag x nvar x nvar_ex x ndraws)
+%                           .exoshock (nobs+nlag x nvar x ndraws)
 %                           .endo   (nobs+nlag x nvar x ndraws)
 %                         (compute_HD does not produce trend2; no such field)
 %         .HDbar          full HD struct, bootstrap mean of all components
@@ -98,8 +101,8 @@ function VAR = VARmodel(ENDO, nlag, const, VARopt, EXOG, nlag_ex)
 if nargin < 3 || isempty(const)
     const = 1;
 end
-if const > 2
-    error('VARmodel: const must be 0, 1, or 2 (got %d)', const);
+if ~isscalar(const) || ~ismember(const, [0 1 2])
+    error('VARmodel: const must be 0, 1, or 2 (got %s)', mat2str(const));
 end
 
 % Default VARopt: call VARoption if not supplied
@@ -413,9 +416,65 @@ nsteps  = VARopt.nsteps;
 resid   = VAR.resid;
 IV      = VARopt.IV;
 
+% Guard: the i.i.d. residual bootstrap is invalid under iv identification.
+% Resampling residual dates independently of the instrument breaks the
+% contemporaneous pairing of z_t with u_t, which is the identifying moment
+% of the proxy SVAR: the draws remain conformable and the program completes,
+% but the resulting bands carry no identification content.
+if strcmp(method,'bs') && strcmp(VARopt.ident,'iv')
+    error(['VARmodel: method = ''bs'' is not valid with ident = ''iv''. The i.i.d. ' ...
+        'residual bootstrap resamples residual dates independently of the instrument, ' ...
+        'destroying the contemporaneous instrument/innovation pairing on which ' ...
+        'proxy-SVAR identification rests. Use method = ''mbb'' (moving block ' ...
+        'bootstrap) or method = ''wild''.']);
+end
+
 % Inner VARopt: same settings but no bootstrap (avoids infinite recursion)
 VARopt_inner           = VARopt;
 VARopt_inner.inference = 0;
+
+% Moving block bootstrap: precompute the block structure and the recentering
+% terms once, outside the draw loop. Blocks of consecutive residuals (and, under
+% iv, of the instrument at the SAME dates) preserve both the serial dependence
+% of the residuals and their contemporaneous pairing with the instrument.
+% Follows Jentsch and Lunsford; the instrument recentering uses the deviation of
+% the block-position mean from the full-sample mean, computed over observed
+% (non-NaN) entries only.
+if strcmp(method,'mbb')
+    if isempty(VARopt.mbb_blocksize)
+        BlockSize = floor(5.03 * nobs^0.25);   % Jentsch-Lunsford rule of thumb
+    else
+        BlockSize = VARopt.mbb_blocksize;
+    end
+    BlockSize = max(1, min(round(BlockSize), nobse));
+    nBlock    = ceil(nobse / BlockSize);       % blocks needed to cover the sample
+    nStart    = nobse - BlockSize + 1;         % number of admissible block starts
+
+    % Recentering for the residuals: position j within a block is recentered on
+    % the mean of all residuals that can occupy position j
+    mbb_ctr = zeros(BlockSize, nvar);
+    for j = 1:BlockSize
+        mbb_ctr(j,:) = mean(resid(j:nobse-BlockSize+j, :), 1);
+    end
+    mbb_ctr = repmat(mbb_ctr, [nBlock, 1]);
+    mbb_ctr = mbb_ctr(1:nobse, :);
+
+    % Recentering for the instrument (iv only), over observed entries only
+    if strcmp(VARopt.ident,'iv')
+        IV_eff  = IV(nlag+1:end, :);
+        nIV     = size(IV_eff, 2);
+        mbb_Mctr = zeros(BlockSize, nIV);
+        for j = 1:BlockSize
+            subM = IV_eff(j:nobse-BlockSize+j, :);
+            for c = 1:nIV
+                mbb_Mctr(j,c) = mean(subM(~isnan(subM(:,c)), c)) ...
+                              - mean(IV_eff(~isnan(IV_eff(:,c)), c));
+            end
+        end
+        mbb_Mctr = repmat(mbb_Mctr, [nBlock, 1]);
+        mbb_Mctr = mbb_Mctr(1:nobse, :);
+    end
+end
 
 % Preallocate storage arrays; draws accumulated along 4th dimension
 IRall        = zeros(nsteps,    nvar, nvar,    ndraws);
@@ -425,6 +484,7 @@ HDall_init   = zeros(nobse+nlag, nvar,           ndraws);
 HDall_const  = zeros(nobse+nlag, nvar,           ndraws);
 HDall_trend  = zeros(nobse+nlag, nvar,           ndraws);
 HDall_exo    = zeros(nobse+nlag, nvar, nvar_ex,  ndraws);
+HDall_exosh  = zeros(nobse+nlag, nvar,           ndraws);
 HDall_endo   = zeros(nobse+nlag, nvar,           ndraws);
 
 % Buffer for the simulated endogenous data in each bootstrap draw
@@ -445,27 +505,51 @@ while tt <= ndraws
 
     % Step 1: draw bootstrap residuals
     if strcmp(method,'bs')
-        % Standard bootstrap: sample rows of residual matrix with replacement
+        % Standard bootstrap: sample rows of residual matrix with replacement.
+        % Rejected above for ident='iv' (breaks the instrument/innovation pairing).
         u = resid(ceil(size(resid,1)*rand(nobse,1)),:);
+    elseif strcmp(method,'mbb')
+        % Moving block bootstrap: draw nBlock blocks of BlockSize consecutive
+        % rows with replacement, concatenate, trim to the sample length, and
+        % recenter. Under iv the instrument is blocked with the SAME start
+        % indices, so each artificial residual keeps the instrument observation
+        % it was paired with in the data.
+        bidx = ceil(nStart * rand(nBlock,1));
+        u    = zeros(nBlock*BlockSize, nvar);
+        for j = 1:nBlock
+            u(1+BlockSize*(j-1):BlockSize*j, :) = resid(bidx(j):bidx(j)+BlockSize-1, :);
+        end
+        u = u(1:nobse,:) - mbb_ctr;
+
+        if strcmp(VARopt.ident,'iv')
+            Zb = zeros(nBlock*BlockSize, nIV);
+            for j = 1:nBlock
+                Zb(1+BlockSize*(j-1):BlockSize*j, :) = IV_eff(bidx(j):bidx(j)+BlockSize-1, :);
+            end
+            Zb  = Zb(1:nobse,:);
+            obs = ~isnan(Zb);                  % recenter observed entries only
+            Zb(obs) = Zb(obs) - mbb_Mctr(obs);
+            VARopt_inner.IV = [IV(1:nlag,:); Zb];
+        end
     elseif strcmp(method,'wild')
         % Wild bootstrap: Rademacher weights applied to original residuals
         if strcmp(VARopt.ident,'iv')
-            % For iv, apply the same Rademacher weight to residuals and instrument
-            rr = 1-2*(rand(nobse,size(IV,2))>0.5);
-            u  = resid .* (rr*ones(size(IV,2),nvar));
-            Z  = [IV(1:nlag,:); IV(nlag+1:end,:).*rr];
+            % For iv, one weight per observation is applied to the whole
+            % residual row AND to every instrument column, so the pairing is
+            % preserved. Drawing one weight per instrument and multiplying by
+            % ones(nIV,nvar) (as before) summed the independent signs, giving
+            % residual weights on {-nIV,...,+nIV} instead of {-1,+1} and
+            % annihilating any row whose signs cancelled.
+            rr = 1-2*(rand(nobse,1)>0.5);
+            u  = resid .* (rr*ones(1,nvar));
+            Z  = [IV(1:nlag,:); IV(nlag+1:end,:) .* (rr*ones(1,size(IV,2)))];
             VARopt_inner.IV = Z;
         else
             rr = 1-2*(rand(nobse,1)>0.5);
             u  = resid .* (rr*ones(1,nvar));
         end
     else
-        error(['Bootstrap method ''' method ''' not recognised. Choose ''bs'' or ''wild''.'])
-    end
-
-    % For standard bootstrap with iv, instrument is not resampled
-    if strcmp(method,'bs') && strcmp(VARopt.ident,'iv')
-        VARopt_inner.IV = VARopt.IV;
+        error(['Bootstrap method ''' method ''' not recognised. Choose ''bs'', ''mbb'', or ''wild''.'])
     end
 
     % Step 2: simulate artificial data
@@ -519,6 +603,7 @@ while tt <= ndraws
         HDall_const(:,:,tt)    = VAR_draw.HD.const;
         HDall_trend(:,:,tt)    = VAR_draw.HD.trend;
         HDall_exo(:,:,:,tt)    = VAR_draw.HD.exo;
+        HDall_exosh(:,:,tt)    = VAR_draw.HD.exoshock;
         HDall_endo(:,:,tt)     = VAR_draw.HD.endo;
         tt = tt + 1;
     end
@@ -553,6 +638,7 @@ VAR.HDall.init   = HDall_init;
 VAR.HDall.const  = HDall_const;
 VAR.HDall.trend  = HDall_trend;
 VAR.HDall.exo    = HDall_exo;
+VAR.HDall.exoshock = HDall_exosh;
 VAR.HDall.endo   = HDall_endo;
 
 % HDbar: full struct, bootstrap mean of all components
@@ -561,6 +647,7 @@ VAR.HDbar.init   = mean(HDall_init,  3);
 VAR.HDbar.const  = mean(HDall_const, 3);
 VAR.HDbar.trend  = mean(HDall_trend, 3);
 VAR.HDbar.exo    = mean(HDall_exo,   4);
+VAR.HDbar.exoshock = mean(HDall_exosh, 3);
 VAR.HDbar.endo   = mean(HDall_endo,  3);
 
 % HDinf / HDsup: full structs, percentile bands on all components
@@ -579,6 +666,9 @@ VAR.HDsup.trend  = aux(:,:,2);
 aux              = prctile(HDall_exo,   [pctg_inf pctg_sup], 4);
 VAR.HDinf.exo    = aux(:,:,:,1);
 VAR.HDsup.exo    = aux(:,:,:,2);
+aux              = prctile(HDall_exosh, [pctg_inf pctg_sup], 3);
+VAR.HDinf.exoshock = aux(:,:,1);
+VAR.HDsup.exoshock = aux(:,:,2);
 aux              = prctile(HDall_endo,  [pctg_inf pctg_sup], 3);
 VAR.HDinf.endo   = aux(:,:,1);
 VAR.HDsup.endo   = aux(:,:,2);

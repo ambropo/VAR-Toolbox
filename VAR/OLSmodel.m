@@ -45,8 +45,12 @@ if ~exist('const','var')
 end
 
 % Add constant or trend if needed
-if const > 2
-    error('OLSmodel: const must be 0, 1, or 2 (got %d)', const);
+% Validate from both sides: the chain below has no final else, so a negative
+% or non-integer const previously fell through silently and the regression
+% ran with no deterministics at all (while OLS.const recorded the invalid
+% value). VARmodel and LPmodel apply the same check.
+if ~isscalar(const) || ~ismember(const, [0 1 2])
+    error('OLSmodel: const must be 0, 1, or 2 (got %s)', mat2str(const));
 end
 if const==1
     x = [ones(nobs,1) x];
